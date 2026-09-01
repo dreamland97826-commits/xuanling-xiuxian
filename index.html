@@ -1,0 +1,3211 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0d1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="玄靈修仙風雲錄">
+<meta name="mobile-web-app-capable" content="yes">
+<meta charset="UTF-8" />
+<title>玄靈修仙風雲錄｜文字修仙</title>
+<style>
+:root{
+  --bg:#0c0e12;
+  --panel:#151922;
+  --panel2:#10141b;
+  --text:#e8e2d3;
+  --muted:#9b968b;
+  --line:#2d3440;
+  --accent:#d7bc7a;
+  --danger:#c66b6b;
+  --good:#82b58b;
+  --ghost:#9c8fc7;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(139,111,67,.15), transparent 25%),
+    radial-gradient(circle at 85% 15%, rgba(73,78,121,.13), transparent 25%),
+    var(--bg);
+  color:var(--text);
+  font-family:"Noto Serif TC","Microsoft JhengHei",serif;
+  min-height:100vh;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:22px}
+.header{
+  display:flex;justify-content:space-between;gap:20px;align-items:end;
+  border-bottom:1px solid var(--line);padding:12px 0 18px;margin-bottom:18px
+}
+h1{font-size:30px;margin:0;letter-spacing:.16em;font-weight:600}
+.subtitle{color:var(--muted);font-size:13px;letter-spacing:.08em;margin-top:8px}
+.badge{
+  border:1px solid var(--line);padding:7px 11px;border-radius:999px;
+  color:var(--accent);font-size:12px;background:rgba(255,255,255,.02)
+}
+.grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
+.panel{
+  background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 18%),var(--panel);
+  border:1px solid var(--line);border-radius:14px;padding:16px;
+  box-shadow:0 15px 45px rgba(0,0,0,.18)
+}
+.panel h2{font-size:15px;color:var(--accent);letter-spacing:.1em;margin:0 0 14px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.stat{
+  padding:10px;background:var(--panel2);border:1px solid #232a34;border-radius:9px
+}
+.stat .k{font-size:11px;color:var(--muted)}
+.stat .v{font-size:17px;margin-top:4px}
+.full{grid-column:1/-1}
+.progress{height:8px;background:#222831;border-radius:999px;overflow:hidden;margin-top:7px}
+.progress>div{height:100%;background:linear-gradient(90deg,#8f7850,var(--accent));width:0;transition:width .35s ease}
+.ghostbar>div{background:linear-gradient(90deg,#675c91,var(--ghost))}
+.dangerbar>div{background:linear-gradient(90deg,#724646,var(--danger))}
+.actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.actions button{flex:0 0 auto;min-width:88px}
+.action-groups{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.action-row{
+  display:flex;align-items:center;gap:8px;overflow-x:auto;padding:7px 2px 10px;
+  scrollbar-width:thin
+}
+.action-row::-webkit-scrollbar{height:7px}
+.action-row::-webkit-scrollbar-thumb{background:#343b46;border-radius:999px}
+.action-label{
+  flex:0 0 74px;color:var(--accent);font-size:12px;letter-spacing:.08em;
+  position:sticky;left:0;background:var(--panel);z-index:2;padding:8px 6px
+}
+.manual-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}
+.manual-card{
+  border:1px solid #303845;border-radius:10px;padding:10px;background:#11161d
+}
+.manual-card .name{font-size:13px;color:var(--text)}
+.manual-card .meta{font-size:11px;color:var(--muted);margin-top:3px}
+.skill-progress{height:7px;background:#222831;border-radius:999px;overflow:hidden;margin-top:8px}
+.skill-progress>div{height:100%;background:linear-gradient(90deg,#79684b,var(--accent))}
+.conflict{color:#df9999;font-size:11px;margin-top:6px}
+.craft-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+@media(max-width:800px){.manual-grid{grid-template-columns:1fr}.craft-grid{grid-template-columns:repeat(2,1fr)}}
+button{
+  background:#1c222c;color:var(--text);border:1px solid #353d49;border-radius:9px;
+  padding:11px 10px;cursor:pointer;font-family:inherit;transition:.18s
+}
+button:hover{transform:translateY(-1px);border-color:#75684f;background:#222935}
+button.primary{border-color:#7d6842;color:#f1dca8}
+button.danger{border-color:#754646;color:#e6aaaa}
+button.ghost{border-color:#5c5579;color:#c8bde9}
+button:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.log-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.world-news{border:1px solid #3b414b;border-radius:11px;background:#11151c;padding:11px 13px;margin-bottom:12px}
+.news-head{display:flex;justify-content:space-between;color:var(--accent);font-size:11px;letter-spacing:.1em;margin-bottom:7px}
+.news-ticker{font-size:13px;line-height:1.65;color:#ddd6c8}
+.opportunity-hints{font-size:11px;color:#9eb1a2;margin-top:7px;line-height:1.6}
+.latest-panel{
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:linear-gradient(180deg,#181d26,#121720);
+  border:1px solid #3a424f;
+  border-radius:11px;
+  padding:12px 14px;
+  box-shadow:0 8px 24px rgba(0,0,0,.22);
+}
+.latest-label{
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:.12em;
+  margin-bottom:5px;
+}
+.latest-text{
+  font-size:14px;
+  line-height:1.65;
+}
+.log{
+  height:475px;
+  overflow:auto;
+  background:#0d1117;
+  border:1px solid #252c36;
+  border-radius:11px;
+  padding:14px;
+  line-height:1.72;
+  scroll-behavior:smooth;
+}
+.entry{padding:10px 2px;border-bottom:1px dashed #252b33}
+.entry:last-child{border-bottom:0}
+.year{color:var(--accent);font-size:12px}
+.choicebox{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+.choicebox button{padding:7px 10px;font-size:12px}
+.realm-list{font-size:12px;color:var(--muted);line-height:1.8}
+.realm-list b{color:var(--text)}
+.start{
+  max-width:680px;margin:9vh auto;background:var(--panel);border:1px solid var(--line);
+  padding:26px;border-radius:16px
+}
+.start h2{margin-top:0;color:var(--accent)}
+input,select{
+  width:100%;background:#0f1319;color:var(--text);border:1px solid #343b46;
+  border-radius:8px;padding:11px;margin:7px 0 15px;font-family:inherit
+}
+.routecards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 17px}
+.routecard{border:1px solid #343b46;border-radius:10px;padding:13px;cursor:pointer}
+.routecard.active{border-color:#9d8352;background:#1b1a17}
+.routecard b{color:var(--accent)}
+.small{font-size:12px;color:var(--muted);line-height:1.6}
+.destinybox{
+  border:1px solid #3a424e;background:#0f1319;border-radius:11px;
+  padding:13px;margin:8px 0 16px
+}
+.destinyresult{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px
+}
+.destinyitem{
+  padding:10px;border:1px solid #2c3440;border-radius:9px;background:#141922
+}
+.destinyitem .dk{font-size:11px;color:var(--muted)}
+.destinyitem .dv{font-size:16px;color:var(--accent);margin-top:4px}
+.destinyrare{animation:rareGlow 1.8s ease-in-out infinite alternate}
+@keyframes rareGlow{
+  from{box-shadow:0 0 0 rgba(215,188,122,0)}
+  to{box-shadow:0 0 22px rgba(215,188,122,.24)}
+}
+.hidden{display:none!important}
+.footer{color:#777;font-size:11px;text-align:center;padding:20px}
+.tag{font-size:11px;border:1px solid #404753;padding:3px 6px;border-radius:99px;margin-left:5px;color:#aaa}
+.sectbox{margin-top:12px;padding:11px;border:1px solid #2d3540;border-radius:10px;background:#11161d}
+.sectline{font-size:12px;color:var(--muted);line-height:1.75}
+.sectline b{color:var(--text)}
+.war{color:#e39a9a}
+.neutral{color:#d7c390}
+.righteous{color:#9fc8aa}
+.evil{color:#d48a8a}
+.ghosttext{color:#b9a7de}.manual{color:#d9c58d}.fragment{color:#c99b9b}
+@media(max-width:800px){
+  .grid{grid-template-columns:1fr}
+  .latest-panel{position:sticky;top:6px}
+  .log{height:52vh;min-height:360px}
+}
+
+/* ===== UX / RWD overhaul ===== */
+html{scroll-behavior:smooth}
+body{overflow-x:hidden}
+button,input,select{font-size:16px}
+button{min-height:44px;touch-action:manipulation}
+.wrap{max-width:1440px;padding:16px 18px 28px}
+.header{align-items:center;position:relative}
+.header-main{min-width:0}
+.header h1{line-height:1.15}
+.grid{grid-template-columns:minmax(300px,360px) minmax(0,1fr);align-items:start}
+.grid>*, .panel{min-width:0}
+aside.panel{
+  position:sticky;top:14px;
+  max-height:calc(100dvh - 28px);
+  overflow:auto;
+  scrollbar-width:thin;
+  overscroll-behavior:contain
+}
+main.panel{min-height:calc(100dvh - 120px)}
+.techbox{
+  margin-top:12px;padding:11px;border:1px solid #2d3540;border-radius:10px;background:#11161d
+}
+.techline{font-size:12px;color:var(--muted);line-height:1.75}
+.techline b{color:var(--text)}
+.world-news{position:relative}
+.log{height:calc(100dvh - 305px);min-height:420px;max-height:760px}
+.latest-panel{top:0}
+.action-row{overflow:visible;flex-wrap:wrap;padding:4px 0 6px}
+.action-label{
+  flex:0 0 100%;position:static;background:transparent;padding:2px 1px 4px;
+  font-weight:700;border-bottom:1px solid rgba(255,255,255,.05)
+}
+.action-row button{flex:1 1 92px;min-width:92px}
+.choicebox button{min-height:40px;max-width:100%;white-space:normal;text-align:left}
+.entry{overflow-wrap:anywhere}
+.realm-list{overflow-wrap:anywhere}
+.mobile-only{display:none!important}
+
+/* Compact summary for smaller screens */
+.mobile-summary{
+  display:none;
+  background:rgba(17,21,28,.94);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:9px 11px;
+  gap:7px;
+  overflow-x:auto;
+  scrollbar-width:none
+}
+.mobile-summary::-webkit-scrollbar{display:none}
+.mobile-summary .ms-item{
+  flex:0 0 auto;min-width:92px;
+  border-right:1px solid #2d3440;padding-right:10px
+}
+.mobile-summary .ms-item:last-child{border-right:0}
+.mobile-summary .ms-k{font-size:10px;color:var(--muted)}
+.mobile-summary .ms-v{font-size:13px;color:var(--text);margin-top:2px;white-space:nowrap}
+.mobile-summary .ms-v.accent{color:var(--accent)}
+
+/* Mobile bottom quick action dock */
+.mobile-dock{
+  display:none;position:fixed;z-index:60;left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));
+  padding:7px;
+  background:rgba(13,17,23,.94);
+  border:1px solid #39414d;border-radius:15px;
+  box-shadow:0 10px 35px rgba(0,0,0,.45);
+  backdrop-filter:blur(16px);
+  grid-template-columns:repeat(5,1fr);gap:5px
+}
+.mobile-dock button{
+  min-width:0;min-height:48px;padding:6px 4px;font-size:11px;border-radius:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px
+}
+.mobile-dock .dock-icon{font-size:17px;line-height:1}
+.mobile-dock .dock-label{line-height:1.15}
+
+.section-toggle{
+  width:100%;display:flex;justify-content:space-between;align-items:center;
+  margin-top:12px;background:#131820;border-color:#2d3540;color:var(--accent);
+  min-height:42px
+}
+.section-toggle::after{content:"▾";transition:.2s}
+.section-toggle.collapsed::after{transform:rotate(-90deg)}
+.collapsible-section.is-collapsed{display:none!important}
+
+@media(max-width:1100px){
+  .wrap{max-width:100%;padding:12px}
+  .grid{grid-template-columns:300px minmax(0,1fr);gap:12px}
+  .stats{gap:7px}
+  .stat{padding:8px}
+  .stat .v{font-size:15px}
+  .log{height:calc(100dvh - 300px);min-height:390px}
+}
+
+@media(max-width:860px){
+  body{padding-bottom:76px}
+  .wrap{padding:10px}
+  .header{margin-bottom:9px;padding:8px 2px 12px;gap:10px}
+  .header h1{font-size:23px;letter-spacing:.11em}
+  .subtitle{font-size:11px;margin-top:5px}
+  .badge{font-size:11px;padding:6px 9px;white-space:nowrap}
+  .mobile-summary{display:flex;margin-bottom:9px}
+  .grid{display:flex;flex-direction:column;gap:10px}
+  main.panel{order:1;width:100%;padding:11px;min-height:auto}
+  aside.panel{
+    order:2;width:100%;position:static;max-height:none;overflow:visible;padding:12px
+  }
+  .world-news{margin-bottom:9px;padding:10px 11px}
+  .news-ticker{font-size:12px;line-height:1.55}
+  .opportunity-hints{font-size:11px}
+  .latest-panel{position:sticky;top:6px;z-index:12;padding:10px 11px}
+  .latest-text{font-size:13px;line-height:1.55}
+  .log{height:58vh;height:58dvh;min-height:360px;max-height:none;padding:11px}
+  .entry{padding:9px 1px;font-size:14px}
+  .choicebox{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px
+  }
+  .choicebox button{width:100%;font-size:13px}
+  .mobile-dock{display:grid}
+  .mobile-only{display:block!important}
+  .footer{padding-bottom:10px}
+}
+
+@media(max-width:600px){
+  .wrap{padding:7px}
+  .header{align-items:flex-start}
+  .header h1{font-size:21px}
+  .subtitle{display:none}
+  .badge{max-width:48vw;overflow:hidden;text-overflow:ellipsis}
+  .panel{border-radius:11px}
+  main.panel{padding:8px}
+  aside.panel{padding:10px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .stat{padding:8px 7px}
+  .stat .k{font-size:10px}
+  .stat .v{font-size:14px;overflow-wrap:anywhere}
+  .stat.full{grid-column:1/-1}
+  .action-groups{gap:9px}
+  .action-row{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px
+  }
+  .action-label{grid-column:1/-1}
+  .action-row button{width:100%;min-width:0;padding:9px 5px;font-size:12px}
+  .manual-grid{grid-template-columns:1fr}
+  .craft-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .log{height:61vh;height:61dvh;min-height:350px;border-radius:9px}
+  .choicebox{grid-template-columns:1fr}
+  .choicebox button{text-align:center}
+  .world-news{border-radius:9px}
+  .news-head{font-size:10px}
+  .mobile-summary .ms-item{min-width:82px}
+  .mobile-summary .ms-v{font-size:12px}
+  .realm-list{font-size:11px;line-height:1.65}
+}
+
+@media(max-width:390px){
+  .action-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mobile-dock{left:5px;right:5px;gap:3px;padding:5px}
+  .mobile-dock button{font-size:10px}
+  .mobile-dock .dock-icon{font-size:16px}
+  .log{height:59dvh}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
+
+
+.progress-pct{float:right;color:var(--accent);font-variant-numeric:tabular-nums;font-weight:700}
+.energy-progress{height:10px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+.energy-progress>div{will-change:width}
+.energy-progress.ready>div{filter:brightness(1.25)}
+.energy-progress.ready{box-shadow:0 0 0 1px rgba(215,184,120,.35),0 0 14px rgba(215,184,120,.12)}
+
+
+/* ===== Reincarnation / attributes / alignment ===== */
+.aligncards{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:8px 0 16px}
+.aligncard{border:1px solid #343b46;border-radius:9px;padding:9px 7px;text-align:center;cursor:pointer;font-size:12px}
+.aligncard.active{border-color:#9d8352;background:#1b1a17;color:var(--accent)}
+.attribute-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}
+.attr-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px;border:1px solid #2d3540;border-radius:8px;background:#10151c}
+.attr-item .attr-meta{min-width:0}
+.attr-item .attr-name{color:var(--text);font-size:12px}
+.attr-item .attr-desc{color:var(--muted);font-size:10px;margin-top:2px}
+.attr-item button{min-height:34px;padding:4px 10px;font-size:14px}
+.morality-good{color:#9fc8aa!important}
+.morality-evil{color:#d48a8a!important}
+.morality-neutral{color:#d7c390!important}
+.afterlife-title{color:#b9a7de;font-weight:700}
+@media(max-width:600px){
+ .aligncards{grid-template-columns:repeat(2,1fr)}
+ .attribute-grid{grid-template-columns:1fr}
+}
+
+
+/* ===== Persistent world / reincarnation legacy ===== */
+.legacy-box{margin-top:12px;padding:11px;border:1px solid #3a3547;border-radius:10px;background:#121019}
+.legacy-head{display:flex;justify-content:space-between;gap:8px;align-items:center;color:#c8b6e6;font-size:12px;font-weight:700}
+.legacy-list{margin-top:7px;font-size:11px;color:var(--muted);line-height:1.65}
+.legacy-chip{display:inline-block;border:1px solid #40384c;border-radius:99px;padding:2px 7px;margin:2px 3px 2px 0;color:#c9bdd8}
+
+/* PWA / standalone refinements */
+@media (display-mode: standalone) {
+  body { min-height: 100vh; min-height: 100dvh; }
+  .wrap { padding-top: max(8px, env(safe-area-inset-top)); }
+}
+html,body{overscroll-behavior-y:none}
+body{-webkit-tap-highlight-color:transparent}
+button{-webkit-user-select:none;user-select:none}
+
+</style>
+<link rel="manifest" href="./manifest.webmanifest">
+</head>
+<body>
+
+<div id="startScreen" class="start">
+  <h2>玄靈修仙風雲錄</h2>
+  <p class="small">你生於亂世，仙門高懸於雲外。有人問道，有人煉體，有人一步踏錯成魔，也有人死後才真正開始修行。</p>
+  <label>道號 / 名字</label>
+  <input id="nameInput" maxlength="12" placeholder="例如：沈長風" value="無名" />
+
+  <label>種族</label>
+  <select id="raceSelect">
+    <option value="隨機">隨機命定</option>
+    <option value="人族">人族</option>
+    <option value="妖族">妖族</option>
+    <option value="精">精</option>
+    <option value="混血">混血（隨機血脈）</option>
+  </select>
+  <div class="small">鬼、天魔、仙、神、渾沌魔神屬於特殊或後期種族，會透過死亡、飛升、墮魔或重大事件轉化。</div>
+
+  <label style="display:block;margin-top:12px">初始立場</label>
+  <div class="aligncards" id="alignmentCards">
+    <div class="aligncard active" data-align="正道">正道</div>
+    <div class="aligncard" data-align="中立">中立</div>
+    <div class="aligncard" data-align="魔門">魔門</div>
+    <div class="aligncard" data-align="邪修">邪修</div>
+    <div class="aligncard" data-align="自由">自由散修</div>
+  </div>
+  <div class="small">立場只影響初始邀請與部分事件，不限制你日後改投、墮魔、洗白或背叛。</div>
+
+  <label style="display:block;margin-top:12px">初始道路</label>
+  <div class="routecards">
+    <div class="routecard active" data-route="體修">
+      <b>體修</b>
+      <div class="small">血厚、抗劫、近身強。修行較穩，但悟道較慢。</div>
+    </div>
+    <div class="routecard" data-route="法修">
+      <b>法修</b>
+      <div class="small">靈力與悟性高，突破較快，但肉身脆弱。</div>
+    </div>
+  </div>
+
+  <label>靈根與先天天賦</label>
+  <div class="destinybox" id="destinyBox">
+    <div class="small">靈根不可自選。請由測靈石判定你的先天命格；其中存在極低機率的隱藏靈根。</div>
+    <button id="drawDestinyBtn" style="width:100%;margin-top:10px">觸碰測靈石</button>
+    <div class="destinyresult hidden" id="destinyResult">
+      <div class="destinyitem"><div class="dk">靈根</div><div class="dv" id="drawRoot">—</div></div>
+      <div class="destinyitem"><div class="dk">天賦</div><div class="dv" id="drawTalent">—</div></div>
+    </div>
+    <div class="small" id="destinyDesc" style="margin-top:9px"></div>
+  </div>
+
+  <button id="beginBtn" class="primary" style="width:100%" disabled>踏入仙途</button>
+</div>
+
+<div id="gameScreen" class="wrap hidden">
+  <div class="header">
+    <div class="header-main">
+      <h1>玄靈修仙風雲錄</h1>
+      <div class="subtitle">一念為仙 · 一念成魔 · 一死亦未必道消</div>
+    </div>
+    <div class="badge" id="statusBadge">凡俗 · 體修</div>
+  </div>
+
+  <div class="mobile-summary" id="mobileSummary">
+    <div class="ms-item"><div class="ms-k">境界</div><div class="ms-v accent" id="mRealm">凡俗</div></div>
+    <div class="ms-item"><div class="ms-k">年歲</div><div class="ms-v" id="mAge">16歲</div></div>
+    <div class="ms-item"><div class="ms-k">時序</div><div class="ms-v" id="mSeason">春</div></div>
+    <div class="ms-item"><div class="ms-k">修行能量</div><div class="ms-v" id="mEnergy">0</div></div>
+    <div class="ms-item"><div class="ms-k">門派</div><div class="ms-v" id="mSect">散修</div></div>
+  </div>
+
+  <div class="grid">
+    <aside class="panel">
+      <h2>命格</h2>
+      <div class="stats">
+        <div class="stat"><div class="k">姓名</div><div class="v" id="sName">—</div></div>
+        <div class="stat"><div class="k">修途</div><div class="v" id="sRoute">—</div></div>
+        <div class="stat"><div class="k">靈根</div><div class="v" id="sRoot">—</div></div>
+        <div class="stat"><div class="k">天賦</div><div class="v" id="sTalent">—</div></div>
+        <div class="stat"><div class="k">種族</div><div class="v" id="sRace">—</div></div>
+        <div class="stat"><div class="k">異化值</div><div class="v" id="sMutation">0%</div></div>
+        <div class="stat"><div class="k">血脈穩定</div><div class="v" id="sStability">100%</div></div>
+        <div class="stat"><div class="k">門派</div><div class="v" id="sSect">散修</div></div>
+        <div class="stat"><div class="k">職位</div><div class="v" id="sSectRank">無</div></div>
+        <div class="stat"><div class="k">聲望</div><div class="v" id="sRep">0</div></div>
+        <div class="stat"><div class="k">年歲</div><div class="v"><span id="sAge">16</span> / <span id="sLife">80</span></div></div>
+<div class="stat"><div class="k">時序</div><div class="v" id="sSeason">春 · 1/4</div></div>
+        <div class="stat"><div class="k">境界</div><div class="v" id="sRealm">凡俗</div></div>
+        <div class="stat"><div class="k">天劫</div><div class="v" id="sTrib">未臨</div></div>
+        <div class="stat"><div class="k">氣血</div><div class="v" id="sHp">100</div></div>
+        <div class="stat"><div class="k">靈力</div><div class="v" id="sQi">20</div></div>
+        <div class="stat"><div class="k">悟性</div><div class="v" id="sWis">10</div></div>
+        <div class="stat"><div class="k">業障</div><div class="v" id="sKarma">0</div></div>
+        <div class="stat"><div class="k">善惡</div><div class="v" id="sMorality">中立 0</div></div>
+        <div class="stat"><div class="k">屬性點</div><div class="v" id="sAttrPoints">0</div></div>
+
+        <div class="stat full">
+          <div class="k"><span id="energyLabel">靈氣</span> <span id="cultText"></span> <span id="cultPct" class="progress-pct">0%</span></div>
+          <div class="progress energy-progress" title="目前修行能量進度"><div id="cultBar"></div></div>
+        </div>
+        <div class="stat full">
+          <div class="k">魔念 <span id="demonText"></span></div>
+          <div class="progress dangerbar"><div id="demonBar"></div></div>
+        </div>
+        <div class="stat full hidden" id="ghostPanel">
+          <div class="k">陰壽 / 魂魄穩定 <span id="ghostText"></span></div>
+          <div class="progress ghostbar"><div id="ghostBar"></div></div>
+        </div>
+      </div>
+
+      <h2 id="actionsAnchor" style="margin-top:18px">行動</h2>
+      <div class="action-groups">
+        <div class="action-row">
+          <div class="action-label">修行</div>
+          <button id="cultivateBtn" class="primary">閉關</button>
+          <button id="breakBtn">突破</button>
+          <button id="restBtn">休養</button>
+          <button id="manualBtn">功法</button>
+<button id="realmFeatureBtn">境界能力</button>
+<button id="attributeBtn">屬性</button>
+        </div>
+        <div class="action-row">
+          <div class="action-label">外出</div>
+          <button id="adventureBtn">歷練</button>
+          <button id="sectBtn">門派</button>
+          <button id="sectStoryBtn">門派劇情</button>
+          <button id="intelBtn">機緣情報</button>
+        </div>
+        <div class="action-row">
+          <div class="action-label">百藝</div>
+          <button id="alchemyBtn">煉丹</button>
+          <button id="talismanBtn">製符</button>
+          <button id="forgeBtn">煉器</button>
+          <button id="arrayBtn">佈陣</button>
+          <button id="herbBtn">靈植</button>
+          <button id="cookBtn">靈廚</button>
+        </div>
+        <div class="action-row">
+          <div class="action-label">系統</div>
+          <button id="saveBtn">存檔</button>
+          <button id="resetBtn" class="danger">輪迴／重開</button>
+        </div>
+      </div>
+
+      <button class="section-toggle mobile-only" data-toggle="sectInfo">角色／宗門詳情</button>
+      <div class="sectbox collapsible-section" id="sectInfo">
+        <div class="sectline"><b>門派年資：</b><span id="sSectYears">0</span> 年</div>
+        <div class="sectline"><b>陣營：</b><span id="sSectAlign">無</span></div>
+        <div class="sectline"><b>舊門恩怨：</b><span id="sBetrayal">無</span></div>
+        <div class="sectline"><b>異變特徵：</b><span id="sMutations">無</span></div>
+        <div class="sectline"><b>異族傳承：</b><span id="sForeignPath">無</span></div>
+        <div class="sectline"><b>未了因果：</b><span id="sThreads">0</span></div>
+        <div class="sectline"><b>命運標記：</b><span id="sFateTags">無</span></div>
+        <div class="sectline"><b>最近劫雷：</b><span id="sLastThunder">無</span></div>
+        <div class="sectline"><b>突破輔助：</b><span id="sBreakAid">無</span></div>
+<div class="sectline"><b>金丹：</b><span id="sCore">未結丹</span></div>
+<div class="sectline"><b>本命法寶：</b><span id="sLifeArtifact">無</span></div>
+<div class="sectline"><b>第二生命：</b><span id="sSecondLife">未開啟</span></div>
+<div class="sectline"><b>掌握法則：</b><span id="sLaws">無</span></div>
+<div class="sectline"><b>門派篇章：</b><span id="sSectStory">尚未展開</span></div>
+<div class="sectline"><b>世界大勢：</b><span id="sWorldArc">大世將起</span></div>
+<div class="sectline"><b>自主立場：</b><span id="sPlayerAlign">正道</span></div>
+<div class="sectline"><b>前世餘韻：</b><span id="sLegacy">無</span></div>
+<div class="sectline"><b>額外屬性：</b><span id="sAttributes">體魄0・靈性0・神識0・氣運0</span></div>
+      </div>
+      <div class="legacy-box" id="legacyWorldBox">
+        <div class="legacy-head"><span>輪迴世界遺產</span><span id="sWorldAge">玄靈曆 0 年</span></div>
+        <div class="legacy-list" id="sLegacyWorld">此世尚未留下跨輪迴遺產。</div>
+      </div>
+      <div class="legacy-box" id="npcWorldBox">
+        <div class="legacy-head"><span>風雲人物</span><span id="sNpcCount">0 位活躍人物</span></div>
+        <div class="legacy-list" id="sNpcWorld">尚未出現足以牽動天下的重要人物。</div>
+      </div>
+
+      <button class="section-toggle mobile-only" data-toggle="manualInfo">功法詳情</button>
+      <div class="techbox collapsible-section" id="manualInfo">
+        <div class="techline"><b>主修功法：</b><span id="sManual">無</span></div>
+        <div class="techline"><b>輔修功法：</b><span id="sAuxManuals">無</span></div>
+        <div class="techline"><b>功法衝突：</b><span id="sManualConflict">低</span></div>
+        <div id="manualProgressList" class="manual-grid"></div>
+      </div>
+
+      <button class="section-toggle mobile-only" data-toggle="craftInfo">百藝熟練</button>
+      <div class="techbox collapsible-section" id="craftInfo">
+        <div class="techline"><b>百藝熟練：</b></div>
+        <div id="craftProgressList" class="manual-grid"></div>
+      </div>
+
+      <button class="section-toggle mobile-only" data-toggle="realmInfo">境界序列</button>
+      <div class="collapsible-section" id="realmInfo"><h2 style="margin-top:18px">境界序列</h2>
+      <div class="realm-list" id="realmList"></div></div>
+    </aside>
+
+    <main class="panel">
+      <div class="world-news" id="worldNews">
+        <div class="news-head"><span>修真界快訊</span><span id="newsTime">本季</span></div>
+        <div id="newsTicker" class="news-ticker">天下暫無大事。</div>
+        <div id="opportunityHints" class="opportunity-hints"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <h2 style="margin-bottom:10px">浮生錄</h2>
+        <button id="latestBtn" style="padding:7px 10px;font-size:12px">查看最新</button>
+      </div>
+      <div class="log-wrap">
+        <div class="latest-panel" id="latestPanel">
+          <div class="latest-label">最新進度</div>
+          <div class="latest-text" id="latestText">尚未踏入仙途。</div>
+        </div>
+        <div class="log" id="log"></div>
+      </div>
+    </main>
+  </div>
+
+  <div class="footer">所有因果都會留下痕跡。包括你以為讀檔就沒發生過的那些。</div>
+
+  <nav class="mobile-dock" id="mobileDock" aria-label="快速行動">
+    <button type="button" data-click="cultivateBtn"><span class="dock-icon">◉</span><span class="dock-label">閉關</span></button>
+    <button type="button" data-click="adventureBtn"><span class="dock-icon">⌁</span><span class="dock-label">歷練</span></button>
+    <button type="button" data-click="breakBtn" class="primary"><span class="dock-icon">↑</span><span class="dock-label">突破</span></button>
+    <button type="button" data-click="sectStoryBtn"><span class="dock-icon">卷</span><span class="dock-label">劇情</span></button>
+    <button type="button" data-scroll="actionsAnchor"><span class="dock-icon">☰</span><span class="dock-label">更多</span></button>
+  </nav>
+</div>
+
+<script>
+const REALMS = [
+{name:"凡俗",need:120,life:100,diff:0},{name:"煉氣",need:360,life:125,diff:8},
+{name:"築基",need:1100,life:250,diff:16},{name:"金丹",need:3600,life:500,diff:27},
+{name:"元嬰",need:11500,life:1000,diff:39},{name:"化神",need:36000,life:2000,diff:52},
+{name:"煉虛",need:110000,life:3500,diff:64},{name:"合體",need:330000,life:5500,diff:75},
+{name:"大乘",need:950000,life:8500,diff:85},{name:"渡劫",need:2600000,life:12000,diff:92},
+{name:"真仙",need:99999999,life:99999,diff:98}
+];
+
+const STAGES = ["前期","中期","後期","圓滿"];
+const STAGE_NEED_MULT = [0.34,0.52,0.78,1.00];
+
+
+function energyType(){
+ const r=String(state.race||"");
+ if(state.route==="魔修"||r==="天魔"||r==="墮仙")return "魔氣";
+ if(state.route==="鬼修"||["鬼","活屍","殭屍"].includes(r))return "陰氣";
+ if(r==="妖族"||r==="半妖")return "妖氣";
+ if(r==="仙"||r==="神")return "仙靈力";
+ if(r==="精")return "靈元";
+ return "靈氣";
+}
+function rootQualityBonus(){return {五行靈根:10,天靈根:8,變異靈根:7,三靈根:2,雜靈根:-5}[state.rootType]||0;}
+function usableBreakAid(){
+ const inv=state.inventory||{};
+ if(state.realm===1&&state.stage===3&&(inv["築基丹"]||0)>0)return "築基丹";
+ if(state.realm===2&&state.stage===3&&(inv["結金丹"]||0)>0)return "結金丹";
+ if(state.realm===3&&state.stage===3&&(inv["凝嬰丹"]||0)>0)return "凝嬰丹";
+ if((state.demon||0)>=35&&(inv["定心丹"]||0)>0)return "定心丹";
+ return null;
+}
+function aidBreakBonus(a){
+ if(a==="築基丹")return state.rootType==="雜靈根"?24:state.rootType==="三靈根"?18:state.rootType==="變異靈根"?12:state.rootType==="天靈根"?10:8;
+ if(a==="結金丹")return 13;if(a==="凝嬰丹")return 11;
+ if(a==="定心丹")return Math.min(16,Math.floor((state.demon||0)/6));return 0;
+}
+
+
+const SEASONS=["春","夏","秋","冬"];
+
+const WORLD_EVENTS=[
+ {id:"auction",title:"鬼市與四海盟同時放出大型拍賣消息，稀有魂材與上古殘篇將現世",seasons:[0,2],weight:12,opp:"拍賣會",effect:"market"},
+ {id:"secret",title:"北荒古修秘境靈光沖霄，天機閣推測半年內開啟",seasons:[0,1,2,3],weight:11,opp:"秘境",effect:"secret"},
+ {id:"beast",title:"妖域獸潮異動，四海盟發布跨州求援令",seasons:[1,2],weight:9,opp:"妖獸潮",effect:"beast"},
+ {id:"herb",title:"百花谷萬靈母樹附近出現罕見花期，藥王谷已派醫丹兩脈前往",seasons:[0,1],weight:8,opp:"靈藥",effect:"herb"},
+ {id:"war",title:"萬劍宗與天魔門弟子在邊境秘境爆發衝突，雙方長老仍未出面",seasons:[0,1,2,3],weight:9,opp:"宗門衝突",effect:"war"},
+ {id:"ghost",title:"鬼市忘川渡陰氣暴漲，葬神宗與陰差同時出現在入口附近",seasons:[2,3],weight:8,opp:"鬼道機緣",effect:"ghost"},
+ {id:"assassin",title:"噬血樓血榜傳出新增數名高氣運天驕，天機閣公開表示關切",seasons:[0,1,2,3],weight:7,opp:"血榜",effect:"assassin"},
+ {id:"mind",title:"萬象宗千夢樓對外開放三日，據說可用一夜換十年夢中悟道",seasons:[0,3],weight:7,opp:"悟道",effect:"mind"},
+ {id:"hehuan",title:"合歡宗紅塵行走現身正道坊市，數名天驕同時收到邀帖",seasons:[0,1,2,3],weight:6,opp:"紅塵機緣",effect:"hehuan"}
+];
+const SECT_REL_BASE={
+ "萬劍宗":{"玄引門":35,"藥王谷":25,"天魔門":-55,"萬象宗":-25,"葬神宗":-60,"噬血樓":-45},
+ "玄引門":{"藥王谷":40,"天機閣":25,"百花谷":30,"天魔門":-40,"葬神宗":-55},
+ "嶽山宗":{"藥王谷":35,"百花谷":20,"合歡宗":-15,"天魔門":0},
+ "藥王谷":{"百花谷":45,"合歡宗":15,"葬神宗":-25,"四海盟":45,"鬼市":20},
+ "天機閣":{"四海盟":45,"鬼市":5,"噬血樓":-35,"萬象宗":5},
+ "百花谷":{"合歡宗":15,"鬼市":10,"葬神宗":-15},
+ "合歡宗":{"天魔門":15,"萬象宗":20,"噬血樓":15,"鬼市":25},
+ "天魔門":{"萬象宗":10,"葬神宗":-15,"四海盟":15},
+ "萬象宗":{"葬神宗":-5,"噬血樓":15,"鬼市":20},
+ "葬神宗":{"噬血樓":35,"鬼市":40},
+ "噬血樓":{"鬼市":35,"四海盟":-5},
+ "四海盟":{"鬼市":30}
+};
+function initWorld(){
+ state.world=state.world||{};
+ state.world.sectRelations=state.world.sectRelations||{};
+ state.world.news=state.world.news||[];
+ state.world.newsArchive=state.world.newsArchive||[];
+ state.world.opportunities=state.world.opportunities||[];
+ state.world.seasonCount=state.world.seasonCount||0;
+ state.world.calendarYears=state.world.calendarYears||0;
+ state.world.legacyPeople=state.world.legacyPeople||[];
+ state.world.legacyManuals=state.world.legacyManuals||[];
+ state.world.legacyDeeds=state.world.legacyDeeds||[];
+ state.world.reincarnationHistory=state.world.reincarnationHistory||[];
+ state.world.activeThreads=state.world.activeThreads||[];
+ state.world.factions=state.world.factions||{};
+ state.world.shocks=state.world.shocks||[];
+ state.world.rumors=state.world.rumors||[];
+ state.world.npcs=state.world.npcs||[];
+ state.world.npcHistory=state.world.npcHistory||[];
+ for(const [a,rels] of Object.entries(SECT_REL_BASE))for(const [b,v] of Object.entries(rels)){
+   if(state.world.sectRelations[a+"|"+b]===undefined||state.world.sectRelations[a+"|"+b]===null)state.world.sectRelations[a+"|"+b]=v;
+ }
+}
+function worldRel(a,b){
+ initWorld();return ((state.world.sectRelations[a+"|"+b]!=null)?state.world.sectRelations[a+"|"+b]:((state.world.sectRelations[b+"|"+a]!=null)?state.world.sectRelations[b+"|"+a]:0));
+}
+function changeWorldRel(a,b,n){
+ initWorld();const k=state.world.sectRelations[a+"|"+b]!==undefined?a+"|"+b:b+"|"+a;
+ state.world.sectRelations[k]=clamp(((state.world.sectRelations[k]!=null)?state.world.sectRelations[k]:0)+n,-100,100);
+}
+function pushNews(text,opp=null,ttl=2){
+ initWorld();
+ const item={text,age:state.age,season:state.season,ttl,worldYear:state.world.calendarYears||0,life:(state.reincarnations||0)+1};
+ state.world.news.unshift(item);state.world.newsArchive.unshift({...item});
+ state.world.news=state.world.news.slice(0,8);state.world.newsArchive=state.world.newsArchive.slice(0,80);
+ if(opp)state.world.opportunities.push({name:opp,expires:state.world.seasonCount+ttl});
+}
+function simulateSectPolitics(){
+ initWorld();
+ const pairs=Object.keys(state.world.sectRelations);
+ if(!pairs.length)return;
+ const key=pairs[rnd(0,pairs.length-1)], [a,b]=key.split("|"), rel=state.world.sectRelations[key];
+ const roll=rnd(1,100);
+ if(rel<=-45&&roll<=45){
+   pushNews(`【宗門】${a}與${b}衝突升級，雙方弟子已在邊境交手。`,"宗門戰場",2);
+   changeWorldRel(a,b,-rnd(3,8));
+ }else if(rel>=25&&roll<=35){
+   pushNews(`【宗門】${a}與${b}互派使者，宣布交換傳承與物資。`,"宗門交流",2);
+   changeWorldRel(a,b,rnd(2,5));
+ }else if(roll<=18){
+   pushNews(`【傳聞】${a}一名核心／真傳人物失蹤，外界懷疑與${b}有關。`,"調查失蹤",3);
+   changeWorldRel(a,b,-rnd(2,6));
+ }else if(roll<=30){
+   const acts=["交換秘境名額","爭奪靈礦歸屬","互挖長老與百藝人才","就一宗失蹤案互相施壓","共同追查上古異象"];
+   pushNews(`【局勢】${a}與${b}正在${acts[rnd(0,acts.length-1)]}，後續可能改變兩派關係。`,"勢力動向",2);
+ }
+}
+
+
+const NPC_SURNAMES=["顧","蘇","沈","陸","楚","葉","韓","江","洛","白","寧","林","蕭","謝","溫","秦"];
+const NPC_GIVEN=["清河","晚照","青梧","玄機","聽瀾","無塵","知微","長明","懷月","歸雁","照雪","景辰","辭","昭","含章","問心"];
+const NPC_TRAITS=["沉著","孤傲","多疑","重情","冷酷","謹慎","冒險","仁善","功利","好勝","隨和","偏執"];
+const NPC_FEARS=["死亡","失敗","背叛","失去摯愛","被遺忘","失去自由","宗門覆滅","心魔失控","貧弱無能","被人操控"];
+const NPC_GOALS=["成為掌門","飛升上界","創出新功法","復仇","守護宗門","尋找失蹤之人","建立勢力","獲得長生","證明自己","解開身世","改變陣營","成為天下第一"];
+const NPC_ALIGNMENTS=["正道","中立","魔門","邪修","自由"];
+const NPC_EMOTIONS=["信任","敬佩","愛慕","嫉妒","畏懼","仇恨","虧欠","戒備"];
+
+function npcName(){
+ return NPC_SURNAMES[rnd(0,NPC_SURNAMES.length-1)] + NPC_GIVEN[rnd(0,NPC_GIVEN.length-1)];
+}
+function createAutonomousNPC(opts={}){
+ initWorld();
+ const sect=opts.sect||randomSect();
+ const trait=opts.trait||NPC_TRAITS[rnd(0,NPC_TRAITS.length-1)];
+ const align=opts.alignment||(()=>{
+   const sf=SECTS.find(x=>x.name===sect);
+   if(!sf)return "自由";
+   if(sf.align==="正道")return "正道";
+   if(sf.align==="魔門"||sf.align==="中立偏魔")return "魔門";
+   if(sf.align==="邪修")return "邪修";
+   if(sf.align==="散修聯盟"||sf.align==="特殊中立")return "自由";
+   return "中立";
+ })();
+ const npc={
+   id:`N${Date.now()}_${rnd(1000,9999)}`,
+   name:opts.name||npcName(),
+   sect,
+   rank:opts.rank||["外門弟子","內門弟子","核心/真傳弟子","外門長老"][rnd(0,3)],
+   realm:(opts.realm!=null?opts.realm:rnd(1,Math.max(2,Math.min(6,state.realm+2)))),
+   age:opts.age||rnd(18,160),
+   alive:true,
+   trait,
+   ambition:(opts.ambition!=null?opts.ambition:rnd(15,95)),
+   fear:opts.fear||NPC_FEARS[rnd(0,NPC_FEARS.length-1)],
+   morality:(opts.morality!=null?opts.morality:rnd(-75,75)),
+   alignment:align,
+   affection:(opts.affection!=null?opts.affection:rnd(-20,35)),
+   trust:(opts.trust!=null?opts.trust:rnd(0,55)),
+   respect:(opts.respect!=null?opts.respect:rnd(0,55)),
+   jealousy:(opts.jealousy!=null?opts.jealousy:rnd(0,30)),
+   grudge:(opts.grudge!=null?opts.grudge:0),
+   goal:opts.goal||NPC_GOALS[rnd(0,NPC_GOALS.length-1)],
+   loyalty:(opts.loyalty!=null?opts.loyalty:rnd(20,90)),
+   caution:(opts.caution!=null?opts.caution:rnd(15,90)),
+   risk:(opts.risk!=null?opts.risk:rnd(10,90)),
+   power:(opts.power!=null?opts.power:rnd(20,80)+state.realm*4),
+   resources:(opts.resources!=null?opts.resources:rnd(10,90)),
+   relationships:{},
+   memories:[],
+   flags:{},
+   lastAction:"觀望",
+   fame:rnd(0,40),
+   hiddenAgenda:chance(22)?NPC_GOALS[rnd(0,NPC_GOALS.length-1)]:null
+ };
+ state.world.npcs.push(npc);
+ state.world.npcs=state.world.npcs.slice(-28);
+ return npc;
+}
+
+function npcRelationToPlayer(n){
+ let score=(n.affection||0)+(n.trust||0)*.5+(n.respect||0)*.35-(n.grudge||0)-(n.jealousy||0)*.25;
+ if(n.sect===state.sect)score+=12;
+ if(n.alignment===state.playerAlignment)score+=8;
+ if((state.morality||0)>25&&n.morality>25)score+=8;
+ if((state.morality||0)<-25&&n.morality<-25)score+=6;
+ return score;
+}
+
+function npcMemory(n,text,weight=1){
+ n.memories=n.memories||[];
+ n.memories.unshift({text,weight,worldYear:(state.world&&state.world.calendarYears)||0});
+ n.memories=n.memories.slice(0,8);
+}
+function npcUtility(n,action){
+ let u=0,rel=npcRelationToPlayer(n),worldRelVal=worldRel(n.sect,state.sect||"四海盟");
+ const danger=(state.realm+1)*12;
+ if(action==="helpPlayer"){
+   u+=rel*.9+n.morality*.35+n.loyalty*.15-n.caution*.2;
+   if(n.trait==="重情"||n.trait==="仁善")u+=18;
+   if(n.trait==="功利")u-=8;
+ }
+ if(action==="betraySect"){
+   u+=n.ambition*.55+(100-n.loyalty)*.7+n.grudge*.25+n.resources*.15;
+   if(n.goal==="改變陣營"||n.goal==="建立勢力")u+=22;
+   if(n.trait==="偏執"||n.trait==="功利")u+=10;
+   if(n.fear==="宗門覆滅")u-=18;
+ }
+ if(action==="seekOpportunity"){
+   u+=n.ambition*.45+n.risk*.55+n.resources*.15+n.power*.15-n.caution*.2;
+   if(n.goal==="飛升上界"||n.goal==="成為天下第一"||n.goal==="創出新功法")u+=18;
+ }
+ if(action==="revengePlayer"){
+   u+=n.grudge*1.1+n.jealousy*.25+n.ambition*.1-rel*.25;
+   if(n.goal==="復仇")u+=25;
+   if(n.trait==="冷酷"||n.trait==="偏執")u+=14;
+ }
+ if(action==="allyPlayer"){
+   u+=rel*.65+n.trust*.5+n.respect*.35+worldRelVal*.15;
+   if(n.trait==="謹慎")u+=5;
+ }
+ if(action==="avoidPlayer"){
+   u+=n.caution*.45+(danger-n.power)*.45+(n.fear==="死亡"?18:0)-rel*.2;
+ }
+ if(action==="challengePlayer"){
+   u+=n.ambition*.45+n.jealousy*.5+n.risk*.3+(n.goal==="證明自己"?20:0)+(n.trait==="好勝"?18:0);
+   u-=Math.max(0,danger-n.power)*.6;
+ }
+ if(action==="defectToPlayerSect"){
+   u+=(100-n.loyalty)*.5+rel*.4+n.ambition*.25;
+   if(state.sect==="散修")u-=20;
+ }
+ if(action==="protectSect"){
+   u+=n.loyalty*.65+n.morality*.1+n.power*.2;
+   if(n.goal==="守護宗門")u+=28;
+   if(n.fear==="宗門覆滅")u+=15;
+ }
+ return u+rnd(-12,12);
+}
+
+function npcChooseAction(n){
+ if(!n.alive)return "none";
+ const actions=["seekOpportunity","protectSect","allyPlayer","avoidPlayer"];
+ if((n.grudge||0)>15||n.goal==="復仇")actions.push("revengePlayer");
+ if(n.ambition>55)actions.push("challengePlayer");
+ if(n.loyalty<45)actions.push("betraySect");
+ if(state.sect&&state.sect!=="散修"&&n.sect!==state.sect)actions.push("defectToPlayerSect");
+ if(npcRelationToPlayer(n)>25)actions.push("helpPlayer");
+ let best=actions[0],bestU=-999;
+ for(const a of actions){const u=npcUtility(n,a);if(u>bestU){bestU=u;best=a;}}
+ return best;
+}
+
+function executeNpcAction(n,action){
+ n.lastAction=action;
+ if(action==="seekOpportunity"){
+   const gain=rnd(3,12);n.resources+=gain;n.fame+=rnd(1,5);
+   if(chance(25+n.risk*.25)){n.realm=Math.min(REALMS.length-1,n.realm+(chance(25)?1:0));}
+   pushNews(`【人物】${n.name}離開${n.sect}數月後歸來，傳聞在秘境中有所斬獲。`,chance(25)?"人物機緣":null,3);
+ }
+ else if(action==="betraySect"){
+   const old=n.sect,newSect=randomSect([old]);n.sect=newSect;n.loyalty=rnd(25,70);n.grudge+=rnd(0,12);
+   npcMemory(n,`背離${old}，改投${newSect}`,3);
+   pushNews(`【叛宗】${n.name}突然離開${old}，數日後出現在${newSect}勢力範圍。`, "人物風波",4);
+   changeWorldRel(old,newSect,-rnd(5,14));
+ }
+ else if(action==="helpPlayer"){
+   const amt=rnd(10,30)+n.realm*4;state.hp=Math.min(state.maxHp,state.hp+amt);state.cult+=rnd(8,22);
+   n.trust+=6;n.affection+=4;
+   npcMemory(n,"曾在危難中幫助玩家",2);
+   log(`<b>${n.name}</b>主動出手相助。這不是任務指定，而是他基於自身立場所做的選擇。`);
+ }
+ else if(action==="revengePlayer"){
+   n.grudge=Math.max(0,n.grudge-rnd(2,8));
+   const dmg=rnd(8,20)+n.realm*5;
+   state.hp-=dmg;
+   log(`<b>${n.name}</b>循著舊怨找上門來。對方沒有等待世界事件安排，而是主動選擇向你復仇。`);
+   if(state.hp<=0){die(`${n.name}的復仇最終奪走了你的性命。`);return;}
+ }
+ else if(action==="allyPlayer"){
+   n.trust+=rnd(4,10);n.respect+=rnd(3,8);
+   npcMemory(n,"與玩家建立合作",2);
+   log(`<b>${n.name}</b>主動提出合作，原因並非單純好感，而是認為你們目前利益與目標相容。`);
+ }
+ else if(action==="challengePlayer"){
+   const winScore=state.realm*18+state.wisdom+(state.attributes&&state.attributes.body)*4+rnd(0,40);
+   const npcScore=n.realm*18+n.power+rnd(0,35);
+   if(winScore>=npcScore){
+     n.respect+=12;n.jealousy=Math.max(0,n.jealousy-5);state.reputation+=5;
+     log(`<b>${n.name}</b>主動邀你切磋。你勝過對方後，他對你的評價明顯改變。`);
+   }else{
+     state.hp=Math.max(1,state.hp-rnd(6,18));n.fame+=4;n.jealousy=Math.max(0,n.jealousy-3);
+     log(`<b>${n.name}</b>為證明自己向你挑戰。這一戰你略遜一籌。`);
+   }
+ }
+ else if(action==="avoidPlayer"){
+   if(chance(30))pushNews(`【人物】${n.name}突然停止公開露面，似乎刻意避開某些人與事。`,null,2);
+ }
+ else if(action==="defectToPlayerSect"){
+   const old=n.sect;n.sect=state.sect;n.loyalty=rnd(45,80);n.trust+=8;
+   pushNews(`【人物】${n.name}離開${old}後，主動向${state.sect}尋求容身之所。`, "人物投靠",4);
+ }
+ else if(action==="protectSect"){
+   n.loyalty=Math.min(100,n.loyalty+3);n.fame+=2;
+   if(chance(25))pushNews(`【宗門】${n.name}主動承擔${n.sect}一項危險任務，聲望因此上升。`,null,2);
+ }
+}
+
+function npcRelationshipDrift(a,b){
+ if(a.id===b.id||!a.alive||!b.alive)return;
+ const k=b.id;a.relationships=a.relationships||{};
+ let v=((a.relationships[k]!=null)?a.relationships[k]:rnd(-10,10));
+ if(a.sect===b.sect)v+=rnd(0,3);
+ if(a.alignment===b.alignment)v+=1;
+ if(a.trait==="多疑")v-=rnd(0,2);
+ if(a.trait==="重情")v+=rnd(0,2);
+ a.relationships[k]=clamp(v,-100,100);
+}
+
+function simulateNpcSeason(){
+ initWorld();
+ while(state.world.npcs.length<10)createAutonomousNPC();
+ for(const n of state.world.npcs){
+   if(!n.alive)continue;
+   n.age += .25;
+   if(n.age>(REALMS[Math.min(n.realm,REALMS.length-1)].life||120)&&chance(12)){n.alive=false;n.fate="壽盡坐化";pushNews(`【人物】${n.name}壽元已盡，於${n.sect}坐化。`,null,3);continue;}
+   if(chance(28))executeNpcAction(n,npcChooseAction(n));
+   if(chance(10)&&n.goal==="尋找失蹤之人")n.trust+=1;
+ }
+ const living=state.world.npcs.filter(x=>x.alive);
+ if(living.length>1&&chance(30)){
+   const a=living[rnd(0,living.length-1)],b=living[rnd(0,living.length-1)];
+   npcRelationshipDrift(a,b);npcRelationshipDrift(b,a);
+ }
+ state.world.npcHistory.unshift(...state.world.npcs.filter(n=>n.lastAction!=="觀望").slice(0,2).map(n=>({name:n.name,action:n.lastAction,year:state.world.calendarYears||0})));
+ state.world.npcHistory=state.world.npcHistory.slice(0,40);
+}
+
+function importantNpcInteraction(){
+ initWorld();
+ const candidates=state.world.npcs.filter(n=>n.alive);
+ if(!candidates.length||!chance(18))return false;
+ const n=candidates[rnd(0,candidates.length-1)], rel=npcRelationToPlayer(n);
+ pendingChoice=true;
+ let text=`【人物事件】<b>${n.name}</b>（${n.sect}・${n.trait}）主動找上你。<br>`;
+ if(rel>35)text+=`他目前對你頗有信任，長期目標是「${n.goal}」。`;
+ else if(rel<-20)text+=`他對你存有明顯敵意，並且最恐懼「${n.fear}」。`;
+ else text+=`他似乎正在衡量你是否值得納入自己的計畫。`;
+ log(text);
+ const box=document.createElement("div");box.className="choicebox";
+ const opts=[
+  ["坦誠交談",()=>{n.trust+=10;n.affection+=rel>=0?5:1;npcMemory(n,"玩家曾坦誠交談",2);log(`${n.name}記住了你這次的態度。`);} ],
+  ["談利益合作",()=>{n.respect+=8;n.resources+=4;npcMemory(n,"玩家以利益談判",1);log(`${n.name}沒有立刻信任你，但承認你很務實。`);} ],
+  ["保持距離",()=>{n.caution+=8;n.trust-=3;log(`${n.name}沒有強求，卻也因此提高了戒心。`);} ]
+ ];
+ if((state.morality||0)<-15||state.demon>35)opts.push(["威脅對方",()=>{n.grudge+=18;n.fear="你";state.reputation+=1;changeMorality(-4,"以威逼人");log(`${n.name}表面退讓，卻把這次屈辱牢牢記住。`);}]);
+ opts.forEach(([t,f])=>{const b=document.createElement("button");b.textContent=t;b.onclick=()=>{f();pendingChoice=false;box.remove();advanceQuarter(1);render();};box.appendChild(b);});
+ $("log").lastChild.appendChild(box);render();return true;
+}
+
+function renderNpcWorld(){
+ if(!$("sNpcWorld"))return;initWorld();
+ const alive=state.world.npcs.filter(n=>n.alive);
+ $("sNpcCount").textContent=`${alive.length} 位活躍人物`;
+ if(!alive.length){$("sNpcWorld").textContent="尚未出現足以牽動天下的重要人物。";return;}
+ const ranked=[...alive].sort((a,b)=>(b.fame+b.ambition+b.power)-(a.fame+a.ambition+a.power)).slice(0,5);
+ $("sNpcWorld").innerHTML=ranked.map(n=>{
+   const mood=n.grudge>30?"敵意":n.trust>55?"信任":n.jealousy>40?"嫉妒":"觀望";
+   return `<span class="legacy-chip">${n.name}・${n.sect}・${n.trait}・${mood}</span>`;
+ }).join("");
+}
+
+function weightedPick(items){
+ const total=items.reduce((a,x)=>a+(x.weight||1),0);let r=Math.random()*total;
+ for(const x of items){r-=x.weight||1;if(r<=0)return x;}return items[items.length-1];
+}
+function randomSect(exclude=[]){
+ const names=SECTS.map(x=>x.name).filter(x=>!exclude.includes(x));
+ return names.length?names[rnd(0,names.length-1)]:"四海盟";
+}
+function seedWorldThread(type,data={},ttl=rnd(3,10)){
+ initWorld();state.world.activeThreads.push({id:`W${Date.now()}${rnd(100,999)}`,type,stage:0,ttl,data,hidden:chance(48)});
+ state.world.activeThreads=state.world.activeThreads.slice(-14);
+}
+function worldShock(text,severity=1){
+ initWorld();state.world.shocks.unshift({text,severity,worldYear:state.world.calendarYears||0});
+ state.world.shocks=state.world.shocks.slice(0,12);pushNews(`【突發】${text}`,severity>=2?"突發局勢":null,rnd(2,5));
+}
+function spawnEmergentThread(){
+ const a=randomSect(),b=randomSect([a]),rel=worldRel(a,b);
+ const candidates=[
+  {type:"succession",weight:8,data:{sect:a},news:`${a}掌門閉關未出，數名真傳開始暗中結盟。`},
+  {type:"artifact",weight:9,data:{sect:a},news:`${a}境內出土一件無法辨識來歷的古物，各方尚未公開表態。`},
+  {type:"defection",weight:7,data:{from:a,to:b},news:`傳聞${a}一名高階人物失蹤，${b}附近卻出現相似氣息。`},
+  {type:"resource",weight:10,data:{a,b},news:`${a}與${b}交界發現新靈脈，歸屬尚未確認。`},
+  {type:"plague",weight:5,data:{sect:a},news:`${a}勢力範圍出現不明異化症狀，消息被刻意壓低。`},
+  {type:"prophecy",weight:5,data:{sect:a},news:`天機閣流出一則殘缺卦象，似乎與${a}未來十年氣運有關。`},
+  {type:"assassination",weight:rel<0?10:5,data:{target:a,suspect:b},news:`噬血樓疑似收到與${a}高層相關的大額血契。`},
+  {type:"alliance",weight:rel>10?10:4,data:{a,b},news:`${a}與${b}使者秘密會面，目的不明。`}
+ ];
+ const c=weightedPick(candidates);seedWorldThread(c.type,c.data,rnd(4,12));
+ // Some seeds are rumors, not guaranteed truth.
+ const prefix=chance(35)?"【傳聞】":"【暗流】";
+ pushNews(`${prefix}${c.news}`,chance(40)?"勢力暗流":null,rnd(2,4));
+}
+function resolveWorldThread(t){
+ const d=t.data||{};t.stage++;t.ttl--;
+ if(t.type==="succession"){
+  if(t.stage===1&&chance(60))pushNews(`【宗門】${d.sect}內部開始出現不同繼承人聲音，部分長老公開站隊。`,"宗門內局",3);
+  else if(t.stage>=2||t.ttl<=0){const violent=chance(35);pushNews(`【宗門】${d.sect}${violent?"爆發短暫內鬥，新掌權者以雷霆手段收局":"完成權力交接，新任高層開始調整對外策略"}。`,"勢力洗牌",4);t.done=true;}
+ }else if(t.type==="artifact"){
+  if(t.stage===1)pushNews(`【異寶】${d.sect}出土古物引發異象，${randomSect([d.sect])}已派人前往。`,"古物",3);
+  else{const bad=chance(42);worldShock(bad?`${d.sect}出土古物失控，附近靈脈出現異變。`:`${d.sect}宣布破解古物部分用途，宗門聲勢大增。`,bad?2:1);t.done=true;}
+ }else if(t.type==="defection"){
+  if(t.stage===1)pushNews(`【追查】${d.from}公開尋找失蹤者，${d.to}否認收留任何叛徒。`,"叛宗疑雲",3);
+  else{const trueDef=chance(55);pushNews(trueDef?`【揭露】失蹤者確已改投${d.to}，並帶走${d.from}部分傳承。`:`【反轉】所謂叛宗只是障眼法，失蹤者其實正在追查第三方勢力。`,"因果反轉",4);changeWorldRel(d.from,d.to,trueDef?-12:4);t.done=true;}
+ }else if(t.type==="resource"){
+  if(t.stage===1)pushNews(`【資源】${d.a}與${d.b}均宣稱新靈脈屬於自身舊疆，散修開始湧入周邊。`,"靈脈爭奪",3);
+  else{const war=chance(clamp(45-worldRel(d.a,d.b)/2,15,80));pushNews(`【資源】新靈脈最終${war?"引發兩派衝突":"由雙方簽訂共採契約"}。`,"靈脈",4);changeWorldRel(d.a,d.b,war?-10:8);t.done=true;}
+ }else if(t.type==="plague"){
+  if(t.stage===1)pushNews(`【異變】${d.sect}周邊異化症狀開始擴散，藥王谷與百花谷意見不一。`,"異化疫病",4);
+  else{const contained=chance(55);worldShock(contained?`${d.sect}異化事件暫被控制，但病源仍未查明。`:`異化突破封鎖，部分修士開始出現跨種族特徵。`,contained?1:2);t.done=true;}
+ }else if(t.type==="prophecy"){
+  if(t.stage===1)pushNews(`【天機】卦象第二句現世：「盛極處，見舊人。」各方解讀完全不同。`,"天機殘卦",4);
+  else{const sect=randomSect([d.sect]);pushNews(`【應卦？】${d.sect}與${sect}發生意外事件，但無人能確定是否真與舊卦有關。`,"命數",3);t.done=true;}
+ }else if(t.type==="assassination"){
+  if(t.stage===1)pushNews(`【血榜】${d.target}開始秘密清查內部，${d.suspect}卻突然撤回數名外派弟子。`,"暗殺疑雲",3);
+  else{const success=chance(38);worldShock(success?`${d.target}一名重要人物遇刺，局勢瞬間失衡。`:`刺殺失敗，活捉的殺手卻沒有任何可追溯身份。`,success?2:1);changeWorldRel(d.target,d.suspect,-rnd(4,12));t.done=true;}
+ }else if(t.type==="alliance"){
+  if(t.stage===1)pushNews(`【外交】${d.a}與${d.b}否認結盟傳聞，卻同時調整了邊境部署。`,"外交暗流",3);
+  else{const real=chance(60);pushNews(real?`【盟約】${d.a}與${d.b}正式宣布有限合作。`:`【破局】${d.a}與${d.b}會談破裂，雙方互指對方缺乏誠意。`,"勢力變化",4);changeWorldRel(d.a,d.b,real?10:-8);t.done=true;}
+ }
+}
+function simulateEmergentWorld(){
+ initWorld();
+ // Threads advance independently and may collide.
+ for(const t of state.world.activeThreads){if(!t.done&&chance(34))resolveWorldThread(t);}
+ state.world.activeThreads=state.world.activeThreads.filter(t=>!t.done&&t.ttl>0);
+ if(chance(24)&&state.world.activeThreads.length<7)spawnEmergentThread();
+ // Rare black swan events deliberately ignore normal faction logic.
+ if(chance(2.2)){
+  const shocks=[
+   ()=>worldShock(`${randomSect()}一位久未露面的老祖突然坐化，死因不明。`,2),
+   ()=>worldShock(`一座本应百年後開啟的秘境提前現世，入口只維持三季。`,2),
+   ()=>worldShock(`幽冥短暫與陽世重疊，數名已死之人的魂影被目擊。`,2),
+   ()=>worldShock(`某地天劫無故降臨，卻找不到真正渡劫之人。`,2),
+   ()=>worldShock(`鬼市出現一件標價為「一段未來」的無主商品。`,2)
+  ];shocks[rnd(0,shocks.length-1)]();
+ }
+ // NPC legacies can act without waiting for the player.
+ const alive=(state.world.legacyPeople||[]).filter(x=>x.alive);
+ if(alive.length&&chance(12)){
+  const p=alive[rnd(0,alive.length-1)],acts=p.role==="仇敵"?["追查一樁舊案","登上血榜","與人爆發死鬥"]:p.role==="徒弟"?["公開講道","收下一名弟子","在秘境中得到機緣"]:["離開舊居遠遊","出現在大型拍賣會","閉關多年後重新現身"];
+  const act=acts[rnd(0,acts.length-1)];pushNews(`【故人】${p.name}（${p.role}）${act}。`,chance(35)?"前世因果":null,3);
+  if(chance(12)){p.alive=false;p.fate="死於一次未被玩家親眼見證的事件";pushNews(`【故人】${p.name}的魂燈熄滅。你甚至不知道事情究竟發生在哪裡。`,null,4);}
+ }
+}
+
+function simulateWorldSeason(){
+ initWorld();state.world.seasonCount++;
+ state.world.opportunities=state.world.opportunities.filter(x=>x.expires>state.world.seasonCount);
+ state.world.news=state.world.news.filter(x=>x.ttl-->0);
+ if(chance(42)){
+   const pool=WORLD_EVENTS.filter(e=>e.seasons.includes(state.season||0));
+   if(pool.length){
+     const e=pool[rnd(0,pool.length-1)];
+     pushNews(`【天下】${e.title}。`,e.opp,rnd(2,4));
+   }
+ }
+ if(chance(34))simulateSectPolitics();
+ simulateEmergentWorld();
+ simulateNpcSeason();
+}
+function renderWorldNews(){
+ initWorld();
+ $("newsTime").textContent=`${state.age}歲 · ${seasonName()}`;
+ $("newsTicker").innerHTML=state.world.news.length?state.world.news.slice(0,3).map(n=>n.text).join("<br>"):"天下暫無足以傳遍修真界的大事。";
+ const opp=state.world.opportunities.map(x=>x.name);
+ const threads=(state.world.activeThreads||[]).length;
+ $("opportunityHints").innerHTML=(opp.length?`可謀算機緣：${[...new Set(opp)].join("、")}`:"目前沒有明顯公開機緣；也許真正的機緣從來不登快訊。")+(threads?`<br>暗流：目前至少有 ${threads} 條事件鏈仍在自行發展。`:"");
+}
+
+const LAW_POOL=["劍之法則","五行法則","陰陽法則","生死法則","空間法則","時間法則","雷之法則","火之法則","水之法則","木之法則","金之法則","土之法則","魂之法則","血之法則","因果法則","生命法則","枯榮法則","自由法則","自我法則","夢之法則","契約法則","死亡法則","等價法則","輪回法則","紅塵法則","同舟法則"];
+function seasonName(){return SEASONS[state.season||0];}
+function advanceQuarter(q=1){
+ for(let i=0;i<q;i++){
+   state.season=(state.season||0)+1;
+   if(state.season>=4){state.season=0;passYear();}
+   simulateWorldSeason();
+ }
+ // Every quarter action can change cultivation, demon intent, HP, Qi,
+ // manuals, bloodline and other live values. Refresh the whole HUD now,
+ // not only the world-news panel.
+ render();
+}
+function lawCompleteCount(){return (state.completeLaws||[]).length;}
+function maybeUnlockRealmFeatures(){
+ if(state.realm>=3&&!state.coreQuality){const x=rootQualityBonus()+state.wisdom*.25-manualConflictScore()*.08-(state.demon||0)*.03;state.coreQuality=x>=24?"一品金丹":x>=18?"二品金丹":x>=12?"三品金丹":x>=6?"四品金丹":x>=0?"五品金丹":x>=-5?"六品金丹":x>=-10?"七品金丹":"八品金丹";log(`金丹凝成：<b>${state.coreQuality}</b>。`);}
+ if(state.realm>=4&&!state.secondLife){state.secondLife=true;log("元嬰既成，你獲得一次元嬰遁逃的第二生命。");}
+ if(state.realm>=5&&!state.heavenQi){state.heavenQi=true;log("化神之後，你開始直接牽引天地靈氣。");}
+ if(state.realm>=6&&!state.spaceSense){state.spaceSense=1;log("煉虛之境，你開始感知空間結構與天地元氣。");}
+ if(state.realm>=7&&!(state.lawInsights||[]).length){state.lawInsights=[LAW_POOL[rnd(0,LAW_POOL.length-1)]];log(`你觸及法則雛形：<b>${state.lawInsights[0]}</b>。`);}
+}
+function attemptLawInsight(){
+ if(state.realm<7){log("至少合體境才能真正參悟法則。");return;}
+ let law=(state.lawInsights||[])[0]||LAW_POOL[rnd(0,LAW_POOL.length-1)];
+ state.lawInsights=state.lawInsights||[law];state.lawProgress=state.lawProgress||{};
+ state.lawProgress[law]=(state.lawProgress[law]||0)+rnd(8,18)+Math.floor(state.wisdom*.12);
+ log(`參悟 <b>${law}</b>，完整度 ${Math.min(100,state.lawProgress[law])}%。`);
+ if(state.lawProgress[law]>=100){state.completeLaws=state.completeLaws||[];if(!state.completeLaws.includes(law))state.completeLaws.push(law);log(`<b>${law}已臻完整。</b>`);}
+ advanceQuarter(1);render();
+}
+
+function realmDisplay(){
+  if(state.realm===0) return "凡俗";
+  if(state.realm>=REALMS.length-1) return REALMS[state.realm].name;
+  return `${REALMS[state.realm].name}${STAGES[state.stage||0]}`;
+}
+function currentBreakNeed(){
+  if(state.realm===0) return REALMS[0].need;
+  if(state.realm>=REALMS.length-1) return 999999;
+  return Math.floor(REALMS[state.realm].need * STAGE_NEED_MULT[state.stage||0]);
+}
+function breakTargetName(){
+  if(state.realm===0) return "煉氣前期";
+  if(state.stage<3) return `${REALMS[state.realm].name}${STAGES[state.stage+1]}`;
+  return `${REALMS[state.realm+1].name}${state.realm+1>=REALMS.length-1?"":"前期"}`;
+}
+function breakthroughChance(){
+ if(state.realm>=REALMS.length-1)return 0;
+ const major=state.realm===0||(state.stage||0)===3;
+ let base=(major?76:[91,85,78,68][state.stage||0])-state.realm*(major?4.8:1.8);
+ base+=rootQualityBonus()+Math.min(10,state.wisdom*.28)+(((state.talentMult||1)-1)*18);
+ if(state.route==="體修")base+=state.realm<=2?4:2;if(state.route==="法修")base+=2;if(state.route==="魔修")base+=4;
+ base-=manualConflictScore()*.10+Math.max(0,100-((state.bloodStability===undefined||state.bloodStability===null)?100:state.bloodStability))*.07+(state.demon||0)*(major?0.10:0.04);
+ base+=aidBreakBonus(usableBreakAid())+Math.min(6,(state.failedBreaks||0)*1.2);
+ return clamp(base,major?5:20,major?88:95);
+}
+
+
+const TRIB_LEVELS=[
+ {name:"一九天劫",bolts:9,rank:"黃階下品",base:1.00},
+ {name:"二九天劫",bolts:18,rank:"黃階上品",base:1.10},
+ {name:"三九天劫",bolts:27,rank:"玄階下品",base:1.22,alias:"三六天劫"},
+ {name:"四九天劫",bolts:36,rank:"玄階中品",base:1.36},
+ {name:"五九天劫",bolts:45,rank:"玄階上品",base:1.52},
+ {name:"六九天劫",bolts:54,rank:"地階下品",base:1.70},
+ {name:"七九天劫",bolts:63,rank:"地階中品",base:1.92},
+ {name:"八九天劫",bolts:72,rank:"地階上品",base:2.18},
+ {name:"九九天劫",bolts:81,rank:"天階",base:2.55}
+];
+
+const THUNDER_TYPES=[
+ {name:"金雷劫",color:"金白",tier:1,attrs:["金"],pierce:0.04},
+ {name:"木雷劫",color:"青綠",tier:1,attrs:["木"],pierce:0.03},
+ {name:"水雷劫",color:"幽藍",tier:1,attrs:["水"],pierce:0.04},
+ {name:"火雷劫",color:"赤紅",tier:1,attrs:["火"],pierce:0.05},
+ {name:"土雷劫",color:"玄黃",tier:1,attrs:["土"],pierce:0.03},
+ {name:"太陰劫雷",color:"銀黑",tier:2,attrs:["陰"],pierce:0.10},
+ {name:"太陽劫雷",color:"熾金",tier:2,attrs:["陽"],pierce:0.11},
+ {name:"紫霄神雷",color:"紫",tier:3,attrs:["神雷"],pierce:0.17},
+ {name:"九霄神雷",color:"蒼紫",tier:4,attrs:["天威"],pierce:0.22},
+ {name:"混沌神雷",color:"混沌灰紫",tier:5,attrs:["混沌"],pierce:0.30},
+ {name:"滅世雷霆",color:"黑紫",tier:6,attrs:["滅世"],pierce:0.38}
+];
+
+function talentTribScore(){
+ const rank={天:18,地:12,玄:6,黃:0}[state.talentRank]||0;
+ const sub={上等:4,中等:2,下等:0}[state.talentSub]||0;
+ const root={天靈根:10,變異靈根:12,三靈根:5,雜靈根:0,五行靈根:16}[state.rootType]||0;
+ return rank+sub+root;
+}
+function heartDemonScore(){
+ return (state.demon||0)*0.55 + Math.max(0,state.karma||0)*0.22 + manualConflictScore()*0.35 + Math.max(0,100-((state.bloodStability===undefined||state.bloodStability===null)?100:state.bloodStability))*0.28 + (state.failedBreaks||0)*2.5;
+}
+function tribulationIndexForNextRealm(nextRealm){
+ let score=talentTribScore()+heartDemonScore()+nextRealm*7;
+ if(state.route==="魔修")score+=8;
+ if(state.route==="鬼修")score+=6;
+ if(state.race==="天魔"||state.race==="墮仙")score+=10;
+ if(state.rootType==="五行靈根")score+=6;
+ return clamp(Math.floor(score/18),0,8);
+}
+function pickThunderType(tribIdx,nextRealm){
+ let maxTier=1;
+ if(tribIdx>=2||nextRealm>=4)maxTier=2;
+ if(tribIdx>=4||nextRealm>=6)maxTier=3;
+ if(tribIdx>=6||nextRealm>=8)maxTier=4;
+ if(tribIdx>=7&&nextRealm>=9)maxTier=5;
+ if(tribIdx>=8&&nextRealm>=10)maxTier=6;
+ const pool=THUNDER_TYPES.filter(x=>x.tier<=maxTier);
+ // Prefer five-element thunder against corresponding roots at lower levels
+ if(maxTier<=2 && state.rootName){
+   const elem=ELEMENTS.find(e=>String(state.rootName).includes(e));
+   const hit=pool.find(x=>x.attrs.includes(elem));
+   if(hit&&chance(48))return hit;
+ }
+ return pool[rnd(0,pool.length-1)];
+}
+function tribulationDefense(){
+ let d=state.maxHp*0.18+state.wisdom*1.8+state.qi*0.7+state.realm*20;
+ if(state.route==="體修")d+=state.maxHp*0.22;
+ if(state.rootType==="變異靈根")d+=18;
+ const arrSkill=(state.craftSkills&&state.craftSkills.array)||0;
+ d+=arrSkill*0.08;
+ if((state.inventory&&state.inventory["渡劫陣"]))d+=45;
+ if((state.inventory&&state.inventory["護身符"]))d+=18;
+ if((state.inventory&&state.inventory["淬體靈膳"]))d+=20;
+ return d;
+}
+
+const ELEMENTS = ["金","木","水","火","土"];
+const MUTATED_ROOTS = ["雷靈根","冰靈根","風靈根"];
+
+
+const RACES = ["人族","妖族","精"];
+const SPECIAL_RACES = ["鬼","天魔","仙","神","渾沌魔神"];
+
+
+const MANUALS=[
+{name:"萬劍歸元訣",sect:"萬劍宗",grade:"地階上品",route:"法修",cult:1.16,battle:12},
+{name:"心劍篇",sect:"萬劍宗",grade:"天階下品",route:"法修",cult:1.18,battle:18,fragmentQuest:true},
+{name:"玄引太清經",sect:"玄引門",grade:"地階極品",route:"法修",cult:1.20,battle:10},
+{name:"北斗七星陣解",sect:"玄引門",grade:"地階上品",route:"法修",cult:1.12,battle:7},
+{name:"鎮岳不滅身",sect:"嶽山宗",grade:"地階極品",route:"體修",cult:1.14,battle:20},
+{name:"十二巫碑觀想法",sect:"嶽山宗",grade:"天階下品",route:"體修",cult:1.18,battle:22,fragmentQuest:true},
+{name:"藥王回生經",sect:"藥王谷",grade:"地階上品",route:"法修",cult:1.14,battle:5},
+{name:"萬毒生滅篇",sect:"藥王谷",grade:"地階極品",route:"法修",cult:1.16,battle:9},
+{name:"天機衍命經",sect:"天機閣",grade:"地階極品",route:"法修",cult:1.16,battle:7},
+{name:"周天星命錄",sect:"天機閣",grade:"天階下品",route:"法修",cult:1.19,battle:9,fragmentQuest:true},
+{name:"萬木生靈經",sect:"百花谷",grade:"地階上品",route:"法修",cult:1.16,battle:6},
+{name:"枯榮四時篇",sect:"百花谷",grade:"地階極品",route:"法修",cult:1.18,battle:8},
+{name:"陰陽合歡經",sect:"合歡宗",grade:"地階極品",route:"法修",cult:1.25,battle:8},
+{name:"紅塵百欲錄",sect:"合歡宗",grade:"天階下品",route:"魔修",cult:1.29,battle:12,fragmentQuest:true},
+{name:"自在天魔經",sect:"天魔門",grade:"天階下品",route:"魔修",cult:1.32,battle:18},
+{name:"逆天自在篇",sect:"天魔門",grade:"天階上品",route:"魔修",cult:1.35,battle:22,fragmentQuest:true},
+{name:"萬象輪心經",sect:"萬象宗",grade:"地階極品",route:"魔修",cult:1.24,battle:12},
+{name:"萬我歸一篇",sect:"萬象宗",grade:"天階中品",route:"魔修",cult:1.28,battle:15,fragmentQuest:true},
+{name:"九幽葬神典",sect:"葬神宗",grade:"天階下品",route:"鬼修",cult:1.26,battle:19,ghostManual:true},
+{name:"不化骨真經",sect:"葬神宗",grade:"地階極品",route:"體修",cult:1.18,battle:20,ghostManual:true},
+{name:"無相血影訣",sect:"噬血樓",grade:"地階極品",route:"法修",cult:1.20,battle:17},
+{name:"斷命血契錄",sect:"噬血樓",grade:"天階下品",route:"魔修",cult:1.23,battle:20,fragmentQuest:true},
+{name:"百川納氣訣",sect:"四海盟",grade:"玄階極品",route:"通用",cult:1.08,battle:5},
+{name:"海天自在訣",sect:"四海盟",grade:"地階中品",route:"通用",cult:1.14,battle:9},
+{name:"陰陽渡魂經",sect:"鬼市",grade:"地階極品",route:"鬼修",cult:1.21,battle:12,ghostManual:true},
+{name:"等價無門篇",sect:"鬼市",grade:"天階下品",route:"通用",cult:1.18,battle:10,fragmentQuest:true},
+{name:"五行輪轉經",sect:"奇遇",grade:"天階上品",route:"法修",cult:1.30,battle:14,fragmentQuest:true},
+{name:"太古龍象鎮獄功",sect:"奇遇",grade:"天階中品",route:"體修",cult:1.20,battle:22,fragmentQuest:true}
+];
+
+const FOREIGN_MANUALS=[
+ {name:"天狐九變",origin:"妖族",target:"妖族",grade:"地階極品",cult:1.22,battle:11,mutation:["狐瞳","妖耳","靈尾"],desc:"以天狐血脈重塑形神，擅幻術與魅惑。"},
+ {name:"真龍化血篇",origin:"妖族",target:"妖族",grade:"天階下品",cult:1.25,battle:18,mutation:["龍瞳","龍鱗","龍角"],desc:"引龍血入體，肉身大增，但血脈排斥極烈。"},
+ {name:"幽冥還魂經",origin:"鬼",target:"鬼",grade:"地階上品",cult:1.18,battle:10,mutation:["陰瞳","鬼紋","無影"],desc:"活人亦可修鬼道，稍有不慎便成活屍。"},
+ {name:"天魔蝕心典",origin:"天魔",target:"天魔",grade:"天階中品",cult:1.34,battle:20,mutation:["魔瞳","魔紋","黑血"],desc:"以心魔為薪，修得越快，越難確認心中念頭是否仍屬自己。"},
+ {name:"太陰月華錄",origin:"精",target:"精",grade:"地階中品",cult:1.17,battle:8,mutation:["月紋","靈膚","草木香"],desc:"借月華洗去凡胎，逐步轉為天地精靈。"},
+ {name:"墮仙逆命篇",origin:"仙",target:"墮仙",grade:"天階上品",cult:1.30,battle:19,mutation:["裂仙紋","灰羽","逆靈脈"],desc:"仙道逆行之法，仙靈與濁氣共存，可能化為墮仙。"}
+];
+
+
+const SUPPORT_MANUALS=[
+ {name:"百草丹經",sect:"藥王谷",grade:"地階上品",kind:"丹修",tags:["木","火","丹"],conflicts:["鬼","屍"],bonus:"丹藥成功率與藥效提升"},
+ {name:"太一符籙真解",sect:"玄引門",grade:"地階中品",kind:"符修",tags:["符","神識"],conflicts:["魔"],bonus:"符籙成功率與威力提升"},
+ {name:"赤霄鍛器錄",sect:"四海盟",grade:"玄階極品",kind:"器修",tags:["火","金","器"],conflicts:["鬼"],bonus:"法器品質與耐久提升"},
+ {name:"周天星斗陣解",sect:"天機閣",grade:"地階極品",kind:"陣修",tags:["陣","星"],conflicts:["血"],bonus:"陣法成功率與渡劫準備提升"},
+ {name:"萬木生靈篇",sect:"百花谷",grade:"玄階上品",kind:"靈植師",tags:["木","靈植"],conflicts:["魔","血"],bonus:"靈植成熟率與稀有產出提升"},
+ {name:"食氣靈膳錄",sect:"四海盟",grade:"玄階中品",kind:"靈廚",tags:["火","水","靈膳"],conflicts:[],bonus:"靈膳增益與氣血恢復提升"},
+ {name:"玄陰養魂篇",sect:"鬼市",grade:"地階中品",kind:"魂修",tags:["鬼","魂"],conflicts:["陽","浩然"],bonus:"魂魄穩定與鬼修功法效果提升",possession:true},
+ {name:"血神寄胎術",sect:"葬神宗",grade:"天階下品",kind:"邪法",tags:["血","魂","魔"],conflicts:["浩然","仙"],bonus:"修煉極快，但存在奪舍風險",possession:true}
+];
+
+const CRAFT_TYPES={
+ alchemy:{name:"丹修",stat:"alchemy",materials:["靈草","妖丹","靈泉"],products:["回氣丹","療傷丹","築基丹","定心丹","結金丹","凝嬰丹"]},
+ talisman:{name:"符修",stat:"talisman",materials:["符紙","靈墨","妖血"],products:["火符","護身符","鎮魂符","破陣符"]},
+ forge:{name:"器修",stat:"forge",materials:["玄鐵","妖骨","靈晶"],products:["法劍","護甲","魂燈","陣旗"]},
+ array:{name:"陣修",stat:"array",materials:["陣旗","靈晶","符紙"],products:["聚靈陣","護山陣","困殺陣","渡劫陣"]},
+ herb:{name:"靈植師",stat:"herb",materials:["靈種","靈泉","靈土"],products:["百年靈草","血靈芝","養魂花","五行果"]},
+ cook:{name:"靈廚",stat:"cook",materials:["妖獸肉","靈米","靈草"],products:["回氣靈膳","淬體靈膳","定心湯","悟道羹"]}
+};
+
+const ADVENTURE_SCENES=[
+"暴雨後的山崖裂開一座古洞府，禁制正在衰弱。",
+"坊市拍賣會出現一張無人識得的染血殘卷。",
+"凡人城鎮爆發怪病，井水卻散發微弱靈氣。",
+"跨域飛舟墜毀荒原，傷者、貨艙與追兵同時出現。",
+"秘境入口只維持三日，各宗弟子已在入口彼此試探。",
+"月下古琴聲自無名孤墳傳來，墳前沒有腳印。",
+"妖族商隊遭劫，領隊願以妖王令換你護送百里。",
+"瘋道人說你身上有一段『不屬於此世的因果』。",
+"兩名修士為千年靈藥死戰，如今雙雙重傷。",
+"靈泉下方鎮壓著某種仍在呼吸的古老生物。",
+"古戰場亡魂重演萬年前最後一戰，軍陣中央似有寶光。",
+"你遇見一位與自己容貌完全相同的人，他自稱來自另一條時間線。",
+"天降赤色流星，落點附近所有妖獸都開始躁動。",
+"山村每逢月圓便少一人，村民說是山神娶親。",
+"你在河底發現一座倒懸的宮殿，門匾文字與當世完全不同。",
+"一名瀕死長老將儲物戒交給你，身後追殺者已不足十里。"
+];
+
+const SECTS = [
+  {name:"萬劍宗",align:"正道",minRealm:0,initial:true,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:0,focus:"劍修",desc:"仙界萬劍歸仙宗下界道統。以試劍陣與問心階擇徒，重劍骨、劍意、毅力與創道。"},
+  {name:"玄引門",align:"正道",minRealm:0,initial:true,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:0,focus:"法・符・陣・百藝",desc:"仙界靈隱仙宗下界道統，七峰並立，為正道第一大勢力。"},
+  {name:"嶽山宗",align:"正道",minRealm:0,initial:true,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:0,focus:"體修・巫血",desc:"洪荒巫族遺脈，重肉身、祖血與意志，無上界母宗。"},
+  {name:"藥王谷",align:"中立偏正",minRealm:0,initial:true,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:0,focus:"丹修・醫道",desc:"玄靈界第一醫道聖地，兼修丹、醫、毒、血脈與生命之道。"},
+  {name:"天機閣",align:"中立",minRealm:0,initial:true,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:0,focus:"陣・符・命修",desc:"天界天機軒下界子勢力。觀天下之命，尋可承天運之人。"},
+  {name:"百花谷",align:"中立",minRealm:0,initial:true,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:0,focus:"靈植・丹・陣",desc:"以萬靈母樹與萬花生生大陣為根基，研究生命培育、共生與化靈。"},
+  {name:"合歡宗",align:"中立偏魔",minRealm:0,initial:true,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:0,focus:"法修・雙修・紅塵",desc:"魔界天仙門下界道統。眾生有欲，欲即大道；重關係、情念與雙修。"},
+  {name:"天魔門",align:"魔門",minRealm:1,initial:false,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:8,focus:"正統魔修・天魔",desc:"以自我、自由與天魔血脈為核心的正統魔道。"},
+  {name:"萬象宗",align:"魔門",minRealm:1,initial:false,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:8,focus:"心魔・幻・夢",desc:"魔界萬相魔宮下界道統，研究人格、記憶、夢境、心魔與自我。"},
+  {name:"葬神宗",align:"邪修",minRealm:1,initial:false,roots:["變異靈根","三靈根","雜靈根","五行靈根","天靈根"],rep:5,focus:"屍・傀儡・魂",desc:"研究死亡、遺骸、縫魂與神骸的禁忌道統；創宗本意可能只是守墓。"},
+  {name:"噬血樓",align:"邪修",minRealm:1,initial:false,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:10,focus:"刺客・血契",desc:"跨域殺手與情報暗網，以血名、血榜、契約與斷命為核心。"},
+  {name:"四海盟",align:"散修聯盟",minRealm:0,initial:true,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:0,focus:"散修・商貿・探索",desc:"散修互助、交易與探索聯盟；沒有上界母宗，重信用與盟契。"},
+  {name:"鬼市",align:"特殊中立",minRealm:1,initial:false,roots:["天靈根","變異靈根","三靈根","雜靈根","五行靈根"],rep:15,focus:"陰陽交易・幽冥",desc:"上通天下，下通幽冥。非宗門而是陰陽自由港，壽元、記憶、氣運乃至來世皆可能成為商品。"}
+];
+
+const SECT_RANKS = [
+  {name:"雜役弟子",years:0,rep:0,realm:0},
+  {name:"外門弟子",years:1,rep:8,realm:1},
+  {name:"外門長老",years:6,rep:35,realm:2},
+  {name:"內門弟子",years:4,rep:28,realm:2},
+  {name:"內門長老",years:12,rep:85,realm:3},
+  {name:"核心／真傳弟子",years:8,rep:70,realm:3},
+  {name:"各峰長老",years:22,rep:160,realm:5},
+  {name:"掌門",years:45,rep:320,realm:7}
+];
+
+const SECT_STORIES={
+"萬劍宗":[
+ {min:0,title:"問心階",text:"試劍陣之後，你踏上問心階。萬劍宗不只問你會不會劍，而問：你為何持劍？",opts:[["劍護所愛","護道"],["劍證己道","創道"],["劍只服我","孤劍"]]},
+ {min:2,title:"劍谷擇劍",text:"築基後，你獲准進入劍谷。千百柄古劍沉默，是否有一柄願意選你？",opts:[["等劍選我","劍緣"],["自鑄本命劍","鑄劍"],["無劍亦可","心劍"]]},
+ {min:3,title:"真傳之爭",text:"宗門真傳席位有限。與你同行多年的同門亦站到了擂台另一端。",opts:[["全力一戰","真傳"],["讓出席位","情義"],["另創道路","自立"]]},
+ {min:5,title:"上界之劍",text:"劍谷內谷刻著『萬劍歸仙宗・第七十二下界道統』。你第一次知道宗門只是更大棋局的一部分。",opts:[["承上界傳承","飛仙派"],["先問宗門自身","問劍派"],["為何永為第七十二？","自立派"]]},
+ {min:7,title:"宗門之劫",text:"千機劍陣全面啟動。萬劍齊鳴，宗門真正需要你主持一方劍陣。",opts:[["守山門","守宗"],["追敵出陣","殺伐"],["護住劍谷","傳承"]]},
+ {min:8,title:"萬劍歸宗",text:"大乘之後，你必須回答：學遍萬劍之後，你留下的是祖師的劍，還是自己的劍？",opts:[["創一劍道","創道終章"],["承宗飛仙","飛升終章"],["斷上界因果","斷宗終章"]]}
+],
+"玄引門":[
+ {min:0,title:"七星問道",text:"北斗七峰同時觀察新弟子。你要選的不只是一門功法，而是一套人生。",opts:[["天璇道法","道法"],["百藝諸峰","百藝"],["先留外門觀察","觀局"]]},
+ {min:2,title:"築基名額",text:"築基丹與秘境席位有限。正道第一宗的第一課，是資源從來不會自動落到你手裡。",opts:[["大比爭取","競爭"],["自己煉丹","自給"],["經營人脈","政治"]]},
+ {min:3,title:"七峰大比",text:"鬥法、丹、器、符、陣、御獸、論道同場競逐。你的強，不必只有一種樣子。",opts:[["鬥法奪魁","戰修"],["百藝揚名","百藝名聲"],["論道服眾","道心"]]},
+ {min:5,title:"七星缺一",text:"北斗七星大陣有一峰失去共鳴。是叛徒、奪舍，還是封印之下有東西醒了？",opts:[["秘密查峰","調查"],["先穩大陣","守序"],["公開七峰會議","改革"]]},
+ {min:7,title:"天骨",text:"你終於知道七峰不只是護山陣眼，也是七把鎖。地下鎮著一塊不知屬於神、魔還是混沌生命的天骨。",opts:[["繼續鎮壓","鎮封"],["研究天骨","神道"],["拒交上界","玄靈派"]]},
+ {min:8,title:"七星崩",text:"大乘之際，天骨甦醒，七峰政治裂痕同時爆發。你要保住的是宗門、制度，還是真相？",opts:[["維持掌門制","守成"],["七峰共治","改制"],["脫離上宗","獨立"]]}
+],
+"嶽山宗":[
+ {min:0,title:"搬山",text:"入門第一關沒有仙術：把石頭搬上山。長老只想知道，失去靈氣後你還剩多少自己。",opts:[["一步一步搬","毅力"],["研究最省力路線","悟性"],["扛起更大一塊","血勇"]]},
+ {min:2,title:"祖血",text:"祖血石映出你體內古老痕跡。血脈是捷徑，卻也可能是牢籠。",opts:[["追求返祖","祖血"],["後天苦修","人道"],["仙體並行","融合"]]},
+ {min:3,title:"十二巫碑",text:"無字巫碑只讓你看。火、水、風、雷、空間、生死……你必須自己從沉默中理解。",opts:[["感悟肉身","肉身法"],["感悟空間","空間法"],["感悟生死","生死法"]]},
+ {min:5,title:"不周古道",text:"你踏入洪荒殘界，法修靈力沉寂，而古老肉身仍在荒蕪世界中呼吸。",opts:[["追尋巫族","古巫"],["採集洪荒遺物","探索"],["尋找人族古修","人祖"]]},
+ {min:7,title:"仙使索人",text:"巡天司要求宗門交出一名祖血返祖者。對方可能是你、徒弟或好友。",opts:[["拒交","逆仙"],["送入洪荒殘界","護人"],["隨仙使而去","上界支線"]]},
+ {min:8,title:"不受接引",text:"天劫已過，天空卻沒有接引仙光。天地沒有替你準備路。",opts:[["肉身破界","破界"],["走不周古道","洪荒歸途"],["創人族肉身大道","人祖終章"]]}
+],
+"藥王谷":[
+ {min:0,title:"一人一獸",text:"一個凡人與一隻護崽妖獸同時重傷，手中只有一份藥。醫者第一次學會：救誰從來不是純技術題。",opts:[["救凡人","人命"],["救妖獸","眾生"],["拆藥另尋辦法","醫心"]]},
+ {min:2,title:"只有一顆丹",text:"凡人女孩與宗門執事皆命懸一線。你只有一顆丹。",opts:[["救女孩","生命平等"],["救執事","宗門利益"],["冒險分丹","醫術挑戰"]]},
+ {min:3,title:"瘟疫",text:"一場會感染修士的瘟疫爆發，而且可能是人造的。",opts:[["封城止疫","大局"],["全民試藥","研究"],["追查病源","真相"]]},
+ {min:5,title:"重塑肉身",text:"元嬰失去肉身者求你重塑。若能造身體，那麼距離造人還有多遠？",opts:[["只治病人","守線"],["研究人工肉身","造化"],["與百花谷共研","共生"]]},
+ {min:7,title:"天地之病",text:"古神血肉、血脈返祖、靈植異變似乎不是孤立事件。玄靈界本身，可能正在『生病』。",opts:[["聯合諸宗研究","醫天地"],["封存發現","保守"],["深入古神病源","禁區"]]},
+ {min:8,title:"最後一位病人",text:"大乘圓滿前，你面對一位可救卻未必該救的病人。醫道走到最後，不再只是讓生命延長。",opts:[["盡力救","醫仙"],["尊重其終點","生死醫"],["治的是世界，不是一人","醫天地終章"]]}
+],
+"天機閣":[
+ {min:0,title:"擇星",text:"無字命簿浮現數名承運者：皇子、宗門天驕、妖族少女，還有一名完全算不到的乞兒。",opts:[["押皇子","王朝線"],["押宗門天驕","宗門線"],["押不可算之人","異數線"]]},
+ {min:2,title:"第一次改命",text:"承運者三月後將遭死劫。告訴他、暗中救、還是讓命數照常發生？",opts:[["提前示警","護命"],["暗中布局","執棋"],["不改命","順命"]]},
+ {min:3,title:"雙星爭命",text:"另一名天機使扶持的承運者與你的人正面衝突。表面是王朝或宗門之爭，實際也是兩名觀命者在下棋。",opts:[["正面輔佐","對弈"],["與同門談判","平衡"],["做空自己的承運者","背命"]]},
+ {min:5,title:"眾生棋局",text:"你第一次進入眾生棋局，卻發現自己的棋子也在其中，而且有一條線直指天界。",opts:[["接受自己亦是棋","順命派"],["追查上界線索","真相"],["嘗試移動自己的棋子","逆命"]]},
+ {min:7,title:"天命造假",text:"你發現某些命運之子的氣運來自人工拼接與移植。『天命』可能也是商品。",opts:[["揭露真相","逆命"],["繼續利用","執棋"],["交回天機軒","上軒"]]},
+ {min:8,title:"最後一卦",text:"天機盤自行給出你的最後一卦。你已修數千年，還願意讓一行卦辭替你決定嗎？",opts:[["依卦而行","順命終章"],["毀去卦象","無命終章"],["知命而自選","天機閣主"]]}
+],
+"百花谷":[
+ {min:0,title:"種子",text:"你拿到一枚未知種子。真正的考核不是催熟，而是先理解它需要什麼。",opts:[["耐心觀察","共生"],["大量靈氣催生","培育"],["模擬自然環境","自然"]]},
+ {min:2,title:"會哭的花",text:"即將成熟的啼月花在夜裡對你說：『不要採我。』",opts:[["停止採摘","靈智"],["照規矩採藥","資源"],["帶去見長老","研究"]]},
+ {min:3,title:"妖花",text:"培育失控的食靈花擁有幼童般靈智，卻會吞噬妖獸甚至修士。",opts:[["封印馴養","共生"],["銷毀","安全"],["改良捕食本能","培育"]]},
+ {min:5,title:"萬靈母樹",text:"母樹透過夢境讓你看見一株連接諸界的古木。百花谷的使命，可能從來不是種藥。",opts:[["守護母樹","守園"],["研究建木殘脈","建木"],["公開真相","改革"]]},
+ {min:7,title:"花籍",text:"一株化形兩千年的牡丹仍被舊門規視為『宗門資產』。你要不要承認高靈智靈植的身份？",opts:[["建立花籍","萬靈之友"],["維持傳統","谷守"],["自願契約制度","共生制度"]]},
+ {min:8,title:"建木新芽",text:"一枚嫩芽令仙、魔、天界與妖族同時來訪。諸天都想得到它。",opts:[["讓它自己長","自然終章"],["重建跨界建木","建木終章"],["帶往自建生態界","造園者"]]}
+],
+"合歡宗":[
+ {min:0,title:"照心鏡",text:"鏡中不照容貌，只照你最想得到的東西。合歡宗不問它高尚與否，只問你敢不敢承認。",opts:[["承認欲望","紅塵"],["觀而不取","自在"],["遮掩答案","自欺"]]},
+ {min:2,title:"第一次雙修",text:"你可選擇互利雙修、欲念引導，或拒絕以他人作為自己的修行道路。",opts:[["陰陽互濟","穩基"],["欲念引導","心法"],["暫不雙修","自修"]]},
+ {min:3,title:"外宗天驕",text:"宗門任務要你接近一名資質極佳的外宗天驕。數十年後，他問：『若我只是雜靈根，你還會來嗎？』",opts:[["一開始不會，現在會","真心"],["承認只是任務","利用"],["切斷關係","無情"]]},
+ {min:5,title:"爐鼎",text:"你發現宗內仍有秘密爐鼎培養。雙修與採補之間的界線，終於不再只是功法描述。",opts:[["揭發救人","合道"],["默許制度","採補"],["改革為自願契約","自在"]]},
+ {min:7,title:"收割紅塵",text:"魔界天仙門要求建立大陣收集玄靈界逸散欲念。眾生不會立刻死，但會逐漸失去愛、野心與創造力。",opts:[["拒絕收割","紅塵守護"],["服從上門","上門派"],["改為自願供奉","契約"]]},
+ {min:8,title:"最後一段因果",text:"天仙門說，斬斷你最深的牽掛即可讓飛升容易許多。",opts:[["不斬，同路渡劫","雙人飛升"],["斬情飛升","天仙門"],["有欲而不受役","自在終章"]]}
+],
+"天魔門":[
+ {min:1,title:"違令",text:"考官命你跪下。天魔門不問跪不跪，而問你為什麼跪。",opts:[["因實力差距而暫低頭","清醒"],["拒跪","無拘"],["因長老身份而跪","從眾"]]},
+ {min:2,title:"自己的戒律",text:"宗門要你自己立一條規矩。沒人逼你立，所以違反它時也無人能替你辯解。",opts:[["不欺本心","真我"],["不負故人","承諾"],["不向任何人發誓","自由"]]},
+ {min:3,title:"天魔化",text:"上界魔氣可以讓你重塑骨血。變得更強，也可能逐步變成另一種生命。",opts:[["深入天魔化","真魔"],["停在半天魔","自在"],["以人身修魔","人魔"]]},
+ {min:5,title:"魔界並不自由",text:"你第一次真正接觸魔界，發現那裡也有階級、血脈與強者秩序。",opts:[["接受強者規則","強者派"],["拒絕魔印","人魔"],["建立自願契約","契約派"]]},
+ {min:7,title:"天地是最大的宗門",text:"你反抗過宗門、王朝與上界，最後發現壽元、天劫、飛升也是天地定下的規則。",opts:[["破壞規則","無拘"],["理解後再改","自在"],["掌握規則成為制定者","新天條"]]},
+ {min:8,title:"自在天甦醒",text:"古天魔殘軀睜眼問：『現在是誰在管天？』祂主張打破絕地天通。",opts:[["支持破界","大自由"],["守護下界","自選之序"],["重新制定通界規則","新天條終章"]]}
+],
+"萬象宗":[
+ {min:1,title:"真假",text:"三名考官都說自己是真的。萬象宗第一課：不要太快相信題目本身。",opts:[["找破綻","辨妄"],["三者皆可為真","萬象"],["拒絕回答","疑心"]]},
+ {min:2,title:"第二個我",text:"一封自己的字跡寫著『今晚不要睡』。夢中，另一個你正等著說話。",opts:[["與他交談","合心"],["封印他","斬妄"],["讓他獨立修行","分相"]]},
+ {min:3,title:"夢中的一生",text:"你在夢裡活了數十年、成家、老去，醒來現實只過三日。那些感情因為是夢，就不是真的嗎？",opts:[["承認它也是人生","夢修"],["斬斷夢念","清醒"],["尋找夢中故人","執念"]]},
+ {min:5,title:"記憶犯罪",text:"一名長老秘密改寫大量弟子記憶，讓他們不再痛苦、也不再懷疑宗門。",opts:[["恢復記憶","自證"],["支持長老","秩序"],["建立同意制度","心境倫理"]]},
+ {min:7,title:"人格樣本",text:"上界資料沒有你的名字，只有『玄靈界第七十九型人格樣本』。",opts:[["拒絕被定義","自證派"],["研究自己","分相派"],["名字本就虛妄","無我派"]]},
+ {min:8,title:"萬相降臨",text:"萬相魔宮提出讓眾生進入沒有戰爭、疾病與死亡的共同夢境。只要永遠不醒。",opts:[["選擇真實","醒世者"],["建立夢界","夢主"],["讓夢境規則映入現實","夢成真"]]}
+],
+"葬神宗":[
+ {min:1,title:"親手安葬",text:"入宗考核最後一關竟是不許煉、不許取材，只把陌生人的屍體好好埋掉。",opts:[["立碑安葬","葬道"],["記錄後安葬","研究"],["質疑浪費材料","不死派"]]},
+ {min:2,title:"死去的師兄",text:"照顧你的師兄魂已散，肉身完整。長老問是否煉成護屍。",opts:[["安葬","尊亡"],["煉成護屍","屍道"],["尋找殘魂","縫魂"]]},
+ {min:3,title:"傀儡會怕死嗎",text:"你製作的高階傀儡在必死任務前問：『我會回來嗎？』",opts:[["取消命令","靈械"],["仍然派遣","器物"],["讓它自己選","自主生命"]]},
+ {min:5,title:"不死實驗",text:"肉身可替換、魂可縫、記憶可重建。宗門開始研究真正不死。",opts:[["理解死亡即可","葬道"],["追求不死","不死"],["創造新生命","造生"]]},
+ {min:7,title:"神骸心跳",text:"葬神陵某具死去無數年的神骸，數月才跳一次的心臟又響了。",opts:[["封存神骸","守墓"],["借神之體","神骸"],["追查神性法則","研究"]]},
+ {min:8,title:"葬神真義",text:"你發現創宗祖師原本只是守墓人。『可煉其遺，不可擾其歸』才是被遺忘的祖訓。",opts:[["真正安葬無名神","歸葬終章"],["融合神骸","神骸飛升"],["建立死者國度","死者文明"]]}
+],
+"噬血樓":[
+ {min:1,title:"血名",text:"你得到一封無署名的信。入樓後沒有本名，只有一個由你選擇的血名。",opts:[["取血名入樓","刺客"],["保留真名秘密","雙面"],["拒絕加入","自由"]]},
+ {min:2,title:"第一單",text:"第一個目標可能是叛逃情報員。血榜從不保證目標是惡人。",opts:[["依契執行","契約派"],["調查再決定","血債派"],["製造假死","假死術"]]},
+ {min:3,title:"目標是故人",text:"血契簿上出現你認識數十年的名字。關係第一次被世界標成了價格。",opts:[["拒單","故人"],["通知目標查幕後","反查"],["依契出手","無面"]]},
+ {min:5,title:"無主血契",text:"沒有委託人、沒有資金來源的血契開始出現，目標卻都是群星爭命時代的高氣運人物。",opts:[["追查來源","真相"],["照契執行","斷命派"],["通知天機閣","合作"]]},
+ {min:7,title:"斷命冊",text:"古老斷命冊會自行浮現『應死』之名。有人想他死，與天地認為他應死，逐漸混在一起。",opts:[["只認自願血契","契約"],["服從斷命冊","斷命"],["研究死亡因果","血債"]]},
+ {min:8,title:"萬名血榜",text:"一夜之間，數萬名字上榜。若全殺也許阻止災難，也可能只是成就一場屠戮。",opts:[["建立等價因果制","無人可買"],["成為斷命使","天地之刀"],["毀去血榜","毀榜終章"]]}
+],
+"四海盟":[
+ {min:0,title:"第一次組隊",text:"五名散修約定均分秘境所得，卻只找到一顆築基丹。散修的第一堂課是合作怎麼落地。",opts:[["競價分靈石","信用"],["讓最需要者先用","互助"],["抽籤","公平"]]},
+ {min:2,title:"築基丹與貸契",text:"沒有師父送丹，四海盟可以借你資源，但失敗後債仍在。自由很美，也很貴。",opts:[["簽修行貸契","商盟"],["自己煉","自立"],["進秘境拼命","冒險"]]},
+ {min:3,title:"無主秘境",text:"你發現尚未登記的秘境。公開可得聯盟保護，私藏則收益全歸自己。",opts:[["登記共營","同舟"],["秘密開發","私利"],["賣給大宗門","商道"]]},
+ {min:5,title:"十三席政治",text:"四海盟變大後，坊市、商會、秘境名額也開始出現壟斷與內定。",opts:[["游俠互助","游俠派"],["維持自由市場","商盟派"],["推動公開制度","建制改革"]]},
+ {min:7,title:"無主之地",text:"一片宗門覆滅後的靈域成了無主之地。四海盟第一次有能力真正擁有領土。",opts:[["建立自治諸盟","聯邦"],["建立四海仙國","建國"],["拒絕領土化","自由派"]]},
+ {min:8,title:"天下皆有路",text:"上界代理宗門開始限制功法與資源流通。散修是否能讓基礎修行不再被少數道統壟斷？",opts:[["公開基礎功法","公共道統"],["建立諸天商路","商路"],["仍做自由散人","自由散人"]]}
+],
+"鬼市":[
+ {min:1,title:"子時有門",text:"黑色銅錢在子時發冷，巷口多了一盞昨天不存在的白燈籠。提燈童子問：『活客還是死客？』",opts:[["以活客入市","陽客"],["探問幽冥入口","陰陽"],["先只交易靈石貨物","慎行"]]},
+ {min:2,title:"買命與忘憂",text:"買命鋪可用壽元換資源，忘憂鋪願高價買下你最痛的一段記憶。",opts:[["不賣自己","無價"],["賣十年壽元","等價"],["出售痛苦記憶","忘憂"]]},
+ {min:3,title:"死人來買東西",text:"你在攤前遇見已死多年的故人。鬼市第一次證明：死亡只是換了一張地圖。",opts:[["幫他完成遺願","陰陽行者"],["問還陽價格","還魂"],["尊重其去向","輪回"]]},
+ {min:5,title:"氣運黑市",text:"紫氣被裝在玉瓶裡出售，來源是已死的天命者。天機閣已經快把鬼市屋頂掀了。",opts:[["禁止贓運交易","守契"],["只問價格","萬物派"],["追查地下產業鏈","陰陽派"]]},
+ {min:7,title:"幽冥封關",text:"忘川渡斷流，輪回異常，大量亡魂滯留陽間。鬼市若失去幽冥，就只剩黑市。",opts:[["入幽冥修復通道","陰陽"],["與陰司正式談判","合法化"],["創自主輪回","新輪回"]]},
+ {min:8,title:"最大的交易",text:"市主說鬼市可以救玄靈界，代價卻是『全天下每人一年壽命』。問題不是值不值，而是誰有資格替所有人簽字。",opts:[["拒絕代眾生交易","真正無價"],["尋求全界自願契約","守契終章"],["以自己的飛升機會付價","陰陽行者終章"]]}
+]
+};
+
+function sectStoryKey(){return state.sect||"散修";}
+function currentSectStory(){
+ const arr=SECT_STORIES[sectStoryKey()]||[];
+ const idx=(state.sectStories&&state.sectStories[sectStoryKey()])||0;
+ return {arr,idx,next:arr[idx]||null};
+}
+function worldArcName(){
+ if(state.realm<=1)return "第一部・天命將起";
+ if(state.realm<=3)return "第二部・正魔暗流";
+ if(state.realm<=4)return "第三部・天驕隕落";
+ if(state.realm<=6)return "第四部・上界之手";
+ if(state.realm<=8)return "第五部・飛升真相";
+ return "終章・誰在製造大世？";
+}
+function applyStoryTag(tag){
+ state.storyTags=state.storyTags||{};state.storyTags[tag]=(state.storyTags[tag]||0)+1;
+ state.reputation+=rnd(3,8);state.wisdom+=rnd(1,3);state.cult+=Math.floor(currentBreakNeed()*.035);
+ if(["採補","不死","無面","斷命派","萬物派","自欺","私利"].includes(tag)){state.karma+=rnd(2,6);state.demon=clamp(state.demon+rnd(1,5),0,100);}
+ if(["護道","情義","醫心","守契","互助","共生","尊亡","真正無價"].includes(tag)){state.karma-=rnd(1,4);}
+}
+function openSectStory(){
+ if(pendingChoice||!state.alive)return;
+ if(state.sect==="散修"){log("你目前沒有固定門派。若想走散修主線，可加入 <b>四海盟</b>；鬼市、噬血樓等勢力則會隨機緣開門。");return;}
+ const {arr,idx,next}=currentSectStory();
+ if(!arr.length){log("目前此勢力尚無可推進的專屬篇章。");return;}
+ if(!next){log(`<b>${state.sect}</b> 的主要門派劇情已完成。往後將由世界大勢、宗門政治與你留下的因果繼續書寫。`);return;}
+ if(state.realm<next.min){log(`下一篇章「<b>${next.title}</b>」至少需要達到 <b>${REALMS[next.min].name}</b>。目前仍可透過門派任務、歷練與世界快訊累積人脈與因果。`);return;}
+ pendingChoice=true;log(`【${state.sect}・${next.title}】${next.text}`);
+ const box=document.createElement("div");box.className="choicebox";
+ next.opts.forEach(([label,tag])=>{const b=document.createElement("button");b.textContent=label;b.onclick=()=>{applyStoryTag(tag);state.sectStories=state.sectStories||{};state.sectStories[state.sect]=idx+1;state.lastSectChoice=`${next.title}：${label}`;log(`你選擇了「<b>${label}</b>」。這不是一次性答案，而會成為往後門派與世界回應你的依據。`);if(next.min>=5)pushNews(`【${state.sect}】門中高層近日出現重大動向，據傳與「${next.title}」有關。`,"門派大事",3);pendingChoice=false;box.remove();advanceQuarter(1);render();};box.appendChild(b);});
+ const later=document.createElement("button");later.textContent="暫緩決定";later.onclick=()=>{pendingChoice=false;box.remove();render();};box.appendChild(later);$("log").lastChild.appendChild(box);render();
+}
+function openIntelMenu(){
+ if(pendingChoice||!state.alive)return;initWorld();
+ const opp=state.world.opportunities||[];
+ if(!opp.length){log("你整理近期情報，暫時沒有公開而明確的機緣。真正的機緣也可能藏在門派劇情與未了因果裡。");return;}
+ pendingChoice=true;log("你攤開近期修真界快訊，準備選擇一條值得追蹤的機緣。");
+ const box=document.createElement("div");box.className="choicebox";
+ [...new Map(opp.map(x=>[x.name,x])).values()].slice(0,5).forEach(o=>{const b=document.createElement("button");b.textContent=`追蹤｜${o.name}`;b.onclick=()=>{state.world.opportunities=state.world.opportunities.filter(x=>x!==o);const good=chance(55+state.wisdom*.6);if(good){const g=Math.floor(currentBreakNeed()*(.05+rnd(0,4)/100));state.cult+=g;state.reputation+=rnd(2,7);state.wisdom+=1;log(`你根據情報提前布局，在「${o.name}」中取得先機，得到一段足以影響修行的收穫。`);}else{const dmg=rnd(5,18)+state.realm*2;state.hp-=dmg;log(`你追著「${o.name}」而去，卻發現快訊只是一部分真相。你付出 ${dmg} 氣血才脫身。`);if(state.hp<=0){pendingChoice=false;box.remove();die("你死在一場被誤判的機緣裡。");return;}}pendingChoice=false;box.remove();advanceQuarter(1);render();};box.appendChild(b);});
+ const c=document.createElement("button");c.textContent="先觀望";c.onclick=()=>{pendingChoice=false;box.remove();render();};box.appendChild(c);$("log").lastChild.appendChild(box);render();
+}
+
+const ROOT_TYPES = [
+  {type:"天靈根", weight:7, cult:1.25, breakthrough:8, desc:"單一五行純度極高，吐納效率與破境能力俱佳。"},
+  {type:"變異靈根", weight:9, cult:1.18, breakthrough:6, desc:"靈根異變，修行速度優異，且更容易在生死關頭爆發。"},
+  {type:"三靈根", weight:34, cult:1.06, breakthrough:2, desc:"三系並存，資質中正，適應多種功法與機緣。"},
+  {type:"雜靈根", weight:49, cult:0.94, breakthrough:-2, desc:"四系靈根彼此牽制，前期修行較慢，但並非無緣大道。"},
+  {type:"五行靈根", weight:1, cult:1.32, breakthrough:10, desc:"【隱藏命格】五行圓滿、生生不息。看似駁雜，實為極罕見的五行道體雛形。", hidden:true}
+];
+
+const TALENT_TIERS = [
+  {rank:"天", weight:5, base:1.25},
+  {rank:"地", weight:15, base:1.12},
+  {rank:"玄", weight:30, base:1.02},
+  {rank:"黃", weight:50, base:0.92}
+];
+const TALENT_SUB = [
+  {name:"上等", bonus:0.07},
+  {name:"中等", bonus:0.00},
+  {name:"下等", bonus:-0.06}
+];
+
+let selectedRoute = "體修";
+let selectedAlignment = "正道";
+let pendingChoice = false;
+let state = null;
+let drawnDestiny = null;
+
+function weightedPick(arr){
+  const total=arr.reduce((s,x)=>s+x.weight,0);
+  let r=Math.random()*total;
+  for(const x of arr){ r-=x.weight; if(r<=0) return x; }
+  return arr[arr.length-1];
+}
+function shuffled(arr){ return [...arr].sort(()=>Math.random()-.5); }
+
+function raceRoll(choice){
+  if(choice && choice!=="隨機"){
+    if(choice==="混血"){
+      const p=shuffled(["人族","妖族","精"]).slice(0,2);
+      return `混血（${p[0]}×${p[1]}）`;
+    }
+    return choice;
+  }
+  const r=rnd(1,100);
+  if(r<=72) return "人族";
+  if(r<=91) return "妖族";
+  if(r<=98) return "精";
+  const p=shuffled(["人族","妖族","精"]).slice(0,2);
+  return `混血（${p[0]}×${p[1]}）`;
+}
+
+function sectEligible(sect, initial=false){
+  if(!state)return false;
+  const rootOK=sect.roots.includes(state.rootType);
+  if(initial){
+    if(!sect.initial)return false;
+    if(sect.name==="嶽山宗" && state.route!=="體修" && state.rootType!=="雜靈根" && !chance(35))return false;
+    if(sect.name==="合歡宗" && state.wisdom<9 && !chance(45))return false;
+    return rootOK && state.realm>=sect.minRealm;
+  }
+  let access=true;
+  if(sect.name==="天魔門")access=state.route==="魔修"||state.demon>=35||state.race==="天魔";
+  if(sect.name==="萬象宗")access=state.demon>=20||state.wisdom>=18||state.route==="魔修";
+  if(sect.name==="葬神宗")access=state.ghostMode||state.zombie||state.route==="鬼修"||state.karma>=10||state.realm>=3;
+  if(sect.name==="噬血樓")access=state.karma>=5||state.reputation>=35||state.realm>=3;
+  if(sect.name==="鬼市")access=state.realm>=1&&(state.ghostMode||state.fateGhost>=10||state.reputation>=20||hasFlag("ghostMarketToken"));
+  return rootOK && state.realm>=sect.minRealm && state.reputation>=sect.rep && access;
+}
+
+function currentSectObj(){
+  return SECTS.find(s=>s.name===state.sect) || null;
+}
+
+function updateSectRank(){
+  if(!state||state.sect==="散修")return;
+  let best="雜役弟子";
+  // talented disciples can enter inner ranks earlier; elder posts require realm + years.
+  for(const r of SECT_RANKS){
+    if(state.sectYears>=r.years && state.reputation>=r.rep && state.realm>=r.realm)best=r.name;
+  }
+  const gifted=(state.rootType==="天靈根"||state.rootType==="變異靈根"||state.rootType==="五行靈根"||state.talentRank==="天");
+  if(gifted && state.realm>=2 && state.reputation>=35 && ["雜役弟子","外門弟子","外門長老"].includes(best))best="內門弟子";
+  if(gifted && state.realm>=3 && state.reputation>=75 && state.sectYears>=6)best="核心／真傳弟子";
+  if(best!==state.sectRank){state.sectRank=best;log(`你在 <b>${state.sect}</b> 的資歷、修為與功績已足，身份變更為 <b>${best}</b>。`);}
+}
+
+function joinSect(sect, isTransfer=false){
+  if(isTransfer && state.sect!=="散修"){
+    state.oldSect=state.sect;
+    state.oldSectRank=state.sectRank;
+    state.oldSectYears=state.sectYears;
+  }
+  state.sect=sect.name;
+  state.sectAlign=sect.align;
+  state.sectRank="雜役弟子";
+  state.sectYears=0;
+  state.reputation=Math.max(0,state.reputation-5);
+  log(`${isTransfer?"你改投":"你拜入"} <b>${sect.name}</b>，從最初的門中身份開始修行。`);
+}
+
+function initialSectInvitation(){
+  let options=SECTS.filter(s=>sectEligible(s,true) && alignmentMatchesSect(s));
+  if(options.length<2) options=SECTS.filter(s=>sectEligible(s,true));
+  if(!options.length){
+    state.sect="散修";
+    state.sectAlign="散修";
+    return;
+  }
+  pendingChoice=true;
+  log("測靈結果傳開後，數個勢力向你遞來入門玉符。你可以擇一，也可以拒絕宗門束縛。");
+  const box=document.createElement("div");box.className="choicebox";
+  const picks=shuffled(options).slice(0,3);
+  picks.forEach(sect=>{
+    const b=document.createElement("button");
+    b.textContent=`${sect.name}｜${sect.align}`;
+    b.onclick=()=>{
+      joinSect(sect,false);
+      pendingChoice=false;box.remove();render();
+    };
+    box.appendChild(b);
+  });
+  const free=document.createElement("button");
+  free.textContent="不入宗門，做散修";
+  free.onclick=()=>{
+    state.sect="散修";state.sectAlign="散修";state.sectRank="無";state.sectYears=0;
+    pendingChoice=false;box.remove();log("你拒絕所有玉符，選擇以散修之身踏入修真界。");render();
+  };
+  box.appendChild(free);
+  $("log").lastChild.appendChild(box);
+  render();
+}
+
+
+
+function addMutationTrait(fm){
+ const available=fm.mutation.filter(x=>!(state.mutationTraits||[]).includes(x));
+ if(available.length&&chance(55)){
+   const t=available[rnd(0,available.length-1)];
+   state.mutationTraits.push(t);
+   log(`<b class="fragment">血脈異變：</b>你的身體出現「${t}」。此變化已開始深入血脈。`);
+ }
+}
+function raceCompatible(target){
+ const r=String(state.race);
+ if(r===target)return 1;
+ if(r.includes("混血"))return .72;
+ if(r==="人族")return .52;
+ if(r==="妖族"&&target==="精")return .68;
+ if(r==="精"&&target==="妖族")return .70;
+ if(r==="鬼"&&target==="天魔")return .55;
+ if(r==="仙"&&target==="墮仙")return .78;
+ return .38;
+}
+function advanceMutation(fm,amount){
+ const compat=raceCompatible(fm.target);
+ const raw=Math.max(2,amount*(1.15-compat));
+ state.mutation=clamp((state.mutation||0)+raw,0,100);
+ state.bloodStability=clamp(((state.bloodStability===undefined||state.bloodStability===null)?100:state.bloodStability)-raw*rnd(35,65)/100,0,100);
+ addMutationTrait(fm);
+
+ if(fm.target==="妖族" && state.race==="人族" && state.mutation>=35 && state.mutation<80) state.race="半妖";
+ if(fm.target==="鬼" && state.race!=="鬼" && state.mutation>=45 && state.bloodStability<45) state.race="活屍";
+ if(fm.target==="墮仙" && (state.race==="仙"||state.race==="神") && state.mutation>=40) state.race="墮仙";
+
+ if(state.mutation>=80){
+   if(fm.target==="妖族"){state.race="妖族";log("<b>異族血脈完成蛻變：你已真正轉化為妖族。</b>");}
+   if(fm.target==="鬼"){state.race="鬼";state.route="鬼修";state.ghostMode=true;state.ghost=Math.max(state.ghost||0,75);state.nextGhostTrib=state.age+10;log("<b>陽血盡褪，你完成鬼化。</b>");}
+   if(fm.target==="天魔"){state.race="天魔";state.route="魔修";state.demon=Math.max(state.demon,75);log("<b>魔血重塑形神，你蛻變為天魔。</b>");}
+   if(fm.target==="精"){state.race="精";log("<b>凡胎逐漸淡去，你化為天地之精。</b>");}
+   if(fm.target==="墮仙"){state.race="墮仙";state.route="魔修";log("<b>仙軀染濁，道果逆轉，你成為墮仙。</b>");}
+ }
+}
+function qiDeviation(reason="異族血脈與原有經脈發生衝突"){
+ const severity=100-((state.bloodStability===undefined||state.bloodStability===null)?100:state.bloodStability)+(state.mutation||0)*.35;
+ log(`<b class="war">走火入魔：</b>${reason}。`);
+ if(chance(clamp(25+severity*.45,20,85))){
+   state.berserkYears=rnd(1,3);
+   state.hp-=rnd(15,35)+state.realm*3;
+   state.demon=clamp(state.demon+rnd(8,18),0,100);
+   log(`你的神智陷入混亂，未來 ${state.berserkYears} 年情緒與行動可能失控。`);
+ }else{
+   state.hp-=rnd(8,20);state.wisdom=Math.max(1,state.wisdom-1);
+   log("你勉強鎮住經脈逆流，但神魂仍受震盪。");
+ }
+}
+function practiceForeignPath(){
+ if(!state.foreignPath)return false;
+ const fm=FOREIGN_MANUALS.find(x=>x.name===state.foreignPath);if(!fm)return false;
+ if(chance(24)){
+   advanceMutation(fm,rnd(5,12));
+   if(chance(clamp(12+(100-state.bloodStability)*.45,8,72))) qiDeviation();
+   return true;
+ }
+ return false;
+}
+function discoverForeignManual(){
+ if(!chance(13))return false;
+ const fm=FOREIGN_MANUALS[rnd(0,FOREIGN_MANUALS.length-1)];
+ pendingChoice=true;
+ log(`此次歷練中，你意外得到異族傳承 <b>${fm.name}</b>（${fm.origin}・${fm.grade}）。${fm.desc}`);
+ const box=document.createElement("div");box.className="choicebox";
+ [["冒險轉修",()=>{
+   if(!state.originalRace)state.originalRace=state.race;
+   state.foreignPath=fm.name;state.foreignOrigin=fm.origin;
+   advanceMutation(fm,rnd(8,18));
+   log(`你開始跨種族修煉《${fm.name}》。力量來得很快，代價也已經開始。`);
+ }],["只研究不修煉",()=>{state.wisdom+=2;state.reputation+=2;log("你只記錄運行法門，不讓異族力量進入經脈。");}],["毀去功法",()=>{state.karma-=2;log("你將傳承毀去。也許避開了一場大劫，也許錯過了一條大道。");}]].forEach(([t,f])=>{const b=document.createElement("button");b.textContent=t;b.onclick=()=>{f();pendingChoice=false;box.remove();advanceQuarter(1);render();};box.appendChild(b);});
+ $("log").lastChild.appendChild(box);render();return true;
+}
+
+
+function allManualDefs(){
+ return [...MANUALS,...SUPPORT_MANUALS];
+}
+function getManual(name){return allManualDefs().find(x=>x.name===name);}
+function ensureManualSkill(name){
+ state.manualSkills=state.manualSkills||{};
+ if(state.manualSkills[name]===undefined)state.manualSkills[name]=0;
+}
+function masteryTier(v){
+ if(v>=900)return ["返璞歸真",1.35];
+ if(v>=600)return ["大成",1.24];
+ if(v>=350)return ["精通",1.16];
+ if(v>=150)return ["熟練",1.10];
+ if(v>=50)return ["入門",1.05];
+ return ["初學",1.00];
+}
+function manualConflictScore(){
+ let score=0;
+ const names=[state.manual,...(state.auxManuals||[])].filter(Boolean);
+ const defs=names.map(getManual).filter(Boolean);
+ for(let i=0;i<defs.length;i++)for(let j=i+1;j<defs.length;j++){
+  const a=defs[i],b=defs[j];
+  const at=a.tags||[],bt=b.tags||[],ac=a.conflicts||[],bc=b.conflicts||[];
+  if(ac.some(x=>bt.includes(x))||bc.some(x=>at.includes(x)))score+=18;
+  if((a.route==="魔修"&&b.route==="法修")||(b.route==="魔修"&&a.route==="法修"))score+=8;
+  if((a.ghostManual&&b.route==="體修")||(b.ghostManual&&a.route==="體修"))score+=6;
+ }
+ return clamp(score,0,100);
+}
+function possessionRisk(){
+ const names=[state.manual,...(state.auxManuals||[])].filter(Boolean);
+ let risk=0;
+ names.map(getManual).filter(Boolean).forEach(m=>{
+  if(m.possession)risk+=8;
+  if(m.name==="血神寄胎術")risk+=18;
+  if(m.ghostManual&&state.race!=="鬼")risk+=5;
+ });
+ risk+=Math.floor((100-((state.bloodStability===undefined||state.bloodStability===null)?100:state.bloodStability))*.18)+(state.demon||0)*.08;
+ return clamp(risk,0,70);
+}
+function practiceAllManuals(baseGain){
+ const names=[state.manual,...(state.auxManuals||[])].filter(Boolean);
+ let mult=1;
+ names.forEach((name,idx)=>{
+  const m=getManual(name);if(!m)return;
+  ensureManualSkill(name);
+  const add=idx===0?rnd(4,8):rnd(2,5);
+  state.manualSkills[name]+=add;
+  const [tier,eff]=masteryTier(state.manualSkills[name]);
+  if(idx===0)mult*=eff;
+  else mult*=1+(eff-1)*.45;
+ });
+ const conflict=manualConflictScore();
+ if(conflict>0&&chance(clamp(conflict*.35,5,45)))qiDeviation("主修與輔修功法彼此衝突，經脈產生逆流");
+ const pr=possessionRisk();
+ if(pr>0&&chance(pr*.12)){
+   const dmg=rnd(12,32)+state.realm*3;
+   state.hp-=dmg;state.wisdom=Math.max(1,state.wisdom-rnd(1,3));state.demon=clamp(state.demon+rnd(4,10),0,100);
+   log("<b class='war'>奪舍異兆：</b>你在識海中聽見不屬於自己的聲音。雖暫時守住神魂，卻付出不小代價。");
+ }
+ return mult;
+}
+function renderManualProgress(){
+ const box=$("manualProgressList");if(!box)return;
+ const names=[state.manual,...(state.auxManuals||[])].filter(Boolean);
+ box.innerHTML=names.length?names.map((name,i)=>{
+   const m=getManual(name)||{};ensureManualSkill(name);
+   const v=state.manualSkills[name]||0;const [tier]=masteryTier(v);
+   const pct=Math.min(100,(v%300)/3);
+   return `<div class="manual-card"><div class="name">${i===0?"【主】":"【輔】"} ${name}</div><div class="meta">${m.grade||"未知"} · ${m.kind||m.route||"通用"} · ${tier}</div><div class="skill-progress"><div style="width:${pct}%"></div></div><div class="meta">熟練度 ${v}</div></div>`;
+ }).join(""):'<div class="small">尚未修習功法。</div>';
+ const aux=$("sAuxManuals");if(aux)aux.textContent=(state.auxManuals||[]).length?state.auxManuals.join("、"):"無";
+ const c=$("sManualConflict");if(c){const v=manualConflictScore();c.textContent=v>=50?"極高":v>=30?"高":v>=15?"中":"低";}
+}
+function renderCraftProgress(){
+ const box=$("craftProgressList");if(!box)return;
+ const map=state.craftSkills||{};
+ box.innerHTML=Object.entries(CRAFT_TYPES).map(([k,v])=>{
+   const n=map[v.stat]||0;const [tier]=masteryTier(n);
+   return `<div class="manual-card"><div class="name">${v.name}</div><div class="meta">${tier} · 熟練度 ${n}</div><div class="skill-progress"><div style="width:${Math.min(100,(n%300)/3)}%"></div></div></div>`;
+ }).join("");
+}
+function setAuxManual(name){
+ state.auxManuals=state.auxManuals||[];
+ if(state.auxManuals.includes(name)){state.auxManuals=state.auxManuals.filter(x=>x!==name);log(`你停止輔修《${name}》。`);return;}
+ if(state.auxManuals.length>=4){log("輔修功法過多，經脈已無法承載。最多同時輔修四門。");return;}
+ state.auxManuals.push(name);ensureManualSkill(name);log(`你將《${name}》列為輔修功法。`);
+ const sc=manualConflictScore();if(sc>=30)log(`<span class="war">警告：目前功法衝突程度偏高，走火入魔風險上升。</span>`);
+}
+function craftAction(type){
+ if(pendingChoice||!state.alive)return;
+ if(state.realm<2){log("真正的丹、器、符、陣百藝需築基後以真火與神識駕馭。");return;}
+ const cfg=CRAFT_TYPES[type],skill=state.craftSkills[cfg.stat]||0;
+ const related=[state.manual,...(state.auxManuals||[])].map(getManual).filter(Boolean).find(m=>m.kind===cfg.name);
+ const bonus=related?12:0;
+ const success=clamp(55+state.wisdom*.5+skill*.04+bonus-state.realm*1.5,25,95);
+ const unlockStep=type==="alchemy"?120:180;
+ const product=cfg.products[Math.min(cfg.products.length-1,Math.floor(skill/unlockStep))];
+ state.craftSkills[cfg.stat]+=rnd(6,12);
+ if(chance(success)){
+   state.inventory[product]=(state.inventory[product]||0)+1;
+   state.reputation+=1;
+   log(`你嘗試${cfg.name}，成功製成 <b>${product}</b>。${related?`《${related.name}》的專精讓成品更加穩定。`:""}`);
+ }else{
+   if(chance(18+Math.max(0,50-state.bloodStability)*.2))qiDeviation(`${cfg.name}過程中靈力失控`);
+   else log(`此次${cfg.name}失敗，材料化為廢料，但你對火候與靈力控制多了一分體會。`);
+ }
+ advanceQuarter(1);render();
+}
+
+function learnManual(m,kind="完整"){
+ state.manual=m.name;state.manualGrade=m.grade;state.manualState=kind;state.manualClues=kind==="殘篇"?1:0;state.manualMastery=0;
+ if(m.name==="血海經"&&kind==="殘篇"){flag("bloodDebt");addThread("bloodsea","血海殘篇獵殺",1);}
+ log(`你開始修煉 <b>${m.name}</b>（${m.grade}・${kind}）。`);
+ if(m.ghostManual&&state.route!=="鬼修"){
+  const ok=clamp(20+(state.fateGhost||0)*.5+state.wisdom+((state.sect==="鬼市"||state.sect==="葬神宗")?18:0)+(state.age%10>5?12:0),8,88);
+  log(`鬼道轉修講究天時地利人和，此刻成功率約 ${Math.floor(ok)}%。`);
+  if(chance(ok)){state.route="鬼修";state.race="鬼";state.ghostMode=true;state.ghost=78;state.nextGhostTrib=state.age+10;log("<b>轉修成功，你踏入鬼道。</b>");}
+  else{state.route="體修";state.race="活屍";state.zombie=true;state.ghostMode=false;state.mutation=Math.max(state.mutation||0,55);state.bloodStability=Math.min(((state.bloodStability===undefined||state.bloodStability===null)?100:state.bloodStability),35);state.mutationTraits=state.mutationTraits||[];if(!state.mutationTraits.includes("屍斑"))state.mutationTraits.push("屍斑");state.maxHp+=90;state.hp=state.maxHp;state.qi=Math.floor(state.qi*.45);log("<b class='war'>陰陽失衡，你化為活屍。</b>若繼續淬鍊屍身，將逐漸進入偏體修的殭屍體系。");}
+ }
+}
+function openManualMenu(){
+ if(pendingChoice||!state.alive)return;pendingChoice=true;
+ log("你展開功法玉簡。功法可指定為主修或輔修；主修決定核心運行路線，輔修則補足百藝、戰鬥與特殊能力。");
+ const box=document.createElement("div");box.className="choicebox";
+ let pool=[...MANUALS.filter(m=>m.sect===state.sect),...SUPPORT_MANUALS.filter(m=>m.sect===state.sect)];
+ if(state.sect==="散修")pool=[...pool,...SUPPORT_MANUALS.filter(m=>m.sect==="四海盟")];
+ const uniq=[...new Map(pool.map(x=>[x.name,x])).values()];
+ uniq.forEach(m=>{
+   const main=document.createElement("button");main.textContent=`主修｜${m.name}`;
+   main.onclick=()=>{learnManual(m,"完整");ensureManualSkill(m.name);pendingChoice=false;box.remove();render();};
+   box.appendChild(main);
+   const aux=document.createElement("button");aux.textContent=`輔修｜${m.name}`;
+   aux.onclick=()=>{setAuxManual(m.name);pendingChoice=false;box.remove();render();};
+   box.appendChild(aux);
+ });
+ const c=document.createElement("button");c.textContent="返回";c.onclick=()=>{pendingChoice=false;box.remove();render();};box.appendChild(c);
+ $("log").lastChild.appendChild(box);render();
+}
+function fragmentEncounter(){
+ if(!state.manual||state.manualState!=="殘篇")return false;
+ const m=MANUALS.find(x=>x.name===state.manual);if(!m||!m.fragmentQuest||!chance(25))return false;
+ pendingChoice=true;log(`<b>${m.name}</b>殘篇突然共鳴——另一名殘篇修煉者也感應到了你。`);
+ const box=document.createElement("div");box.className="choicebox";
+ [["主動獵殺",8],["設伏迎敵",14],["逃離感應",-8]].forEach(([label,bonus])=>{const b=document.createElement("button");b.textContent=label;b.onclick=()=>{
+  const power=50+state.realm*5+state.wisdom*.4+(m.battle||0)+bonus;
+  if(label==="逃離感應"&&chance(60)){log("你斬斷短暫感應，避過一劫。");}
+  else if(chance(clamp(power,15,90))){state.manualClues++;state.cult+=100+state.realm*35;log(`你吞併對方殘篇，線索達 ${state.manualClues}/4。`);if(state.manualClues>=4){state.manualState="完整";if(m.name==="血海經")finishThread("bloodsea");log(`<b class="manual">${m.name}全篇重現！</b>`);}}
+  else if(chance(55)){let d=rnd(35,70)+state.realm*6;state.hp-=d;log(`你敗退，受創 ${d}。`);if(state.hp<=0){pendingChoice=false;box.remove();die(`你被同源修士吞噬，成為${m.name}的養分。`);return;}}
+  else{pendingChoice=false;box.remove();finalDeath(`你被同源修士煉化，成為${m.name}的養分。`);return;}
+  pendingChoice=false;box.remove();advanceQuarter(1);render();
+ };box.appendChild(b);});
+ $("log").lastChild.appendChild(box);render();return true;
+}
+
+function flag(k,v=true){state.flags=state.flags||{};state.flags[k]=v;}
+function hasFlag(k){return !!(state.flags&&state.flags[k]);}
+function relation(k,n){state.relations=state.relations||{};state.relations[k]=(state.relations[k]||0)+n;}
+function addThread(id,title,stage=1,data={}){
+ state.threads=state.threads||[];
+ let t=state.threads.find(x=>x.id===id&&!x.done);
+ if(!t){t={id,title,stage,data,created:state.years,done:false};state.threads.push(t);}
+ else{t.stage=Math.max(t.stage,stage);Object.assign(t.data,data);}
+ return t;
+}
+function finishThread(id){
+ const t=(state.threads||[]).find(x=>x.id===id&&!x.done);if(t)t.done=true;
+}
+function rememberEvent(id){
+ state.eventMemory=state.eventMemory||[];state.eventMemory.push({id,year:state.years});
+ state.eventMemory=state.eventMemory.slice(-30);
+}
+function onCooldown(id,years=4){
+ return (state.eventMemory||[]).some(x=>x.id===id&&state.years-x.year<years);
+}
+function causalCandidates(){
+ const out=[];
+ const push=(id,w,fn)=>{if(!onCooldown(id,3))out.push({id,w,fn});};
+
+ // 狐族因果：救狐 -> 再遇 -> 妖族聖女/傳承
+ if(hasFlag("savedFox")&&!hasFlag("foxReturn")){
+   push("fox_return",18,()=>choiceEvent(
+    "多年後，你在妖域邊境被一隊妖族攔下。為首女子眉眼似曾相識——正是當年你救下的小狐。如今她已是狐族聖女。",
+    [["接受狐族報恩",()=>{flag("foxReturn");relation("狐族",30);state.reputation+=18;state.cult+=100;addThread("fox","狐族舊恩",2);log("狐族以靈藥與一枚月狐令報答昔日恩情。");}],
+     ["婉拒",()=>{flag("foxReturn");relation("狐族",12);state.wisdom+=3;log("你沒有索取回報。狐族仍將這份情記在族譜之中。");}]]
+   ));
+ }
+ // 血海殘篇 -> 同源獵殺
+ if(state.manual==="血海經"&&state.manualState==="殘篇"){
+   push("blood_hunt",25,()=>fragmentEncounter());
+ }
+ // 門派背叛 -> 追殺
+ if((state.betrayalScore||0)>=15&&state.oldSect&&!hasFlag("sectNemesis")){
+   push("sect_hunt",22,()=>choiceEvent(
+    `${state.oldSect}終於派出追刑堂。昔日同門封住退路，領隊甚至叫出了你在門中的舊稱。`,
+    [["正面迎戰",()=>{if(chance(48+state.realm*5)){state.reputation+=12;flag("sectNemesis");state.cult+=80;log("你殺出重圍。從今日起，雙方再無轉圜餘地。");}else{state.hp-=rnd(25,55);log("你負傷逃脫，舊門追殺令仍在。");}}],
+     ["交出部分秘密求和",()=>{state.betrayalScore=Math.max(0,state.betrayalScore-8);state.reputation=Math.max(0,state.reputation-5);log("你以情報換取短暫停戰，但兩邊都更加不信任你。");}]]
+   ));
+ }
+ // 高異化 -> 身體後果
+ if((state.mutation||0)>=35&&state.foreignPath){
+   const fm=FOREIGN_MANUALS.find(x=>x.name===state.foreignPath);
+   if(fm)push("mutation_crisis",20,()=>choiceEvent(
+    `異族功法在體內自行運轉。${(state.mutationTraits&&state.mutationTraits.length)?state.mutationTraits.join("、"):"異變"}開始失控，你感覺原本的血脈正在反抗。`,
+    [["順勢異化",()=>{advanceMutation(fm,rnd(7,14));state.cult+=70;log("你不再壓制異化，換取更快的力量。");}],
+     ["閉關鎮壓",()=>{state.bloodStability=clamp(state.bloodStability+rnd(8,16),0,100);state.mutation=Math.max(0,state.mutation-rnd(2,6));state.age+=1;log("你耗費一年鎮壓血脈衝突，異化暫時穩定。");}]]
+   ));
+ }
+ // 鬼修十年劫前兆
+ if(state.ghostMode&&state.nextGhostTrib-state.age<=2&&state.nextGhostTrib>state.age){
+   push("ghost_omen",30,()=>choiceEvent(
+    "陰司風鈴無風自響。你知道下一次鬼劫已不足兩年，附近恰好出現一處極陰之地。",
+    [["前往極陰之地備劫",()=>{state.ghost=clamp(state.ghost+15,0,100);state.karma+=3;log("你借地脈陰氣穩固魂體，為鬼劫做準備。");}],
+     ["維持原計畫",()=>{state.wisdom+=2;log("你不願為避劫打亂道心，只將劫數記在心中。");}]]
+   ));
+ }
+ // 境界高 + 古因果 -> 上界線
+ if(state.realm>=5&&hasFlag("ancientCause")&&!hasFlag("ancientAwake")){
+   push("ancient_awake",16,()=>choiceEvent(
+    "當年瘋道人留下的那句『不屬於此世的因果』終於應驗。你突破後，識海中浮現一座從未見過的上古神殿。",
+    [["追查神殿",()=>{flag("ancientAwake");flag("heavenMarked");state.wisdom+=6;state.cult+=150;addThread("ancient","上古神殿",2);log("你記住神殿坐標，也同時感到某種高位存在看了你一眼。");}],
+     ["封閉記憶",()=>{state.wisdom+=2;state.demon=Math.max(0,state.demon-3);log("你暫時封印這段記憶。未知之物並未因此消失。");}]]
+   ));
+ }
+ return out;
+}
+function triggerCausalEvent(){
+ const cs=causalCandidates().filter(x=>x.fn);
+ if(!cs.length)return false;
+ let total=cs.reduce((a,b)=>a+b.w,0),r=Math.random()*total,pick=cs[0];
+ for(const c of cs){r-=c.w;if(r<=0){pick=c;break;}}
+ rememberEvent(pick.id);
+ const before=pendingChoice;pick.fn();
+ return pendingChoice!==before || pendingChoice;
+}
+
+
+const STORY_ARCS={
+ plague:{
+  title:"丹毒之村",
+  start(){
+   state.story={id:"plague",act:1,clues:0,mercy:0};
+   storyChoice("【第一幕・封村】你抵達一座被修士封鎖的村莊。村民高燒、經脈發黑，村口卻掛著『疫病勿入』的木牌。",
+    [["檢查病患",()=>{state.story.clues+=2;nextStory("你發現這不是疫病，而是丹毒。所有患者舌下都有相同青斑。");}],
+     ["詢問村民",()=>{state.story.clues++;state.story.mercy++;nextStory("村民說，半月前有游方丹師免費發放『強身丹』。");}],
+     ["通知門派",()=>{state.reputation+=3;nextStory("你傳訊宗門，但援手最快也要下一季才能抵達。");}],
+     ["直接離開",()=>{finishStory("你離開封村。數月後快訊傳來：全村十不存一。", "ignoredPlague");}]]
+   );
+  }
+ }
+};
+function storyChoice(text,choices){
+ pendingChoice=true;log(text);
+ const box=document.createElement("div");box.className="choicebox";
+ choices.forEach(([t,f])=>{const b=document.createElement("button");b.textContent=t;b.onclick=()=>{box.remove();pendingChoice=false;f();render();};box.appendChild(b);});
+ $("log").lastChild.appendChild(box);render();
+}
+function nextStory(intro){
+ const st=state.story;if(!st)return;st.act++;
+ if(st.id==="plague"&&st.act===2){
+   storyChoice(`【第二幕・丹源】${intro}<br>你在村中找到三枚未服用的丹藥，丹香中藏著極淡的血腥氣。`,
+    [["自行解析丹藥",()=>{st.clues+=2;state.craftSkills.alchemy+=8;nextStory("你辨認出丹方被人刻意改過，其中一味藥會逐漸腐蝕經脈。");}],
+     ["追查發丹之人",()=>{st.clues+=2;nextStory("足跡指向二十里外的廢棄丹坊。");}],
+     ["先救治村民",()=>{st.mercy+=2;state.karma-=3;nextStory("你耗費自身靈力壓制丹毒，救下不少垂危者。");}],
+     ["偷藏丹方",()=>{state.karma+=4;st.clues++;flag("poisonRecipe");nextStory("你留下丹藥樣本。這東西既能救人，也能害人。");}]]
+   );
+ }else if(st.id==="plague"&&st.act===3){
+   storyChoice(`【第三幕・丹師】${intro}<br>廢棄丹坊中，一名青年丹師正準備焚毀帳冊。他看到你時臉色慘白。`,
+    [["質問真相",()=>{st.clues+=2;nextStory("丹師承認自己受人僱用試藥，但聲稱從不知道丹藥會死人。");}],
+     ["先封住退路",()=>{st.clues++;state.reputation+=2;nextStory("你制住丹師，從帳冊中找到定期收取試藥結果的匿名使者。");}],
+     ["殺人奪物",()=>{state.karma+=12;state.demon+=7;changeMorality(-12,"殺人奪物"); if(chance(30)){const n=createAutonomousNPC({goal:"復仇",grudge:45,morality:rnd(-20,60)});npcMemory(n,"玩家曾殺害與其相關之人",4);}state.cult+=currentBreakNeed()*.05;finishStory("丹師死了，儲物袋歸你。但真正的幕後之人也失去了唯一能指認他的證人。","killedAlchemist");}],
+     ["假意合作",()=>{st.clues+=3;flag("alchemistContact");nextStory("丹師相信你願意合作，透露下一次交付試藥結果就在七日後。");}]]
+   );
+ }else if(st.id==="plague"&&st.act===4){
+   storyChoice(`【第四幕・幕後】${intro}<br>所有線索最終指向一個不屬於此地的商會，而商會背後似乎與某個宗門長老有關。`,
+    [["公開證據",()=>{state.reputation+=15;state.karma-=5;changeMorality(6,"公開證據救人");addThread("plagueAfter","丹毒餘波",1);finishStory("證據傳遍附近坊市。幕後勢力被迫暫停試藥，但你也因此進入某些人的視線。","exposedPlague");}],
+     ["勒索幕後勢力",()=>{state.reputation-=4;state.karma+=8;changeMorality(-8,"勒索謀利");state.cult+=currentBreakNeed()*.08;flag("blackmailSect");finishStory("你換到大量資源，卻也與幕後勢力形成一條危險的秘密聯繫。","blackmailed");}],
+     ["將證據交給宗門",()=>{state.reputation+=10;addThread("plagueAfter","宗門調查丹毒",1);finishStory("宗門接手調查。你不知道這件事會被主持公道，還是被更高層壓下。","sectInvestigation");}],
+     ["毀去證據",()=>{state.karma+=3;finishStory("火焰吞掉帳冊。真相沉入灰燼，而活下來的人永遠不會知道自己為何受苦。","buriedTruth");}]]
+   );
+ }
+}
+function finishStory(text,outcome){
+ log(`【暫時結局】${text}`);flag(outcome);state.story=null;advanceQuarter(1);
+}
+function maybeStartStory(){
+ if(state.story)return false;
+ if(!hasFlag("plagueStoryDone")&&state.realm<=4&&chance(18)){
+   flag("plagueStoryDone");STORY_ARCS.plague.start();return true;
+ }
+ return false;
+}
+
+function variedAdventure(){
+ // 有因才有果：優先處理已埋下的事件鏈，而非無限抽取孤立事件。
+ if(chance(58) && triggerCausalEvent()) return true;
+
+ // 新因果種子：低階較常遇到人物，中高階逐漸牽動宗門與天地。
+ if(!hasFlag("savedFox") && state.realm<=3 && chance(10)){
+   pendingChoice=true;log("你在獵戶陷阱中發現一隻受傷白狐。牠靈智已開，卻沒有反抗之力。");
+   const box=document.createElement("div");box.className="choicebox";
+   [["救下白狐",()=>{flag("savedFox");relation("狐族",12);state.karma-=5;changeMorality(6,"公開證據救人");addThread("fox","狐族舊恩",1);log("你替牠療傷後放歸山林。白狐離去前回頭看了你三次。");}],
+    ["取妖丹",()=>{state.karma+=12;state.demon+=8;state.cult+=65;flag("foxBloodDebt");relation("狐族",-20);log("你取走妖丹。遠山傳來一聲淒厲狐鳴。");}]].forEach(([t,f])=>{const b=document.createElement("button");b.textContent=t;b.onclick=()=>{f();pendingChoice=false;box.remove();advanceQuarter(1);render();};box.appendChild(b);});
+   $("log").lastChild.appendChild(box);render();return true;
+ }
+ if(!hasFlag("ancientCause") && state.realm>=2 && chance(8)){
+   pendingChoice=true;log("一名瘋道人盯著你看了很久，只說：『你身上有一段不屬於此世的因果。要聽嗎？』");
+   const box=document.createElement("div");box.className="choicebox";
+   [["聽他說",()=>{flag("ancientCause");addThread("ancient","不屬此世的因果",1);state.wisdom+=3;log("道人在你眉心點下一枚看不見的印記，隨後消失。");}],
+    ["不理會",()=>{state.reputation+=1;log("你沒有理會。道人卻笑著說：『因果可不需要你相信。』");}]].forEach(([t,f])=>{const b=document.createElement("button");b.textContent=t;b.onclick=()=>{f();pendingChoice=false;box.remove();advanceQuarter(1);render();};box.appendChild(b);});
+   $("log").lastChild.appendChild(box);render();return true;
+ }
+ let choices=ADVENTURE_SCENES.filter(x=>!(state.adventureHistory||[]).includes(x));
+ if(!choices.length){state.adventureHistory=[];choices=[...ADVENTURE_SCENES];}
+ const scene=choices[rnd(0,choices.length-1)];state.adventureHistory=(state.adventureHistory||[]).concat(scene).slice(-8);
+ if(chance(16)){
+  const candidates=MANUALS.filter(m=>m.sect==="奇遇"||m.fragmentQuest);
+  const m=candidates[rnd(0,candidates.length-1)];
+  pendingChoice=true;log(`${scene}<br><span class="fragment">你從中發現《${m.name}》殘篇。</span>`);
+  const box=document.createElement("div");box.className="choicebox";
+  [["修煉殘篇",()=>learnManual(m,"殘篇")],["封存換取聲望",()=>{state.reputation+=12;log("你沒有修煉，而是將殘篇交給可信勢力。聲望提升。");}],["放棄",()=>log("你壓下貪念，沒有碰那份來歷不明的傳承。")]].forEach(([t,f])=>{const b=document.createElement("button");b.textContent=t;b.onclick=()=>{f();pendingChoice=false;box.remove();advanceQuarter(1);render();};box.appendChild(b);});
+  $("log").lastChild.appendChild(box);render();return true;
+ }
+ pendingChoice=true;log(scene);
+ const box=document.createElement("div");box.className="choicebox";
+ [["深入調查",()=>{if(chance(58+state.wisdom*.5)){let g=rnd(55,120)+state.realm*20;state.cult+=g;state.reputation+=rnd(2,8);log(`你破解其中機緣，修為增加 ${g}。`);}else{let d=rnd(12,38)+state.realm*3;state.hp-=d;log(`你判斷失誤，受傷 ${d}。`);}}],["謹慎旁觀",()=>{state.wisdom+=chance(35)?2:0;state.reputation+=1;log("你沒有急著入局，而是記下各方反應。");}],["趁亂取利",()=>{state.karma+=rnd(3,9);state.demon+=rnd(2,7);state.cult+=rnd(45,90);log("你趁局勢混亂取走利益，也留下了一筆因果。");}]].forEach(([t,f])=>{const b=document.createElement("button");b.textContent=t;b.onclick=()=>{f();pendingChoice=false;box.remove();if(state.hp<=0){die("你在此次歷練中傷重身亡。");return;}advanceQuarter(1);render();};box.appendChild(b);});
+ $("log").lastChild.appendChild(box);render();return true;
+}
+
+function openSectMenu(){
+  if(pendingChoice || !state.alive) return;
+  pendingChoice=true;
+  log(`你整理自身在修真界的人脈與立場。現屬：<b>${state.sect}</b>。`);
+  const box=document.createElement("div");box.className="choicebox";
+
+  if(state.sect!=="散修"){
+    const leave=document.createElement("button");
+    leave.textContent="退出目前門派";
+    leave.onclick=()=>{
+      state.oldSect=state.sect;
+      state.oldSectRank=state.sectRank;
+      state.oldSectYears=state.sectYears;
+      state.betrayalScore=(state.betrayalScore||0)+Math.floor(state.sectYears/4);
+      if(state.sectYears>=8)addThread("oldsect","舊門恩怨",1,{sect:state.sect,years:state.sectYears,rank:state.sectRank});
+      log(`你退出 <b>${state.sect}</b>。多年情分自此化作一筆尚未清算的因果。`);
+      state.sect="散修";state.sectAlign="散修";state.sectRank="無";state.sectYears=0;
+      pendingChoice=false;box.remove();render();
+    };
+    box.appendChild(leave);
+  }
+
+  const eligible=SECTS.filter(s=>s.name!==state.sect && sectEligible(s,false));
+  shuffled(eligible).slice(0,4).forEach(sect=>{
+    const b=document.createElement("button");
+    b.textContent=`轉投 ${sect.name}`;
+    b.onclick=()=>{
+      joinSect(sect,true);
+      pendingChoice=false;box.remove();render();
+    };
+    box.appendChild(b);
+  });
+
+  if((state.route==="魔修" || state.route==="鬼修") && state.oldSect && (state.oldSectYears||0)>=5){
+    const raid=document.createElement("button");
+    raid.className=state.route==="鬼修"?"ghost":"danger";
+    raid.textContent=`協助攻打舊門 ${state.oldSect}`;
+    raid.onclick=()=>{
+      const rankPower={"雜役弟子":0,"外門弟子":2,"外門長老":5,"內門弟子":6,"內門長老":12,"核心／真傳弟子":16,"各峰長老":25,"掌門":40}[state.oldSectRank]||0;
+      const intel=Math.floor((state.oldSectYears||0)*1.4)+rankPower;
+      const success=clamp(35+state.realm*5+state.reputation*.08+intel-(state.karma<0?5:0),15,92);
+      log(`你向敵對勢力交出舊門情報。你曾在其中深耕 ${state.oldSectYears} 年、位至 ${state.oldSectRank}，此次奇襲成功率約 <b>${Math.floor(success)}%</b>。`);
+      if(chance(success)){
+        state.reputation+=35+Math.floor(intel/2);
+        state.karma+=25;
+        state.demon=clamp(state.demon+12,0,100);
+        state.cult+=120+state.realm*40;
+        state.betrayalScore=(state.betrayalScore||0)+30;flag("sectNemesis");addThread("oldsect","舊門血仇",2,{sect:state.oldSect});
+        pushNews(`【震動】${state.oldSect}山門遭到奇襲，據傳有熟悉內情之人引路。`,"宗門餘波",3);
+        log(`<span class="war"><b>奇襲成功。</b></span>你熟知護山大陣、密道與值守習慣，舊門損失慘重。你的名聲暴漲，也從此被故人列入必殺名單。`);
+      }else{
+        const dmg=rnd(30,60)+state.realm*5;
+        state.hp-=dmg;
+        state.reputation=Math.max(0,state.reputation-15);
+        state.betrayalScore=(state.betrayalScore||0)+15;
+        log(`<span class="war">奇襲失敗。</span>舊門早有防備，你遭到反殺，損失 ${dmg} 氣血。`);
+        if(state.hp<=0){ pendingChoice=false;box.remove();die("你死在舊門山門之前，昔日同門無人替你收屍。");return; }
+      }
+      pendingChoice=false;box.remove();render();
+    };
+    box.appendChild(raid);
+  }
+
+  const cancel=document.createElement("button");
+  cancel.textContent="暫不變動";
+  cancel.onclick=()=>{pendingChoice=false;box.remove();render();};
+  box.appendChild(cancel);
+  $("log").lastChild.appendChild(box);
+  render();
+}
+
+function rollDestiny(){
+  const rootType=weightedPick(ROOT_TYPES);
+  let rootName="";
+  if(rootType.type==="天靈根"){
+    rootName=ELEMENTS[rnd(0,ELEMENTS.length-1)]+"天靈根";
+  }else if(rootType.type==="變異靈根"){
+    rootName=MUTATED_ROOTS[rnd(0,MUTATED_ROOTS.length-1)];
+  }else if(rootType.type==="三靈根"){
+    rootName=shuffled(ELEMENTS).slice(0,3).join("・")+"三靈根";
+  }else if(rootType.type==="雜靈根"){
+    rootName=shuffled(ELEMENTS).slice(0,4).join("・")+"雜靈根";
+  }else{
+    rootName="金木水火土・五行靈根";
+  }
+
+  const tier=weightedPick(TALENT_TIERS);
+  const sub=TALENT_SUB[rnd(0,2)];
+  const talentName=`${tier.rank}階${sub.name}`;
+  const talentMult=tier.base+sub.bonus;
+
+  return {
+    rootType:rootType.type,
+    rootName,
+    rootCult:rootType.cult,
+    rootBreak:rootType.breakthrough,
+    rootDesc:rootType.desc,
+    hidden:!!rootType.hidden,
+    talentName,
+    talentRank:tier.rank,
+    talentSub:sub.name,
+    talentMult
+  };
+}
+
+const $ = id => document.getElementById(id);
+const clamp = (n,min,max)=>Math.max(min,Math.min(max,n));
+const rnd = (a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const chance = p => Math.random()*100 < p;
+
+
+function moralityLabel(v=0){
+  v=Math.floor(Number(v)||0);
+  if(v>=60)return `至善 +${v}`;
+  if(v>=20)return `偏善 +${v}`;
+  if(v<=-60)return `極惡 ${v}`;
+  if(v<=-20)return `偏惡 ${v}`;
+  return `中立 ${v>=0?"+":""}${v}`;
+}
+function moralityClass(v=0){return v>=20?"morality-good":v<=-20?"morality-evil":"morality-neutral";}
+function changeMorality(n,reason=""){
+  state.morality=clamp((state.morality||0)+n,-100,100);
+  if(reason)log(`你的善惡因「${reason}」發生變化：${n>0?"+":""}${n}。`);
+}
+function alignmentMatchesSect(sect){
+  const a=(state&&state.playerAlignment)||selectedAlignment;
+  if(a==="自由")return true;
+  if(a==="正道")return ["正道","中立偏正","中立","散修聯盟"].includes(sect.align);
+  if(a==="中立")return ["中立偏正","中立","中立偏魔","散修聯盟","特殊中立"].includes(sect.align);
+  if(a==="魔門")return ["中立偏魔","魔門","中立","特殊中立"].includes(sect.align);
+  if(a==="邪修")return ["邪修","魔門","特殊中立"].includes(sect.align);
+  return true;
+}
+function legacyFromCurrent(){
+  if(!state)return null;
+  return {
+    name:state.name,race:state.race,route:state.route,sect:state.sect,
+    morality:state.morality||0,karma:state.karma||0,demon:state.demon||0,
+    realm:state.realm||0,wisdom:state.wisdom||0,
+    attrs:{...(state.attributes||{})},
+    flags:{...(state.flags||{})},
+    rootType:state.rootType,talentRank:state.talentRank,
+    reincarnations:(state.reincarnations||0)+1
+  };
+}
+function rollRebirthMutation(legacy){
+  const pool=[];
+  if(!legacy)return null;
+  if(legacy.route==="體修"||((legacy.attrs&&legacy.attrs.body)||0)>=5)pool.push({tag:"銅骨餘韻",body:2,text:"前世肉身記憶烙入骨髓，體魄天生較強。"});
+  if(legacy.route==="鬼修"||legacy.race==="鬼")pool.push({tag:"陰魂宿慧",soul:2,fateGhost:12,text:"你自幼偶能聽見亡者低語，神魂異於常人。"});
+  if(legacy.route==="魔修"||(legacy.demon||0)>55)pool.push({tag:"魔念胎記",spirit:1,demon:12,text:"前世魔念未盡，此世出生便帶一縷魔性。"});
+  if((legacy.morality||0)>=40)pool.push({tag:"善緣護生",luck:2,morality:10,text:"前世留下善緣，今生氣運較為柔順。"});
+  if((legacy.morality||0)<=-40)pool.push({tag:"血債隨身",body:1,demon:8,morality:-10,text:"前世血債化為本能，危機中反而更容易爆發。"});
+  if((legacy.karma||0)>=35)pool.push({tag:"業火印記",soul:1,karma:10,text:"舊業未清，轉世後仍有因果追索。"});
+  if(legacy.sect==="天機閣")pool.push({tag:"命數殘光",luck:2,text:"前世曾觀命，此世偶有近乎直覺的吉凶感。"});
+  if(legacy.sect==="萬象宗")pool.push({tag:"夢中前塵",soul:2,text:"你常夢見不屬於今生的片段。"});
+  if(legacy.sect==="葬神宗")pool.push({tag:"死氣親和",body:1,soul:1,text:"生死界線對你而言比旁人模糊。"});
+  if(!pool.length)pool.push({tag:"前塵一夢",luck:1,text:"前世只留下模糊熟悉感，說不清從何而來。"});
+  return pool[rnd(0,pool.length-1)];
+}
+function applyLegacyMutation(st,legacy){
+  if(!legacy)return;
+  const mut=rollRebirthMutation(legacy);
+  st.legacy={summary:`第${legacy.reincarnations}世・${mut.tag}`,mutation:mut.tag};
+  st.reincarnations=legacy.reincarnations;
+  if(mut.body){st.attributes.body+=mut.body;st.maxHp+=mut.body*5;st.hp=st.maxHp;}
+  if(mut.spirit){st.attributes.spirit+=mut.spirit;st.qi+=mut.spirit*3;}
+  if(mut.soul){st.attributes.soul+=mut.soul;st.wisdom+=mut.soul;}
+  if(mut.luck)st.attributes.luck+=mut.luck;
+  if(mut.demon)st.demon+=mut.demon;
+  if(mut.morality)st.morality+=mut.morality;
+  if(mut.karma)st.karma+=mut.karma;
+  if(mut.fateGhost)st.fateGhost+=mut.fateGhost;
+  st.legacyText=mut.text;
+}
+
+const LEGACY_NAMES=["顧清河","蘇晚照","陸玄機","沈青梧","白辭","韓照雪","寧無塵","葉聽瀾","江懷月","楚長明","洛知微","林歸雁"];
+function makeLegacyPerson(role,legacy,index=0){
+ return {id:`L${Date.now()}_${rnd(1000,9999)}_${index}`,name:LEGACY_NAMES[rnd(0,LEGACY_NAMES.length-1)],
+ role,relation:role==="仇敵"?-rnd(55,90):rnd(55,90),sect:(legacy&&legacy.sect)||"散修",
+ realm:Math.max(0,((legacy&&legacy.realm)||0)-rnd(0,2)),alive:true,age:rnd(18,80),
+ lastSeen:(state.world&&state.world.calendarYears)||0,note:role==="徒弟"?"曾受你親授":role==="道侶"?"與前世因果極深":"前世血債未清"};
+}
+function snapshotLifeToWorld(legacy){
+ initWorld();const w=state.world,lifeNo=(state.reincarnations||0)+1;
+ if(state.manual){
+  const x=w.legacyManuals.find(x=>x.name===state.manual);
+  if(x){x.copies=(x.copies||1)+1;x.lastLife=lifeNo;}
+  else w.legacyManuals.push({name:state.manual,founder:state.name,sect:state.sect,grade:state.manualGrade||"未知",copies:1,lastLife:lifeNo});
+ }
+ const depth=Math.max(0,state.realm)+(state.sectYears||0)/8+(state.reputation||0)/60;
+ if(depth>=2){
+  if(!w.legacyPeople.some(x=>x.originLife===lifeNo&&x.role==="徒弟")){const p=makeLegacyPerson("徒弟",legacy,1);p.originLife=lifeNo;w.legacyPeople.push(p);}
+  if((state.sectYears||0)>=5||state.realm>=3){const p=makeLegacyPerson("道侶",legacy,2);p.originLife=lifeNo;w.legacyPeople.push(p);}
+  if((state.betrayalScore||0)>0||(state.karma||0)>20||(state.morality||0)<-20){const p=makeLegacyPerson("仇敵",legacy,3);p.originLife=lifeNo;w.legacyPeople.push(p);}
+ }
+ w.legacyDeeds.unshift({life:lifeNo,name:state.name,sect:state.sect,rank:state.sectRank,realm:realmDisplay(),route:state.route,morality:state.morality||0,manual:state.manual||null,worldYear:w.calendarYears||0});
+ w.legacyDeeds=w.legacyDeeds.slice(0,20);
+ w.reincarnationHistory.unshift({life:lifeNo,name:state.name,race:state.race,sect:state.sect,realm:realmDisplay(),worldYear:w.calendarYears||0});
+ w.reincarnationHistory=w.reincarnationHistory.slice(0,20);
+}
+function advancePersistentWorld(years){
+ initWorld();years=Math.max(1,Math.floor(years||1));state.world.calendarYears+=years;
+ for(const p of state.world.legacyPeople){
+  if(!p.alive)continue;p.age+=years;
+  if(chance(clamp(18+years*1.5+(p.role==="徒弟"?8:0),5,78)))p.realm=Math.min(REALMS.length-1,p.realm+rnd(0,1));
+  const life=REALMS[Math.min(p.realm,REALMS.length-1)].life||120;
+  if(p.age>=life||chance(Math.min(28,years*.45))){p.alive=false;p.fate=chance(45)?"坐化":"死於修真界風波";}
+ }
+ const summaries=["一處古秘境易主","兩大勢力重新議定邊境","新一代天驕登上各宗視野","妖域與人族商路再度開放","幽冥渡口傳出異常","一座舊王朝覆滅，新朝立國"];
+ for(let i=0;i<Math.min(6,Math.ceil(years/10));i++){
+   const base=`【輪迴間年】${summaries[rnd(0,summaries.length-1)]}。`;
+   state.world.newsArchive.unshift({text:base,worldYear:state.world.calendarYears-rnd(0,years),life:"間世"});
+   if(chance(38)){const a=randomSect(),b=randomSect([a]);changeWorldRel(a,b,rnd(-12,12));}
+ }
+ state.world.newsArchive=state.world.newsArchive.slice(0,80);
+}
+function legacyEncounterChance(){
+ initWorld();const alive=(state.world.legacyPeople||[]).filter(x=>x.alive);
+ if(!alive.length||!chance(16+((state.attributes&&state.attributes.luck)||0)*2))return false;
+ const p=alive[rnd(0,alive.length-1)];
+ if(p.role==="徒弟"){log(`你遇見 <b>${p.name}</b>。此人如今已是${(REALMS[p.realm]&&REALMS[p.realm].name)||"修士"}，言談間反覆提到一位早已故去的師尊。那些教誨，你竟熟悉得近乎本能。`);if(chance(35+((state.attributes&&state.attributes.soul)||0)*5)){state.wisdom+=2;log("一段前世授徒的片段自夢底浮起。");}}
+ else if(p.role==="道侶"){log(`人海之中，你與 <b>${p.name}</b> 擦肩而過。對方忽然停步，像從你的神魂氣息中認出了某個早已死去的人。`);if(chance(45)){state.fateScore=(state.fateScore||0)+5;log("前世未盡的情緣重新牽動。");}}
+ else{log(`<b>${p.name}</b>攔住去路。對方追查前世仇敵多年，而你身上的某種氣息讓他產生了可怕的懷疑。`);if(chance(50)){state.hp-=rnd(8,22)+p.realm*3;state.demon=clamp(state.demon+4,0,100);log("舊世血債第一次追到了新生的你。");}}
+ return true;
+}
+function legacyManualEncounter(){
+ initWorld();const ms=state.world.legacyManuals||[];
+ if(!ms.length||!chance(13+((state.attributes&&state.attributes.luck)||0)*2))return false;
+ const m=ms[rnd(0,ms.length-1)];
+ log(`你在坊市舊攤看到一本熟悉得令人心悸的功法：<b>${m.name}</b>。旁註記載，此法曾由「${m.founder}」修行並流傳於${m.sect}。`);
+ if(!state.manual&&chance(55)){state.manual=m.name;state.manualState="傳承抄本";log("你只翻數頁，經脈竟自行循著熟悉路線運轉。前世功法重新回到你手中。");}
+ return true;
+}
+function renderLegacyWorld(){
+ if(!$("sLegacyWorld"))return;initWorld();$("sWorldAge").textContent=`玄靈曆 ${state.world.calendarYears||0} 年`;
+ const people=(state.world.legacyPeople||[]).slice(-6),manuals=(state.world.legacyManuals||[]).slice(-4),deeds=(state.world.legacyDeeds||[]).slice(0,3),parts=[];
+ if(people.length)parts.push(`<b>前世人物：</b> `+people.map(p=>`<span class="legacy-chip">${p.name}・${p.role}${p.alive?"":"（已故）"}</span>`).join(""));
+ if(manuals.length)parts.push(`<b>流傳功法：</b> `+manuals.map(m=>`<span class="legacy-chip">${m.name}</span>`).join(""));
+ if(deeds.length)parts.push(`<b>前世留名：</b> `+deeds.map(d=>`第${d.life}世 ${d.name}／${d.sect}／${d.realm}`).join("；"));
+ $("sLegacyWorld").innerHTML=parts.length?parts.join("<br>"):"此世尚未留下跨輪迴遺產。";
+}
+
+function randomRebirthState(legacy){
+  initWorld();snapshotLifeToWorld(legacy);
+  const persistentWorld=state.world;
+  const gap=rnd(12,80)+Math.max(0,(state.realm||0)-3)*rnd(3,10);
+  advancePersistentWorld(gap);
+  drawnDestiny=rollDestiny();
+  const oldAlign=(state&&state.playerAlignment)||selectedAlignment;selectedAlignment=oldAlign;
+  const races=["人族","人族","人族","妖族","精","混血"],oldRaceValue=$("raceSelect").value;
+  $("raceSelect").value=races[rnd(0,races.length-1)];selectedRoute=["體修","法修"][rnd(0,1)];
+  const st=freshState();$("raceSelect").value=oldRaceValue;st.world=persistentWorld;
+  st.name=`${(legacy&&legacy.name)||"無名"}・轉世`;st.age=16;st.attrPoints=rnd(6,10);
+  st.attributes={body:rnd(0,2),spirit:rnd(0,2),soul:rnd(0,2),luck:rnd(0,2)};
+  st.maxHp+=st.attributes.body*5;st.hp=st.maxHp;st.qi+=st.attributes.spirit*3;st.wisdom+=st.attributes.soul;
+  applyLegacyMutation(st,legacy);st.rebirthGap=gap;return st;
+}
+function resetGameUI(){
+  SafeStore.remove("wendaoSave");
+  state=null;drawnDestiny=null;pendingChoice=false;
+  selectedRoute="體修";selectedAlignment="正道";
+  $("gameScreen").classList.add("hidden");$("startScreen").classList.remove("hidden");
+  $("log").innerHTML="";$("latestText").textContent="尚未踏入仙途。";
+  $("drawDestinyBtn").disabled=false;$("drawDestinyBtn").textContent="觸碰測靈石";
+  $("beginBtn").disabled=true;$("destinyResult").classList.add("hidden");$("destinyDesc").innerHTML="";
+  document.querySelectorAll(".routecard").forEach((c,i)=>c.classList.toggle("active",i===0));
+  document.querySelectorAll(".aligncard").forEach(c=>c.classList.toggle("active",c.dataset.align==="正道"));
+}
+function allocateAttribute(key){
+  if(!state||!state.alive||pendingChoice)return;
+  if((state.attrPoints||0)<=0){log("目前沒有可分配屬性點。");return;}
+  state.attrPoints--;
+  state.attributes=state.attributes||{body:0,spirit:0,soul:0,luck:0};
+  state.attributes[key]=(state.attributes[key]||0)+1;
+  if(key==="body"){state.maxHp+=5;state.hp+=5;}
+  if(key==="spirit")state.qi+=3;
+  if(key==="soul")state.wisdom+=1;
+  render();
+}
+function openAttributeMenu(){
+ if(pendingChoice||!(state&&state.alive))return;pendingChoice=true;
+ log(`你檢視自身根基。尚有 <b>${state.attrPoints||0}</b> 點可分配屬性。`);
+ const box=document.createElement("div");box.className="choicebox attribute-grid";
+ const defs=[
+  ["body","體魄","每點氣血上限 +5"],
+  ["spirit","靈性","每點靈力 +3"],
+  ["soul","神識","每點悟性 +1，亦代表神魂底蘊"],
+  ["luck","氣運","提高部分機緣與轉世變質品質"]
+ ];
+ defs.forEach(([k,n,d])=>{
+   const b=document.createElement("button");b.innerHTML=`${n} +1<br><small>${d}</small>`;
+   b.disabled=(state.attrPoints||0)<=0;
+   b.onclick=()=>{allocateAttribute(k);pendingChoice=false;box.remove();openAttributeMenu();};box.appendChild(b);
+ });
+ const c=document.createElement("button");c.textContent="返回";c.onclick=()=>{pendingChoice=false;box.remove();render();};box.appendChild(c);
+ $("log").lastChild.appendChild(box);render();
+}
+function afterlifeOptions(reason,limited=false){
+ if(pendingChoice)return;
+ pendingChoice=true;state.alive=false;
+ log(`<span class="afterlife-title">【死後抉擇】</span> 肉身已不能維持，但此世因果尚未完全斷絕。`);
+ const legacy=legacyFromCurrent();
+ const box=document.createElement("div");box.className="choicebox";
+ const add=(txt,fn,cls="")=>{const b=document.createElement("button");if(cls)b.className=cls;b.textContent=txt;b.onclick=()=>{box.remove();pendingChoice=false;fn();};box.appendChild(b);};
+
+ const ghostPower=12+(state.fateGhost||0)+((state.attributes&&state.attributes.soul)||0)*5+state.wisdom*.6+state.realm*4+((state.attributes&&state.attributes.luck)||0)*2;
+ if(!limited && ghostPower>=20){
+   add("捨身化鬼｜轉鬼修",()=>{
+     state.alive=true;state.ghostMode=true;state.route="鬼修";state.race="鬼";state.ghost=clamp(65+Math.floor(ghostPower/5),60,95);
+     state.hp=Math.max(50,Math.floor(state.maxHp*.5));state.maxHp=state.hp;state.nextGhostTrib=state.age+10;
+     state.attrPoints=(state.attrPoints||0)+2;state.legacy=state.legacy||{summary:"此世化鬼"};
+     log(`<b>你捨棄肉身，以殘魂續道。</b>下一次鬼劫將在 ${state.nextGhostTrib} 歲降臨。`);render();
+   },"ghost");
+ }
+ if(!limited && (state.realm>=1 || state.route==="體修" || state.sect==="葬神宗")){
+   add("留屍續道｜轉屍修",()=>{
+     state.alive=true;state.ghostMode=false;state.zombie=true;state.route="體修";state.race="活屍";
+     state.hp=Math.max(70,Math.floor(state.maxHp*.7));state.maxHp=Math.max(state.maxHp,state.hp+20);
+     state.bloodStability=clamp(((state.bloodStability===undefined||state.bloodStability===null)?100:state.bloodStability)-25,0,100);state.mutation=Math.max(state.mutation||0,35);
+     state.attrPoints=(state.attrPoints||0)+2;state.morality=clamp((state.morality||0)-5,-100,100);
+     log("<b>你以死軀承載殘魂，轉入屍修之途。</b>從此肉身不再以正常生靈方式運轉。");render();
+   });
+ }
+ if(!limited && (state.realm>=4 || state.ghostMode || ((state.attributes&&state.attributes.soul)||0)>=5)){
+   add("奪舍還陽｜高風險",()=>{
+     const success=clamp(40+state.wisdom*.7+((state.attributes&&state.attributes.soul)||0)*4-state.karma*.15,15,88);
+     if(chance(success)){
+       state.alive=true;state.ghostMode=false;state.race=["人族","妖族","混血"][rnd(0,2)];
+       state.hp=Math.max(60,Math.floor(state.maxHp*.55));state.maxHp=Math.max(80,state.maxHp);
+       state.bloodStability=clamp(((state.bloodStability===undefined||state.bloodStability===null)?100:state.bloodStability)-rnd(12,28),0,100);
+       state.mutation=clamp((state.mutation||0)+rnd(8,18),0,100);state.karma+=10;state.morality=clamp((state.morality||0)-15,-100,100);
+       log(`<b>奪舍成功。</b>新的肉身與你的神魂並不完全契合，血脈穩定度下降。`);render();
+     }else{
+       log("<b>奪舍失敗。</b>殘魂再受重創，只剩投胎一途。");afterlifeOptions("奪舍失敗",true);
+     }
+   });
+ }
+ add("入輪迴｜投胎轉世",()=>{
+   state=randomRebirthState(legacy);
+   $("log").innerHTML="";
+   log(`【輪迴】前世因果沉入忘川。距離上一世已過 <b>${state.rebirthGap||0} 年</b>；你重新睜眼，但玄靈界從未因你的死亡停下。`);
+   log(`此世為 <b>${state.race}</b>，靈根重新判為 <b>${state.rootName}</b>，天賦為 <b>${state.talentName}</b>。`);
+   if(state.legacyText)log(`【前世變質】${state.legacyText}`);
+   initWorld();
+   (state.world.newsArchive||[]).slice(0,2).forEach(n=>log(`【舊聞】${n.text.replace(/^【[^】]+】/,"")}`));
+   pushNews("【輪迴】一個新的名字回到群星爭命的大世之中。",null,2);
+   render();initialSectInvitation();
+ });
+ add("結束輪迴｜回到創角",()=>resetGameUI(),"danger");
+ $("log").lastChild.appendChild(box);render();
+}
+function openRestartMenu(){
+ if(!state){resetGameUI();return;}
+ if(!state.alive){afterlifeOptions("此世已終");return;}
+ if(pendingChoice)return;
+ pendingChoice=true;
+ log("【輪迴／重開】你可以保留此世繼續修行，或捨棄目前進度重新創角。投胎與死後續道需在死亡時觸發。");
+ const box=document.createElement("div");box.className="choicebox";
+ const fresh=document.createElement("button");fresh.className="danger";fresh.textContent="捨棄此世，重新創角";fresh.onclick=()=>{box.remove();pendingChoice=false;resetGameUI();};box.appendChild(fresh);
+ const back=document.createElement("button");back.textContent="返回此世";back.onclick=()=>{box.remove();pendingChoice=false;render();};box.appendChild(back);
+ $("log").lastChild.appendChild(box);render();
+}
+
+function freshState(){
+  return {
+    name:$("nameInput").value.trim() || "無名",
+    route:selectedRoute,
+    race:raceRoll($("raceSelect").value),
+    rootType:drawnDestiny.rootType,
+    rootName:drawnDestiny.rootName,
+    rootCult:drawnDestiny.rootCult,
+    rootBreak:drawnDestiny.rootBreak,
+    talentName:drawnDestiny.talentName,
+    talentRank:drawnDestiny.talentRank,
+    talentSub:drawnDestiny.talentSub,
+    talentMult:drawnDestiny.talentMult,
+    age:16, realm:0, stage:0, cult:0, breakthroughCooldown:0, failedBreaks:0,
+    activeTrib:null,lastTrib:null,lastThunder:null,season:0,coreQuality:null,lifeArtifact:null,
+    secondLife:false,secondLifeUsed:false,heavenQi:false,spaceSense:0,lawInsights:[],lawProgress:{},completeLaws:[],world:null,story:null, hp: selectedRoute==="體修"?120:90,
+    maxHp:selectedRoute==="體修"?120:90,
+    qi:selectedRoute==="法修"?35:20,
+    wisdom:selectedRoute==="法修"?15:10,
+    karma:0, morality:0, demon:0, ghost:0,
+    playerAlignment:selectedAlignment, attrPoints:8,
+    attributes:{body:0,spirit:0,soul:0,luck:0},
+    legacy:null, reincarnations:0,
+    alive:true, ghostMode:false, nextGhostTrib:0,
+    fateGhost:0, years:0, ascended:false,
+    sect:"散修", sectAlign:"散修", sectRank:"無", sectYears:0,
+    reputation:0, oldSect:null, oldSectRank:null, oldSectYears:0, betrayalScore:0,
+    manual:null, manualGrade:null, manualState:null, manualClues:0, manualMastery:0,
+    auxManuals:[], manualSkills:{}, craftSkills:{alchemy:0,talisman:0,forge:0,array:0,herb:0,cook:0},
+    inventory:{靈草:3,符紙:3,玄鐵:2,靈晶:2,靈種:2,妖獸肉:2,靈米:3,靈泉:2,靈墨:2,妖血:1,妖骨:1,靈土:1,妖丹:0,陣旗:0},
+    zombie:false, adventureHistory:[],
+    mutation:0, bloodStability:100, mutationTraits:[], foreignPath:null,
+    foreignOrigin:null, berserkYears:0, originalRace:null,
+    flags:{}, relations:{}, threads:[], eventCooldowns:{}, eventMemory:[], fateScore:0, sectStories:{},storyTags:{},lastSectChoice:null,worldSecrets:0
+  };
+}
+
+$("drawDestinyBtn").onclick=()=>{
+  drawnDestiny=rollDestiny();
+  $("drawRoot").textContent=drawnDestiny.rootName;
+  $("drawTalent").textContent=drawnDestiny.talentName;
+  $("destinyResult").classList.remove("hidden");
+  $("destinyDesc").innerHTML=`${drawnDestiny.rootDesc}<br>天賦會影響整體修煉效率：<b>${drawnDestiny.talentName}</b>。`;
+  $("beginBtn").disabled=false;
+  $("drawDestinyBtn").disabled=true;
+  $("drawDestinyBtn").textContent="命格已定";
+  if(drawnDestiny.hidden){
+    $("destinyBox").classList.add("destinyrare");
+    $("destinyDesc").innerHTML=`<b>測靈石五色齊鳴。</b> ${drawnDestiny.rootDesc}<br>此命格出現機率極低。`;
+  }
+};
+
+document.querySelectorAll(".routecard").forEach(card=>{
+  card.onclick=()=>{
+    document.querySelectorAll(".routecard").forEach(c=>c.classList.remove("active"));
+    card.classList.add("active");
+    selectedRoute=card.dataset.route;
+  }
+});
+
+document.querySelectorAll(".aligncard").forEach(card=>{
+  card.onclick=()=>{
+    document.querySelectorAll(".aligncard").forEach(c=>c.classList.remove("active"));
+    card.classList.add("active");
+    selectedAlignment=card.dataset.align;
+  };
+});
+
+$("beginBtn").onclick=()=>{
+  state=freshState();
+  $("startScreen").classList.add("hidden");
+  $("gameScreen").classList.remove("hidden");
+  log(`你名為「${state.name}」。十六歲這年，你第一次真正看見山巔之上的仙門。`);
+  log(`你選擇以<b>${state.route}</b>入道。路既已起，未必能照原樣走到底。`);
+  log(`測靈結果：<b>${state.rootName}</b>，先天天賦為 <b>${state.talentName}</b>。${drawnDestiny.hidden?" 五色靈光沖天而起，主持測靈的長老沉默了很久。":""}`);
+  log(`你的出身種族為 <b>${state.race}</b>。`);
+  if(state.rootType==="五行靈根"){ state.wisdom+=4; state.qi+=10; }
+  if(state.rootType==="變異靈根"){ state.qi+=6; }
+  initWorld();pushNews("【開局】群星爭命的大世已悄然啟動。各宗門、王朝、坊市與幽冥都在自己的時間裡運轉。",null,3);
+  render();
+  initialSectInvitation();
+};
+
+function log(text, special=""){
+  const div=document.createElement("div");
+  div.className="entry";
+  div.innerHTML=`<div class="year">${state ? `第 ${state.years+1} 年 · ${state.age} 歲 · ${seasonName()}` : ""}</div><div>${text}</div>`;
+  $("log").appendChild(div);
+
+  const latest=$("latestText");
+  if(latest){
+    latest.innerHTML=`<span class="year">${state ? `第 ${state.years+1} 年 · ${state.age} 歲 · ${seasonName()}` : ""}</span><br>${text}`;
+  }
+
+  requestAnimationFrame(()=>{
+    const box=$("log");
+    box.scrollTop=box.scrollHeight;
+  });
+}
+
+function render(){
+  if(!state) return;
+  renderLegacyWorld();
+  renderNpcWorld();
+  $("sName").textContent=state.name;
+  $("sRoute").textContent=state.route;
+  $("sRoot").textContent=state.rootName || "未鑑定";
+  $("sTalent").textContent=state.talentName || "未鑑定";
+  $("sRace").textContent=state.race || "人族";
+  $("sMutation").textContent=`${Math.floor(state.mutation||0)}%`;
+  $("sStability").textContent=`${Math.floor(state.bloodStability===undefined?100:state.bloodStability)}%`;
+  $("sMutations").textContent=(state.mutationTraits&&state.mutationTraits.length)?state.mutationTraits.join("、"):"無";
+  $("sForeignPath").textContent=state.foreignPath||"無";
+  $("sThreads").textContent=(state.threads||[]).filter(x=>!x.done).length;
+  const tags=[];
+  if((state.flags&&state.flags.savedFox))tags.push("狐族之恩");
+  if((state.flags&&state.flags.bloodDebt))tags.push("血海債");
+  if((state.flags&&state.flags.ancientCause))tags.push("上古因果");
+  if((state.flags&&state.flags.sectNemesis))tags.push("宗門死敵");
+  if((state.flags&&state.flags.heavenMarked))tags.push("天道注視");
+  $("sFateTags").textContent=tags.length?tags.join("、"):"無";
+  $("sSect").textContent=state.sect || "散修";
+  $("sSectRank").textContent=state.sectRank || "無";
+  $("sRep").textContent=Math.floor(state.reputation || 0);
+  $("sSectYears").textContent=state.sectYears || 0;
+  $("sSectAlign").textContent=state.sectAlign || "散修";
+  $("sBetrayal").textContent=(state.betrayalScore||0)>0 ? `${state.betrayalScore} 點` : "無";
+  $("sManual").textContent=state.manual?`${state.manual}${state.manualState?`（${state.manualState}）`:""}`:"無";
+  $("sAge").textContent=state.age;
+  $("sSeason").textContent=`${seasonName()} · ${(state.season||0)+1}/4`;
+  $("sLife").textContent=state.ghostMode ? "陰壽" : REALMS[state.realm].life;
+  $("sRealm").textContent=realmDisplay();
+  $("sTrib").textContent=state.activeTrib?`${state.activeTrib.name} ${state.activeTrib.current}/${state.activeTrib.bolts}`:(state.lastTrib||"未臨");
+  $("sLastThunder").textContent=state.lastThunder||"無";
+  $("sHp").textContent=`${Math.max(0,Math.floor(state.hp))}/${state.maxHp}`;
+  $("sQi").textContent=Math.floor(state.qi);
+  $("sWis").textContent=Math.floor(state.wisdom);
+  $("sKarma").textContent=Math.floor(state.karma);
+  if($("sMorality")){
+    $("sMorality").textContent=moralityLabel(state.morality);
+    $("sMorality").className="v "+moralityClass(state.morality);
+  }
+  $("sAttrPoints").textContent=state.attrPoints||0;
+  $("statusBadge").textContent=`${realmDisplay()} · ${state.route}`;
+  if($("mRealm")){
+    $("mRealm").textContent=realmDisplay();
+    $("mAge").textContent=`${state.age}歲`;
+    $("mSeason").textContent=seasonName();
+    $("mEnergy").textContent=`${energyType()} ${Math.floor(state.cult)}`;
+    $("mSect").textContent=state.sect||"散修";
+  }
+
+  const need=currentBreakNeed();
+  $("cultText").textContent=`${Math.floor(state.cult)} / ${need>=999999?"—":need}`;
+  const ep=need>=999999?100:clamp((Number(state.cult)||0)/need*100,0,100);
+  $("energyLabel").textContent=energyType();
+  $("cultBar").style.width=ep.toFixed(1)+"%";$("cultBar").style.minWidth=ep>0?"3px":"0";
+  if($("cultPct")) $("cultPct").textContent=(ep>=100&&need<999999)?"可突破":`${ep.toFixed(1)}%`;
+  $("cultBar").parentElement.classList.toggle("ready",ep>=100&&need<999999);
+  $("demonText").textContent=`${Math.floor(Number(state.demon)||0)}%`;
+  const dp=clamp(Number(state.demon)||0,0,100);
+  $("demonBar").style.width=dp.toFixed(1)+"%";$("demonBar").style.minWidth=dp>0?"3px":"0";
+  const ba=usableBreakAid();$("sBreakAid").textContent=ba?`${ba}（+${aidBreakBonus(ba)}%）`:"無";
+  $("sCore").textContent=state.coreQuality||"未結丹";
+  $("sLifeArtifact").textContent=state.lifeArtifact||"無";
+  $("sSecondLife").textContent=state.secondLife?(state.secondLifeUsed?"已消耗":"元嬰可遁"):"未開啟";
+  $("sLaws").textContent=(state.completeLaws||[]).length?state.completeLaws.join("、"):((state.lawInsights||[]).length?state.lawInsights.join("、")+"（參悟中）":"無");
+  const ss=currentSectStory();
+  $("sSectStory").textContent=state.sect==="散修"?"散修人生":(!ss.next?"主要篇章完成":`${ss.idx+1}/${ss.arr.length}・${ss.next.title}`);
+  $("sWorldArc").textContent=worldArcName();
+  $("sPlayerAlign").textContent=state.playerAlignment||"自由";
+  $("sLegacy").textContent=(state.legacy&&state.legacy.summary)||"無";
+  const at=state.attributes||{body:0,spirit:0,soul:0,luck:0};
+  $("sAttributes").textContent=`體魄${at.body||0}・靈性${at.spirit||0}・神識${at.soul||0}・氣運${at.luck||0}`;
+
+  $("ghostPanel").classList.toggle("hidden",!state.ghostMode);
+  if(state.ghostMode){
+    $("ghostText").textContent=`${Math.floor(state.ghost)}%`;
+    $("ghostBar").style.width=`${clamp(state.ghost,0,100)}%`;
+  }
+
+  $("realmList").innerHTML = REALMS.map((r,i)=>{
+    let label=r.name;
+    if(i===state.realm){
+      label=i===0?"凡俗":(i===REALMS.length-1?r.name:`${r.name}${STAGES[state.stage||0]}`);
+      label="<b>▶ "+label+"</b>";
+    }
+    return `${label}${i===10?' <span class="tag">仙境</span>':''}`;
+  }).join(" → ");
+
+  const locked=!state.alive || pendingChoice || state.ascended;
+  ["cultivateBtn","adventureBtn","restBtn","breakBtn","sectStoryBtn","intelBtn"].forEach(id=>$(id).disabled=locked);
+  $("breakBtn").disabled=locked || state.cult < currentBreakNeed() || state.realm>=REALMS.length-1 || (state.breakthroughCooldown||0)>0;
+  $("breakBtn").textContent=(state.breakthroughCooldown||0)>0?`調息中`:`突破 → ${breakTargetName()}`;
+  renderManualProgress();
+  renderCraftProgress();
+  renderWorldNews();
+  if(!pendingChoice){
+    requestAnimationFrame(()=>{
+      const box=$("log");
+      if(box) box.scrollTop=box.scrollHeight;
+    });
+  }
+}
+
+function passYear(extra=0){
+  initWorld();state.world.calendarYears += 1 + extra;
+  state.age += 1 + extra;
+  state.years += 1 + extra;
+  if((state.breakthroughCooldown||0)>0){
+    state.breakthroughCooldown=Math.max(0,state.breakthroughCooldown-(1+extra));
+  }
+
+  if(state.sect && state.sect!=="散修"){
+    state.sectYears += 1 + extra;
+    state.reputation += 1 + Math.floor(state.realm/2);
+    updateSectRank();
+  }else{
+    state.reputation += chance(18) ? 1 : 0;
+  }
+
+  if(state.ghostMode){
+    state.ghost = clamp(state.ghost - rnd(2,5),0,100);
+    if(state.age >= state.nextGhostTrib){
+      ghostTribulation();
+      return;
+    }
+    if(state.ghost<=0){
+      finalDeath("魂魄潰散，陰壽已盡。這一次，世間再無你的名字。");
+      return;
+    }
+  }else{
+    if(state.age >= REALMS[state.realm].life){
+      die("你的壽元走到盡頭，肉身如秋葉般枯落。");
+      return;
+    }
+  }
+  render();
+}
+
+$("cultivateBtn").onclick=()=>{
+  if(pendingChoice) return;
+  if(state.berserkYears>0 && chance(38)){
+    state.berserkYears--; qiDeviation("心緒暴走，靈力自行逆轉"); advanceQuarter(1); render(); return;
+  }
+  practiceForeignPath();
+  const realmScale=Math.pow(2.05,state.realm);
+  let gain=(rnd(24,40)+state.wisdom*(state.route==="法修"?1.42:.82))*realmScale;
+  gain *= (state.rootCult || 1);
+  gain *= (state.talentMult || 1);
+  if(state.manual){
+    const mm=getManual(state.manual);
+    if(mm&&mm.cult){
+      let rate=mm.cult;
+      if(state.manualState==="殘篇") rate=1+(rate-1)*.55;
+      gain*=rate;
+    }
+  }
+  gain*=practiceAllManuals(gain);
+  if(state.foreignPath){
+    const fm=FOREIGN_MANUALS.find(x=>x.name===state.foreignPath);
+    if(fm) gain*=fm.cult;
+  }
+  if(state.route==="魔修") gain*=1.35;
+  if(state.route==="鬼修") gain*=1.15;
+  if(state.route==="體修"){
+    state.maxHp += rnd(2,5);
+    state.hp = Math.min(state.maxHp,state.hp+rnd(4,10));
+  }else{
+    state.qi += rnd(2,6);
+  }
+  state.cult += Math.floor(gain);
+  if(chance(16)) state.wisdom++;
+  log(`你閉關一季，吐納行功，${energyType()}增加 <b>${Math.floor(gain)}</b>。${chance(25)?"夜半忽有所悟，道心微明。":""}`);
+  advanceQuarter(1);
+};
+
+$("restBtn").onclick=()=>{
+  state.hp=Math.min(state.maxHp,state.hp+rnd(28,45));
+  state.demon=clamp(state.demon-rnd(1,5),0,100);
+  if(state.ghostMode) state.ghost=clamp(state.ghost+rnd(5,10),0,100);
+  log(`你暫離紛爭，靜養心神。山中無甲子，清風倒是從不催人交作業。`);
+  advanceQuarter(1);
+};
+
+$("adventureBtn").onclick=()=>{
+  if(pendingChoice) return;
+  adventure();
+};
+
+function adventure(){
+  if(importantNpcInteraction())return;
+  if(legacyEncounterChance()){advanceQuarter(1);render();return;}
+  if(legacyManualEncounter()){advanceQuarter(1);render();return;}
+  if(maybeStartStory())return;
+  if(chance(42) && triggerCausalEvent()) return;
+  if(discoverForeignManual()) return;
+  if(fragmentEncounter()) return;
+  if(chance(48)){variedAdventure();return;}
+  const roll=rnd(1,100);
+
+  if(state.sect!=="散修" && chance(10)){
+    const sect=currentSectObj();
+    choiceEvent(
+      `${state.sect} 發布門派任務：一支外出隊伍失聯，宗門正在徵召弟子查探。`,
+      [
+        ["接下任務",()=>{
+          const risky=chance(35);
+          if(risky){
+            const dmg=rnd(8,22)+state.realm*3;
+            state.hp-=dmg;
+            state.reputation+=12;
+            state.cult+=45+state.realm*12;
+            log(`你完成任務，但途中受傷 ${dmg} 點。門中聲望提升。`);
+            if(state.hp<=0){ die("你死於門派任務途中。"); }
+          }else{
+            state.reputation+=9;
+            state.cult+=35+state.realm*10;
+            log("你順利完成門派任務，獲得長老記功。");
+          }
+        }],
+        ["拒絕",()=>{
+          state.reputation=Math.max(0,state.reputation-4);
+          log("你婉拒任務。門中無人當面責難，但功簿上自然也少了一筆。");
+        }]
+      ]
+    );
+    return;
+  }
+
+  if(roll<=16){
+    choiceEvent(
+      "你在荒村外發現一名重傷修士，腰間儲物袋靈光未散。",
+      [
+        ["救他",()=>{state.karma-=6;state.fateGhost+=8;state.wisdom+=2; log("你耗費靈力救下此人。對方醒後贈你一卷殘訣，並記下了這份人情。");}],
+        ["奪寶",()=>{state.karma+=14;state.demon+=13;state.cult+=75;state.qi+=8; log("你取走儲物袋，也取走了一條可能回頭的路。修為大增，魔念滋生。");}]
+      ]
+    );
+  }else if(roll<=31){
+    choiceEvent(
+      "古祠深處有一口黑井。井中聲音說：『以十年壽元，換你百年修為。』",
+      [
+        ["交易",()=>{state.age+=10;state.cult+=140+state.realm*35;state.demon+=16;state.fateGhost+=15; log("井水無波，你卻忽然老了十歲。體內多出的力量不像是白來的。");}],
+        ["離開",()=>{state.wisdom+=3;state.demon=Math.max(0,state.demon-3); log("你退出古祠。能拒絕捷徑，有時也是一種修為。");}]
+      ]
+    );
+  }else if(roll<=48){
+    let dmg=rnd(12,30)+state.realm*4;
+    if(state.route==="體修") dmg=Math.floor(dmg*.65);
+    if(state.rootType==="變異靈根" && chance(20)){
+      dmg=Math.floor(dmg*.55);
+      state.cult+=35;
+      log("危急之際，變異靈根自行激發，替你擋下大半殺機。");
+    }
+    state.hp-=dmg;
+    state.cult+=rnd(35,70);
+    log(`你遭遇妖獸，苦戰後脫身。損失 <b>${dmg}</b> 氣血，但生死間所得遠勝靜坐。`);
+    if(state.hp<=0){ die("你傷勢過重，在荒野中失去最後一口氣。"); return; }
+    advanceQuarter(1);
+  }else if(roll<=63){
+    const g=rnd(45,95)+state.realm*15;
+    state.cult+=g; state.qi+=rnd(3,10);
+    log(`你誤入前人洞府，尋得殘留靈藥與心得，${energyType()}增加 <b>${g}</b>。`);
+    advanceQuarter(1);
+  }else if(roll<=76){
+    choiceEvent(
+      "魔教使者攔住你的去路。他沒有拔刀，只問：『正道給不了你的，我們可以。』",
+      [
+        ["拒絕",()=>{state.demon=Math.max(0,state.demon-8);state.karma-=2;state.wisdom+=2; log("你拂袖而去。身後笑聲很輕，像是在說：我們還會再見。");}],
+        ["接下魔印",()=>{state.demon+=32;state.karma+=10;state.cult+=110; log("魔印入體，修為暴漲。你第一次清楚聽見心底那個不屬於自己的笑聲。"); checkDemon();}]
+      ]
+    );
+  }else if(roll<=88){
+    state.fateGhost += 12;
+    state.wisdom+=2;
+    log("你替一名無主孤魂完成遺願。臨散前，它將一縷陰德留在你神魂深處。");
+    advanceQuarter(1);
+  }else{
+    state.hp=Math.min(state.maxHp,state.hp+rnd(8,18));
+    state.cult+=rnd(20,45);
+    log("這一季無大風浪。你走過集市、山河與幾場無關緊要的雨，修行略有精進。");
+    advanceQuarter(1);
+  }
+}
+
+function choiceEvent(text, choices){
+  pendingChoice=true;
+  log(text);
+  const box=document.createElement("div");
+  box.className="choicebox";
+  choices.forEach(([label,fn])=>{
+    const b=document.createElement("button");
+    b.textContent=label;
+    b.onclick=()=>{
+      fn();
+      pendingChoice=false;
+      box.remove();
+      checkDemon();
+      if(state.alive) advanceQuarter(1);
+      render();
+    };
+    box.appendChild(b);
+  });
+  $("log").lastChild.appendChild(box);
+  render();
+}
+
+function checkDemon(){
+  if(state.route!=="魔修" && state.route!=="鬼修" && state.demon>=70){
+    pendingChoice=true;
+    log("魔念已深入道基。今夜，你的靈力逆行，正魔兩途只剩一線之隔。");
+    const box=document.createElement("div");
+    box.className="choicebox";
+    [["墮入魔道",()=>{
+      state.route="魔修";state.cult+=130;state.qi+=20;state.maxHp+=20;state.hp=state.maxHp;
+      if(state.demon>=95 && chance(18) && !String(state.race).includes("天魔")){
+        state.race="天魔";
+        log("<b>魔性徹底重塑血脈，你蛻變為天魔。</b>");
+      }
+      log("<b>你轉為魔修。</b>從此修煉更快，但殺業與魔劫也會更頻繁。");
+    }],["斬心魔",()=>{
+      const ok=chance(45+state.wisdom*.8-state.demon*.25);
+      if(ok){state.demon=30;state.wisdom+=5;log("你守住本心，魔念暫退。這一夜，比百年閉關更長。");}
+      else{state.route="魔修";state.demon=90;log("你未能斬斷心魔。再睜眼時，道袍依舊，人已不同。");}
+    }]].forEach(([label,fn])=>{
+      const b=document.createElement("button");b.textContent=label;
+      b.onclick=()=>{fn();pendingChoice=false;box.remove();render();};box.appendChild(b);
+    });
+    $("log").lastChild.appendChild(box);
+  }
+}
+
+
+function startTribulation(nextRealm,onSuccess){
+ const idx=tribulationIndexForNextRealm(nextRealm);
+ const lv=TRIB_LEVELS[idx];
+ state.activeTrib={name:lv.name,bolts:lv.bolts,current:0,index:idx,base:lv.base,nextRealm};
+ state.lastTrib=lv.name;
+ log(`<b class="war">${lv.name}降臨！</b>共 ${lv.bolts} 道劫雷，品階約為 ${lv.rank}。資質越逆天、心魔越重，天道降下的劫數便越兇。`);
+ resolveTribulationWave(onSuccess);
+}
+function resolveTribulationWave(onSuccess){
+ const t=state.activeTrib;if(!t)return;
+ // Resolve in waves to keep it readable: each interaction represents several bolts.
+ const remaining=t.bolts-t.current;
+ const wave=Math.min(remaining,t.index>=6?9:t.index>=3?6:3);
+ const thunder=pickThunderType(t.index,t.nextRealm);
+ let totalDmg=0;
+ const defense=tribulationDefense();
+ for(let i=0;i<wave;i++){
+   const boltNo=t.current+i+1;
+   const ramp=1+(boltNo/t.bolts)*0.75;
+   let raw=(24+t.nextRealm*11+t.index*9)*TRIB_LEVELS[t.index].base*ramp;
+   raw*=1+thunder.tier*0.12;
+   let mitig=defense*(0.035-thunder.pierce*0.012);
+   if(state.route==="體修")mitig+=10+state.realm*2;
+   const dmg=Math.max(3,Math.floor(raw-mitig));
+   totalDmg+=dmg;
+ }
+ state.hp-=totalDmg;
+ t.current+=wave;
+ state.lastThunder=`${thunder.color}・${thunder.name}`;
+ log(`第 ${t.current-wave+1}～${t.current} 道：<b style="color:${thunder.color.includes("紫")?"#b69cff":thunder.color.includes("赤")?"#e69b8f":"#d9cfad"}">${thunder.name}</b>（${thunder.color}）轟落，合計造成 <b>${totalDmg}</b> 傷害。`);
+
+ if(state.hp<=0){
+   state.activeTrib=null;
+   die(`你未能撐過${t.name}，肉身在${thunder.name}中崩解。`);
+   return;
+ }
+
+ if(t.current>=t.bolts){
+   log(`<b>劫雲開始潰散。</b>你硬生生撐過 ${t.name}，天道認可此次破境。`);
+   state.activeTrib=null;
+   state.hp=Math.max(1,Math.floor(state.hp+state.maxHp*.28));
+   state.wisdom+=rnd(1,3);
+   onSuccess();
+   return;
+ }
+
+ pendingChoice=true;
+ const box=document.createElement("div");box.className="choicebox";
+ [["硬抗下一波",()=>{state.maxHp+=state.route==="體修"?2:0;pendingChoice=false;box.remove();resolveTribulationWave(onSuccess);}],
+  ["運功護體",()=>{state.qi=Math.max(0,state.qi-rnd(5,12));state.hp=Math.min(state.maxHp,state.hp+rnd(8,18));pendingChoice=false;box.remove();resolveTribulationWave(onSuccess);}],
+  ["借陣法/法寶",()=>{if(((state.inventory&&state.inventory["渡劫陣"])||0)>0){state.inventory["渡劫陣"]--;state.hp=Math.min(state.maxHp,state.hp+35);log("你啟動渡劫陣，削弱下一波天威。");}else if(((state.inventory&&state.inventory["護身符"])||0)>0){state.inventory["護身符"]--;state.hp=Math.min(state.maxHp,state.hp+18);log("護身符燃燒成灰，替你擋下一部分雷威。");}else{log("你翻遍儲物袋，卻沒有能派上用場的渡劫之物。");}pendingChoice=false;box.remove();resolveTribulationWave(onSuccess);}]]
+ .forEach(([tx,fn])=>{const b=document.createElement("button");b.textContent=tx;b.onclick=fn;box.appendChild(b);});
+ $("log").lastChild.appendChild(box);render();
+}
+
+$("breakBtn").onclick=()=>{
+  if(state.breakthroughCooldown>0){
+    log(`你上次突破留下的經脈暗傷尚未平復，仍需調息 <b>${state.breakthroughCooldown}</b> 年。`);
+    return;
+  }
+
+  const need=currentBreakNeed();
+  if(state.cult<need){
+    log(`根基尚未圓融。突破至 <b>${breakTargetName()}</b> 至少需要 ${need} 修為。`);
+    return;
+  }
+
+  const target=breakTargetName();
+  const isMajor=state.realm===0 || (state.stage||0)===3;
+  if(state.realm===8&&(state.stage||0)===3&&lawCompleteCount()<1){log("<b>飛升之門未開。</b>大乘圓滿欲入渡劫，至少須掌握一條完整法則。");return;}
+  let base=breakthroughChance();
+
+  // Repeated failures slowly improve understanding, but never make a major breakthrough trivial.
+  base+=Math.min(8,(state.failedBreaks||0)*1.5);
+  base=clamp(base,isMajor?8:18,isMajor?84:94);
+
+  const breakAid=usableBreakAid();
+  if(breakAid){state.inventory[breakAid]--;log(`你服用 <b>${breakAid}</b>，依自身資質獲得約 <b>+${aidBreakBonus(breakAid)}%</b> 的突破助力。`);}
+  log(`你凝聚${energyType()}，嘗試突破至 <b>${target}</b>。${isMajor?"此乃大境界關卡。":"此為小境界晉升。"}成功率約 <b>${Math.floor(base)}%</b>。`);
+
+  if(chance(base)){
+    // Success consumes only part of the accumulated cultivation; excess foundation remains useful.
+    const consume=Math.floor(need*(isMajor?0.78:0.62));
+    state.cult=Math.max(0,state.cult-consume);
+    state.failedBreaks=0;
+
+    if(state.realm===0){
+      state.realm=1;
+      state.stage=0;
+      state.maxHp+=28; state.qi+=15; state.wisdom+=rnd(1,3);
+      log(`<b>引氣入體，道門初開。</b>你正式踏入 <b>煉氣前期</b>。`);
+    }else if(state.stage<3){
+      state.stage++;
+      state.maxHp+=10+state.realm*3;
+      state.hp=Math.min(state.maxHp,state.hp+20);
+      state.qi+=5+state.realm*2;
+      if(state.stage===3)state.wisdom+=1;
+      log(`氣機完成一輪蛻變，你晉入 <b>${realmDisplay()}</b>。距離下一個大境界，只剩最後的積累與天關。`);
+    }else{
+      const nextRealm=state.realm+1;
+      const completeMajor=()=>{
+        state.realm=nextRealm;
+        state.stage=0;
+        state.maxHp+=35+state.realm*13;
+        state.hp=Math.max(state.hp,state.maxHp);
+        state.qi+=18+state.realm*6;
+        state.wisdom+=rnd(2,5);
+        log(`天地氣機倒灌，道基完成質變。你成功踏入 <b>${realmDisplay()}</b>！壽元與根基皆有所增長。`);
+        state.attrPoints=(state.attrPoints||0)+3;
+        log(`大境界蛻變使你獲得 <b>3 點屬性點</b>。`);
+        maybeUnlockRealmFeatures();
+        if(state.realm===REALMS.length-1){
+          state.ascended=true;
+          if(state.route==="魔修" && state.demon>=85){
+            state.race=chance(12)?"渾沌魔神":"天魔";
+          }else{
+            state.race=chance(8)?"神":"仙";
+          }
+          log(`<b>你渡盡塵劫，登臨真仙之境。</b>此刻生命層次已蛻變為 <b>${state.race}</b>。`);
+        }
+        render();
+      };
+
+      // Starting from Foundation Establishment completion -> Golden Core, a heavenly tribulation is mandatory.
+      if(state.realm>=2){
+        startTribulation(nextRealm,completeMajor);
+        return;
+      }else{
+        completeMajor();
+      }
+    }
+
+    if(state.realm===REALMS.length-1 && !state.ascended){
+      state.ascended=true;
+      if(state.route==="魔修" && state.demon>=85){
+        state.race=chance(12)?"渾沌魔神":"天魔";
+      }else{
+        state.race=chance(8)?"神":"仙";
+      }
+      log(`<b>你渡盡塵劫，登臨真仙之境。</b>此刻生命層次已蛻變為 <b>${state.race}</b>。`);
+    }
+  }else{
+    state.failedBreaks=(state.failedBreaks||0)+1;
+    const cultLoss=Math.floor(need*rnd(isMajor?38:24,isMajor?58:40)/100);
+    state.cult=Math.max(0,state.cult-cultLoss);
+    const dmg=rnd(isMajor?34:18,isMajor?62:38)+state.realm*(isMajor?8:4);
+    state.hp-=dmg;
+    state.demon=clamp(state.demon+rnd(isMajor?3:1,isMajor?9:5),0,100);
+    state.breakthroughCooldown=isMajor?rnd(2,4):rnd(1,2);
+    log(`突破失敗。你損失 <b>${cultLoss}</b> 修為、<b>${dmg}</b> 氣血，經脈需調息 <b>${state.breakthroughCooldown}</b> 年後才能再次衝關。`);
+    if(isMajor && chance(18+state.realm*2)){
+      state.bloodStability=clamp(((state.bloodStability===undefined||state.bloodStability===null)?100:state.bloodStability)-rnd(2,7),0,100);
+      log(`大境界反噬傷及根本，血脈穩定度下降。`);
+    }
+    if(state.hp<=0){die("突破反噬摧毀肉身，你在道火與雷光中身死。");return;}
+  }
+  advanceQuarter(isMajor?2:1);
+};
+
+function die(reason){
+  if(!state.alive)return;
+  if(state.secondLife&&!state.secondLifeUsed&&state.realm>=4){
+    state.secondLifeUsed=true;state.hp=Math.max(1,Math.floor(state.maxHp*.18));state.cult=Math.floor(state.cult*.55);
+    log(`<span class="war">${reason}</span>`);log("<b>肉身雖毀，元嬰遁出！</b>你消耗第二生命，保住境界但元氣大傷。");
+    advanceQuarter(2);render();return;
+  }
+  state.alive=false;
+  log(`<span style="color:#d98b8b">${reason}</span>`);
+  afterlifeOptions(reason,false);
+}
+
+function ghostTribulation(){
+  const tier=state.realm+1;
+  const diff=28 + tier*6 + Math.floor((state.age-state.nextGhostTrib+10)/10)*2;
+  const power=state.wisdom + state.qi*.12 + state.ghost*.35 + (state.route==="鬼修"?8:0);
+  const success=clamp(62 + power*.22 - diff,10,90);
+  log(`十年之期已至。陰風遮月，第 <b>${Math.floor((state.age-(state.nextGhostTrib-10))/10)+1}</b> 次鬼劫降臨，成功率約 ${Math.floor(success)}%。`);
+  if(chance(success)){
+    const loss=rnd(10,23)+tier*2;
+    state.ghost=clamp(state.ghost-loss,5,100);
+    state.cult+=90+tier*35;
+    state.nextGhostTrib+=10;
+    log(`你撐過鬼劫，魂火幾近熄滅，卻又重新聚攏。下一劫在 ${state.nextGhostTrib} 歲。`);
+    render();
+  }else{
+    finalDeath("鬼劫撕裂魂魄。你曾死過一次，這次終於沒有第三條路。");
+  }
+}
+
+function finalDeath(text){
+  state.alive=false;pendingChoice=false;
+  log(`<b style="color:#d98b8b">${text}</b>`);
+  render();
+  afterlifeOptions(text,true);
+}
+
+$("latestBtn").onclick=()=>{
+  const box=$("log");
+  safeScrollBottom(box);
+  ($("latestPanel")&&$("latestPanel").scrollIntoView)({behavior:"smooth",block:"nearest"});
+};
+
+
+function openRealmFeature(){
+ if(pendingChoice||!state.alive)return;pendingChoice=true;
+ log("你檢視此境界已能觸及的真正能力。");
+ const box=document.createElement("div");box.className="choicebox";
+ if(state.realm>=3&&!state.lifeArtifact){const b=document.createElement("button");b.textContent="祭煉本命法寶";b.onclick=()=>{const a=state.route==="體修"?["本命戰甲","鎮岳拳印"]:state.route==="魔修"?["血魂幡","魔刀"]:state.route==="鬼修"?["幽冥魂燈","白骨幡"]:["本命飛劍","玄天法印","五行靈珠"];state.lifeArtifact=a[rnd(0,a.length-1)];log(`本命法寶煉成：<b>${state.lifeArtifact}</b>。`);pendingChoice=false;box.remove();advanceQuarter(2);render();};box.appendChild(b);}
+ if(state.realm>=4){const b=document.createElement("button");b.textContent="元嬰出竅";b.onclick=()=>{state.wisdom+=rnd(2,5);state.cult+=currentBreakNeed()*.04;log("元嬰離體遠遊，神識與見聞有所增長。");pendingChoice=false;box.remove();advanceQuarter(1);render();};box.appendChild(b);}
+ if(state.realm>=5){const b=document.createElement("button");b.textContent="牽引天地靈氣";b.onclick=()=>{state.cult+=currentBreakNeed()*.07;log("你借天地為丹田，引動浩瀚天地靈氣。");pendingChoice=false;box.remove();advanceQuarter(1);render();};box.appendChild(b);}
+ if(state.realm>=6){const b=document.createElement("button");b.textContent="感悟空間";b.onclick=()=>{state.spaceSense=(state.spaceSense||0)+rnd(5,12);state.wisdom++;log(`空間感悟提升至 ${state.spaceSense}。`);pendingChoice=false;box.remove();advanceQuarter(1);render();};box.appendChild(b);}
+ if(state.realm>=7){const b=document.createElement("button");b.textContent="參悟法則";b.onclick=()=>{pendingChoice=false;box.remove();attemptLawInsight();};box.appendChild(b);}
+ const c=document.createElement("button");c.textContent="返回";c.onclick=()=>{pendingChoice=false;box.remove();render();};box.appendChild(c);
+ $("log").lastChild.appendChild(box);render();
+}
+$("realmFeatureBtn").onclick=()=>openRealmFeature();
+$("attributeBtn").onclick=()=>openAttributeMenu();
+
+$("sectStoryBtn").onclick=()=>openSectStory();
+$("intelBtn").onclick=()=>openIntelMenu();
+$("sectBtn").onclick=()=>openSectMenu();
+$("manualBtn").onclick=()=>openManualMenu();
+$("alchemyBtn").onclick=()=>craftAction("alchemy");
+$("talismanBtn").onclick=()=>craftAction("talisman");
+$("forgeBtn").onclick=()=>craftAction("forge");
+$("arrayBtn").onclick=()=>craftAction("array");
+$("herbBtn").onclick=()=>craftAction("herb");
+$("cookBtn").onclick=()=>craftAction("cook");
+
+
+$("saveBtn").onclick=()=>{
+  SafeStore.set("wendaoSave",JSON.stringify(state));
+  log("你將此世因果封入玉簡。存檔完成。");
+};
+
+$("resetBtn").onclick=()=>openRestartMenu();
+
+
+// ===== Responsive UI helpers =====
+document.querySelectorAll(".mobile-dock [data-click]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const target=$(btn.dataset.click);
+    if(target && !target.disabled) target.click();
+  });
+});
+document.querySelectorAll(".mobile-dock [data-scroll]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const target=$(btn.dataset.scroll);
+    if(target) target.scrollIntoView({behavior:"smooth",block:"start"});
+  });
+});
+
+document.querySelectorAll(".section-toggle").forEach(btn=>{
+  const target=$(btn.dataset.toggle);
+  if(!target)return;
+  // On phones, keep dense detail sections closed by default.
+  if(window.matchMedia("(max-width:860px)").matches){
+    target.classList.add("is-collapsed");
+    btn.classList.add("collapsed");
+  }
+  btn.addEventListener("click",()=>{
+    target.classList.toggle("is-collapsed");
+    btn.classList.toggle("collapsed");
+  });
+});
+
+// Keep the latest story readable after orientation/viewport changes.
+window.addEventListener("resize",()=>{
+  const box=$("log");
+  if(box && box.scrollHeight-box.scrollTop-box.clientHeight<120){
+    requestAnimationFrame(()=>box.scrollTop=box.scrollHeight);
+  }
+});
+
+
+const buttonHints={
+ cultivateBtn:"閉關修煉並推進時間",breakBtn:"嘗試突破目前境界",restBtn:"休養恢復狀態",
+ adventureBtn:"外出歷練並觸發事件",sectBtn:"查看與處理門派事項",sectStoryBtn:"推進目前門派專屬劇情",
+ intelBtn:"查看可追蹤的世界機緣",manualBtn:"調整主修與輔修功法",realmFeatureBtn:"使用目前境界解鎖的特殊能力",attributeBtn:"分配角色屬性點",resetBtn:"開啟輪迴與重新開局選單"
+};
+for(const [id,hint] of Object.entries(buttonHints)){const b=$(id);if(b){b.title=hint;b.setAttribute("aria-label",hint);}}
+
+window.addEventListener("load",()=>{
+  const raw=SafeStore.get("wendaoSave");
+  if(raw){
+    const btn=document.createElement("button");
+    btn.textContent="讀取前世存檔";
+    btn.style.width="100%";btn.style.marginTop="9px";
+    btn.onclick=()=>{
+      state=JSON.parse(raw);
+      if(!state.rootName){
+        const legacy=rollDestiny();
+        Object.assign(state,{
+          rootType:legacy.rootType,rootName:legacy.rootName,rootCult:legacy.rootCult,
+          rootBreak:legacy.rootBreak,talentName:legacy.talentName,talentRank:legacy.talentRank,
+          talentSub:legacy.talentSub,talentMult:legacy.talentMult
+        });
+      }
+      if(!state.race) state.race="人族";
+      if(!state.sect) state.sect="散修";
+      if(!state.sectAlign) state.sectAlign="散修";
+      if(!state.sectRank) state.sectRank=state.sect==="散修"?"無":"外門弟子";
+      if(state.sectYears===undefined) state.sectYears=0;
+      if(state.reputation===undefined) state.reputation=0;
+      if(state.betrayalScore===undefined) state.betrayalScore=0;
+      if(state.manualClues===undefined) state.manualClues=0;
+      if(state.manualMastery===undefined) state.manualMastery=0;
+      if(!state.adventureHistory) state.adventureHistory=[];
+      if(state.zombie===undefined) state.zombie=false;
+      if(state.mutation===undefined) state.mutation=0;
+      if(state.bloodStability===undefined) state.bloodStability=100;
+      if(!state.mutationTraits) state.mutationTraits=[];
+      if(state.berserkYears===undefined) state.berserkYears=0;
+      if(state.stage===undefined) state.stage=state.realm===0?0:0;
+      if(state.breakthroughCooldown===undefined) state.breakthroughCooldown=0;
+      if(state.failedBreaks===undefined) state.failedBreaks=0;
+      state.cult=Math.max(0,Number(state.cult)||0);state.demon=clamp(Number(state.demon)||0,0,100);
+      if(state.activeTrib===undefined) state.activeTrib=null;
+      if(!state.sectStories)state.sectStories={};if(!state.storyTags)state.storyTags={};if(state.worldSecrets===undefined)state.worldSecrets=0;
+      const sectRename={"太玄劍宗":"萬劍宗","青雲丹門":"藥王谷","萬象書院":"玄引門","天機樓":"天機閣","血煞魔宗":"天魔門","萬魂魔宮":"葬神宗","幽冥谷":"萬象宗","四海散修盟":"四海盟"};
+      if(sectRename[state.sect])state.sect=sectRename[state.sect];if(sectRename[state.oldSect])state.oldSect=sectRename[state.oldSect];
+      if(state.season===undefined)state.season=0;if(state.secondLife===undefined)state.secondLife=false;
+      if(state.secondLifeUsed===undefined)state.secondLifeUsed=false;if(!state.lawInsights)state.lawInsights=[];
+      if(!state.lawProgress)state.lawProgress={};if(!state.completeLaws)state.completeLaws=[];
+      if(state.lastTrib===undefined) state.lastTrib=null;
+      if(state.lastThunder===undefined) state.lastThunder=null;
+      if(!state.auxManuals) state.auxManuals=[];
+      if(!state.manualSkills) state.manualSkills={};
+      if(!state.craftSkills) state.craftSkills={alchemy:0,talisman:0,forge:0,array:0,herb:0,cook:0};
+      if(!state.inventory) state.inventory={靈草:3,符紙:3,玄鐵:2,靈晶:2,靈種:2,妖獸肉:2,靈米:3,靈泉:2,靈墨:2,妖血:1,妖骨:1,靈土:1,妖丹:0,陣旗:0};
+      if(!state.flags) state.flags={};
+      if(!state.relations) state.relations={};
+      if(!state.threads) state.threads=[];
+      if(!state.eventMemory) state.eventMemory=[];
+      if(!state.eventCooldowns) state.eventCooldowns={};
+      if(state.world===undefined)state.world=null;if(state.story===undefined)state.story=null;initWorld();
+      if(state.morality===undefined)state.morality=0;
+      if(!state.playerAlignment)state.playerAlignment="自由";
+      if(state.attrPoints===undefined)state.attrPoints=0;
+      if(!state.attributes)state.attributes={body:0,spirit:0,soul:0,luck:0};
+      if(state.reincarnations===undefined)state.reincarnations=0;
+      if(state.legacy===undefined)state.legacy=null;
+      $("startScreen").classList.add("hidden");
+      $("gameScreen").classList.remove("hidden");
+      log("玉簡微亮。你自前世因果中醒來。");
+      render();
+    };
+    $("beginBtn").after(btn);
+  }
+});
+</script>
+
+
+<script>
+window.addEventListener("error",function(e){
+  var old=document.getElementById("mobileErrorBanner");
+  if(old)return;
+  var d=document.createElement("div");
+  d.id="mobileErrorBanner";
+  d.style.cssText="position:fixed;z-index:99999;left:8px;right:8px;bottom:8px;padding:12px;background:#5b1f1f;color:#fff;border-radius:10px;font-size:13px;line-height:1.5";
+  d.innerHTML="遊戲程式發生相容性錯誤。請改用 Safari／Chrome 開啟此檔案，或重新整理頁面。<br><small>"+(e.message||"未知錯誤")+"</small>";
+  document.body.appendChild(d);
+});
+</script>
+
+</body>
+</html>
